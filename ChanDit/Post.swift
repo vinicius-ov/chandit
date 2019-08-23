@@ -9,11 +9,11 @@
 import UIKit
 
 struct Post: Decodable {
-
     var no: Int?
     var now: String?
     var name: String?
     var com: String?
+    var sub: String?
     var filename: String?
     var ext: String?
     var md5: String?
@@ -41,6 +41,7 @@ struct Post: Decodable {
         case now
         case name
         case com
+        case sub
         case filename
         case ext
         case md5

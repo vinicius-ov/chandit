@@ -25,7 +25,9 @@ class PostTableViewCell: UITableViewCell {
     }
     
     @IBOutlet weak var postText: UITextView!
-    //@IBOutlet weak var postText: UILabel!
+    
+    @IBOutlet weak var postTitle: UILabel!
+    @IBOutlet weak var postNumber: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -34,8 +36,13 @@ class PostTableViewCell: UITableViewCell {
     
     func loadCell() {
         postAuthorName.text = postViewModel?.postAuthorName
+        
+        postTitle.set(html: postViewModel?.title)
+        
+        postNumber.text = "No.\(postViewModel!.number!)"
         postTimePublishing.text = postViewModel?.timeFromPost
         postText.set(html: postViewModel?.comment)
+        
         guard let thumbUrl = postViewModel?.thumbnailUrl else {
             self.postImageSize.constant = 0
             return
@@ -50,14 +57,33 @@ class PostTableViewCell: UITableViewCell {
 //    }
 }
 
+extension UILabel {
+    func set(html: String?) {
+        if let html = html, let htmlData = html.data(using: .unicode) {
+            do {
+                self.attributedText =
+                    try NSAttributedString(data: htmlData,
+                                           options: [.documentType: NSAttributedString.DocumentType.html],
+                                           documentAttributes: nil)
+                self.font = UIFont.systemFont(ofSize: 14.0)
+                self.textColor = UIColor.white
+            } catch let e as NSError {
+                print("Couldn't parse \(html): \(e.localizedDescription)")
+            }
+        }else{
+            self.text = ""
+        }
+    }
+}
 
 extension UITextView {
     func set(html: String?) {
         if let html = html, let htmlData = html.data(using: .unicode) {
             do {
-                self.attributedText = try NSAttributedString(data: htmlData,
-                                                             options: [.documentType: NSAttributedString.DocumentType.html],
-                                                             documentAttributes: nil)
+                self.attributedText =
+                    try NSAttributedString(data: htmlData,
+                                           options: [.documentType: NSAttributedString.DocumentType.html],
+                                           documentAttributes: nil)
                 self.font = UIFont.systemFont(ofSize: 17.0)
                 self.textColor = UIColor.white
             } catch let e as NSError {
