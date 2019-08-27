@@ -44,6 +44,7 @@ class ViewController: UIViewController {
         toolBar.isUserInteractionEnabled = true
         
         boardSelector.inputAccessoryView = toolBar
+        
     }
     
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?){
@@ -112,6 +113,14 @@ extension ViewController : UITableViewDelegate, UITableViewDataSource {
             let post = thread.postViewModel(at: indexPath.row)
             cell.postViewModel = post
             cell.loadCell()
+            
+            cell.parentViewController = self
+            
+            cell.imageViewSelector = { tapGesture in
+                let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ImageViewerViewController") as UIViewController
+                self.present(viewController, animated: true, completion: nil)
+            }
+            
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "viewThreadCell") as! ViewThreadTableViewCell
@@ -141,3 +150,4 @@ extension ViewController: UIPickerViewDataSource, UIPickerViewDelegate {
         boardSelector.text = boards[row]
     }
 }
+

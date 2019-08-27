@@ -35,6 +35,11 @@ struct ThreadViewModel {
     func postViewModel(at index: Int) -> PostViewModel {
         return self.posts[index]
     }
+    
+    var threadTitle:String {
+        let op = posts.first!
+        return op.title ?? op.subject ?? ""
+    }
 }
 
 struct PostViewModel {
@@ -60,6 +65,13 @@ extension PostViewModel {
             return URL(string: "")
         }
         return URL(string: "https://i.4cdn.org/v/\(tim)s.jpg")
+    }
+    
+    var imageUrl: URL? {
+        guard let tim = post.tim, let ext = post.ext else {
+            return URL(string: "")
+        }
+        return URL(string: "https://i.4cdn.org/v/\(tim)\(ext)")
     }
     
     var timeFromPost: String? {
@@ -94,6 +106,19 @@ extension PostViewModel {
         let comment = com?.replacingOccurrences(of: "", with: "")
         com?.count
     }
+    
+    var subject: String? {
+        return post.sub
+    }
+    
+    var width: CGFloat? {
+        return CGFloat.init(exactly: NSNumber(value: post.w ?? 0))
+    }
+    
+    var height: CGFloat? {
+        return CGFloat.init(exactly: NSNumber(value: post.h ?? 0))
+    }
+    
     /*
      Optional("<a href=\"#p475189775\" class=\"quotelink\">&gt;&gt;475189775</a><br>This will never not be hilarious")
      */

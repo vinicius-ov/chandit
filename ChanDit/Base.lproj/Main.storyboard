@@ -326,5 +326,118 @@
             </objects>
             <point key="canvasLocation" x="809" y="19"/>
         </scene>
+        <!--Image Viewer View Controller-->
+        <scene sceneID="I1Y-3E-NjS">
+            <objects>
+                <viewController storyboardIdentifier="ImageViewerViewController" id="pL5-zk-GKd" customClass="ImageViewerViewController" customModule="ChanDit" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="DqW-c3-doV">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0HF-k7-7C1">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="BcI-vB-K4w">
+                                        <rect key="frame" x="197" y="399" width="20" height="20"/>
+                                    </activityIndicatorView>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6Ju-hY-bFz">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="818"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="818" id="6af-Oi-3Kd"/>
+                                            <constraint firstAttribute="width" constant="414" id="cEr-uN-Lel"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="BcI-vB-K4w" firstAttribute="centerX" secondItem="0HF-k7-7C1" secondAttribute="centerX" id="Ezv-xG-0Fn"/>
+                                    <constraint firstAttribute="trailing" secondItem="6Ju-hY-bFz" secondAttribute="trailing" id="Gxv-od-XGi"/>
+                                    <constraint firstItem="BcI-vB-K4w" firstAttribute="centerY" secondItem="0HF-k7-7C1" secondAttribute="centerY" id="N9B-KT-VZD"/>
+                                    <constraint firstAttribute="bottom" secondItem="6Ju-hY-bFz" secondAttribute="bottom" id="WCA-9r-Wal"/>
+                                    <constraint firstItem="6Ju-hY-bFz" firstAttribute="top" secondItem="0HF-k7-7C1" secondAttribute="top" id="XHD-Dp-6O6"/>
+                                    <constraint firstItem="6Ju-hY-bFz" firstAttribute="leading" secondItem="0HF-k7-7C1" secondAttribute="leading" id="lxx-ce-3DP"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="WPq-y8-onS" firstAttribute="bottom" secondItem="0HF-k7-7C1" secondAttribute="bottom" id="8q8-5D-oJI"/>
+                            <constraint firstItem="0HF-k7-7C1" firstAttribute="leading" secondItem="WPq-y8-onS" secondAttribute="leading" id="NCW-gy-T4P"/>
+                            <constraint firstItem="WPq-y8-onS" firstAttribute="trailing" secondItem="0HF-k7-7C1" secondAttribute="trailing" id="NMf-ST-qzZ"/>
+                            <constraint firstItem="0HF-k7-7C1" firstAttribute="top" secondItem="WPq-y8-onS" secondAttribute="top" id="khP-v3-qIF"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="WPq-y8-onS"/>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="6Ju-hY-bFz" id="oIA-v2-okU"/>
+                        <outlet property="imageViewBottomConstraint" destination="WCA-9r-Wal" id="rh1-mj-ELc"/>
+                        <outlet property="imageViewHeight" destination="6af-Oi-3Kd" id="0mN-uZ-H6X"/>
+                        <outlet property="imageViewLeadingConstraint" destination="lxx-ce-3DP" id="wBV-dr-ytx"/>
+                        <outlet property="imageViewTopConstraint" destination="XHD-Dp-6O6" id="FaU-aB-Cgj"/>
+                        <outlet property="imageViewTrailingConstraint" destination="Gxv-od-XGi" id="mCK-Ih-yL2"/>
+                        <outlet property="imageViewWidth" destination="cEr-uN-Lel" id="7aL-8e-QQe"/>
+                        <outlet property="loadingIndicator" destination="BcI-vB-K4w" id="8av-XG-501"/>
+                        <outlet property="scrollView" destination="0HF-k7-7C1" id="i1b-l0-mDi"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wBT-hE-3bE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1648" y="19"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="gXh-j9-QHi">
+            <objects>
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="SuQ-sS-PgH" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="W7Y-UB-PeX"/>
+                        <viewControllerLayoutGuide type="bottom" id="phx-OS-alO"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="64F-nj-iU2">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lWh-he-f7x">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="photo1" translatesAutoresizingMaskIntoConstraints="NO" id="R0v-c0-dQI">
+                                        <rect key="frame" x="0.0" y="0.0" width="16" height="16"/>
+                                    </imageView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="R0v-c0-dQI" secondAttribute="trailing" id="J51-ow-gTD"/>
+                                    <constraint firstItem="R0v-c0-dQI" firstAttribute="top" secondItem="lWh-he-f7x" secondAttribute="top" id="Xu0-kc-rh1"/>
+                                    <constraint firstAttribute="bottom" secondItem="R0v-c0-dQI" secondAttribute="bottom" id="l4t-ML-Orf"/>
+                                    <constraint firstItem="R0v-c0-dQI" firstAttribute="leading" secondItem="lWh-he-f7x" secondAttribute="leading" id="xIk-Gn-Nlv"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="delegate" destination="SuQ-sS-PgH" id="dok-PB-oMX"/>
+                                </connections>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="phx-OS-alO" firstAttribute="top" secondItem="lWh-he-f7x" secondAttribute="bottom" id="7U6-Cc-BgP"/>
+                            <constraint firstAttribute="trailing" secondItem="lWh-he-f7x" secondAttribute="trailing" id="HeX-nv-O8Q"/>
+                            <constraint firstItem="lWh-he-f7x" firstAttribute="top" secondItem="W7Y-UB-PeX" secondAttribute="bottom" id="KzN-od-WCi"/>
+                            <constraint firstItem="lWh-he-f7x" firstAttribute="leading" secondItem="64F-nj-iU2" secondAttribute="leading" id="PCl-0d-nA7"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6k0-RP-Idr"/>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <connections>
+                        <outlet property="imageView" destination="R0v-c0-dQI" id="YSd-fi-w0q"/>
+                        <outlet property="imageViewBottomConstraint" destination="l4t-ML-Orf" id="mg6-VS-agm"/>
+                        <outlet property="imageViewLeadingConstraint" destination="xIk-Gn-Nlv" id="DWj-hB-Mbg"/>
+                        <outlet property="imageViewTopConstraint" destination="Xu0-kc-rh1" id="NLD-mn-21W"/>
+                        <outlet property="imageViewTrailingConstraint" destination="J51-ow-gTD" id="tnK-Va-S4h"/>
+                        <outlet property="scrollView" destination="lWh-he-f7x" id="iKp-Od-YmC"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xxW-FB-8M1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2400" y="19"/>
+        </scene>
     </scenes>
+    <resources>
+        <image name="photo1" width="16" height="16"/>
+    </resources>
 </document>

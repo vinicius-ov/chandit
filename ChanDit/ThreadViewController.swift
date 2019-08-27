@@ -32,6 +32,7 @@ class ThreadViewController: UIViewController {
                     self.threadViewModel.posts = thread.posts.map(PostViewModel.init)
                     
                     DispatchQueue.main.async {
+                        self.title = self.threadViewModel.threadTitle
                         self.postsTable.reloadData()
                     }
                 }
@@ -56,6 +57,7 @@ extension ThreadViewController: UITableViewDataSource {
         let post = threadViewModel.postViewModel(at: indexPath.row)
         cell.postViewModel = post
         cell.loadCell()
+        cell.parentViewController = self
         return cell
     }
     

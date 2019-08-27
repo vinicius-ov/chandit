@@ -24,6 +24,9 @@ class PostTableViewCell: UITableViewCell {
         }
     }
     
+    @objc var imageViewSelector: ((UITapGestureRecognizer) -> Void)!
+    var parentViewController: UIViewController!
+    
     @IBOutlet weak var postText: UITextView!
     
     @IBOutlet weak var postTitle: UILabel!
@@ -50,11 +53,21 @@ class PostTableViewCell: UITableViewCell {
         postImage.kf.setImage(with: thumbUrl) { result in
             self.postImageSize.constant = 120
         }
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action:
+            #selector(viewImage(tapGesture:)))
+        postImage.addGestureRecognizer(tapGesture)
+        postImage.isUserInteractionEnabled = true
+        
     }
     
-//    override func prepareForReuse() {
-//        postImage.image = nil
-//    }
+    @objc func viewImage(tapGesture: UITapGestureRecognizer) {
+        let viewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "ImageViewerViewController") as! ImageViewerViewController
+        viewController.postViewModel = postViewModel
+        viewController.modalPresentationStyle = .overCurrentContext
+        parentViewController.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
 }
 
 extension UILabel {
