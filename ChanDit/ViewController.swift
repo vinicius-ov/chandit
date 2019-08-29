@@ -7,15 +7,17 @@
 //
 
 import UIKit
+import SnapKit
 
 class ViewController: UIViewController {
     
     @IBOutlet weak var postsTable: UITableView!
-    var pageViewModel = PageViewModel()
+    var pageViewModel = PageViewModel() //deveria ser injetado
     var threadToLaunch:Int!
     var pickerView: UIPickerView!
     @IBOutlet weak var boardSelector: UITextField!
-    let boards = ["Vydia","Vydia Generals"]
+    let boardsViewModel = BoardsViewModel() //deveria ser injetado
+    let service = Service() //deveria ser injetado
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +31,8 @@ class ViewController: UIViewController {
         pickerView.delegate = self
         pickerView.dataSource = self
         boardSelector.inputView = pickerView
-        boardSelector.text = boards[0]
+        
+        boardSelector.text = boardsViewModel.selectedBoardName
         
         let toolBar = UIToolbar()
         toolBar.barStyle = UIBarStyle.default
@@ -45,30 +48,18 @@ class ViewController: UIViewController {
         
         boardSelector.inputAccessoryView = toolBar
         
+        fetchData()
+        
     }
     
-    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?){
-        if motion == .motionShake
-        {
-            postsTable.reloadData()
-        }
-    }
-    
-    @objc func hideKeyboard() {
-         boardSelector.resignFirstResponder()
-    }
-    
-    override func viewDidLayoutSubviews() {
-//        print(postImage.frame.width)
-//        print(self.view.bounds.width)
-        let service = Service()
-        service.loadData(from: URL(string: "https://a.4cdn.org/v/1.json")!) { (result) in
+    func fetchData() {
+        service.loadData(from: URL(string: "https://a.4cdn.org/\(boardsViewModel.selectedBoardId)/1.json")!) { (result) in
             switch result {
             case .success(let data):
                 do {
                     guard let page = try? JSONDecoder().decode(Page.self, from: data) else {
-                            print("error trying to convert data to JSON \(data)")
-                            return
+                        print("error trying to convert data to JSON \(data)")
+                        return
                     }
                     self.pageViewModel.threads = page.threads.map ({ (thread: Thread) in
                         let tvm = ThreadViewModel.init(thread: thread)
@@ -86,20 +77,35 @@ class ViewController: UIViewController {
         }
     }
     
-    @objc func navigateToThreadView() {
+    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?){
+        if motion == .motionShake
+        {
+            postsTable.reloadData()
+        }
+    }
+    
+    @objc func hideKeyboard() {
+        boardSelector.resignFirstResponder()
+        postsTable.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+        fetchData()
+    }
+    
+    @objc func navigateToThreadView(_ sender: UIButton) {
+        self.threadToLaunch = sender.tag
         performSegue(withIdentifier: "gotoThreadView", sender: self)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let vc = segue.destination as! ThreadViewController
-        vc.threadNumber = threadToLaunch
+        vc.threadNumber = self.threadToLaunch
+        vc.selectedBoardId = boardsViewModel.selectedBoardId
     }
     
 }
 
 extension ViewController : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return pageViewModel.threads[section].posts.count + 1
+        return pageViewModel.threads[section].posts.count
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -107,28 +113,48 @@ extension ViewController : UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row < pageViewModel.threads[indexPath.section].posts.count {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "postCell") as! PostTableViewCell
-            let thread = pageViewModel.threads[indexPath.section]
-            let post = thread.postViewModel(at: indexPath.row)
-            cell.postViewModel = post
-            cell.loadCell()
-            
-            cell.parentViewController = self
-            
-            cell.imageViewSelector = { tapGesture in
-                let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ImageViewerViewController") as UIViewController
-                self.present(viewController, animated: true, completion: nil)
-            }
-            
-            return cell
-        } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "viewThreadCell") as! ViewThreadTableViewCell
-            cell.viewThread.addTarget(self, action: #selector(ViewController.navigateToThreadView), for: .touchUpInside)
-            threadToLaunch = pageViewModel.threadViewModel(at: indexPath.section).postViewModel(at: 0).number
-            
-            return cell
+        //if indexPath.row < pageViewModel.threads[indexPath.section].posts.count {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "postCell") as! PostTableViewCell
+        let thread = pageViewModel.threads[indexPath.section]
+        let post = thread.postViewModel(at: indexPath.row)
+        cell.selectedBoardId = boardsViewModel.selectedBoardId
+        cell.postViewModel = post
+        
+        cell.loadCell()
+        
+        cell.parentViewController = self
+        
+        cell.imageViewSelector = { tapGesture in
+            let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ImageViewerViewController") as UIViewController
+            self.present(viewController, animated: true, completion: nil)
         }
+        
+        return cell
+        
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let view = UIView()
+        view.backgroundColor = .darkGray
+        let viewThreadButton = UIButton()
+        
+        viewThreadButton.setTitle("View Thread", for: .normal)
+        viewThreadButton.backgroundColor = .gray
+        viewThreadButton.setTitleColor(.white, for: .normal)
+        viewThreadButton.sizeToFit()
+        view.addSubview(viewThreadButton)
+        
+        viewThreadButton.snp.makeConstraints { (make) -> Void in
+            make.centerY.equalTo(view)
+            make.trailing.equalTo(-10)
+            make.width.equalTo(120)
+        }
+        
+        let threadToLaunch = pageViewModel.threadViewModel(at: section).postViewModel(at: 0).number
+        viewThreadButton.tag = threadToLaunch!
+        let selector = #selector(ViewController.navigateToThreadView(_:))
+        viewThreadButton.addTarget(self, action: selector, for: .touchUpInside)
+        return view
     }
     
 }
@@ -139,15 +165,18 @@ extension ViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return boards.count
+        return boardsViewModel.boards.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return boards[row]
+        return boardsViewModel.boards[row].name
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        boardSelector.text = boards[row]
+        let name = boardsViewModel.boards[row].name
+        boardSelector.text = name
+        boardsViewModel.setCurrentBoard(byBoardName: name)
     }
+    
 }
 

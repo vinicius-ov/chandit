@@ -60,18 +60,40 @@ extension PostViewModel {
         return post.no
     }
     
-    var thumbnailUrl: URL? {
+//    var thumbnailUrl: URL? {
+//        guard let tim = post.tim else {
+//            return URL(string: "")
+//        }
+//        return URL(string: "https://i.4cdn.org/\(boardsViewModel.selectedBoardId)/\(tim)s.jpg")
+//    }
+    
+    func thumbnailUrl(boardId: String) -> URL? {
         guard let tim = post.tim else {
             return URL(string: "")
         }
-        return URL(string: "https://i.4cdn.org/v/\(tim)s.jpg")
+        return URL(string: "https://i.4cdn.org/\(boardId)/\(tim)s.jpg")
     }
     
-    var imageUrl: URL? {
+    var thumbWidth: CGFloat? {
+        return CGFloat.init(exactly: NSNumber(value: post.tn_w ?? 0))
+    }
+    
+    var thumbHeight: CGFloat? {
+        return CGFloat.init(exactly: NSNumber(value: post.tn_h ?? 0))
+    }
+    
+//    var imageUrl: URL? {
+//        guard let tim = post.tim, let ext = post.ext else {
+//            return URL(string: "")
+//        }
+//        return URL(string: "https://i.4cdn.org/v/\(tim)\(ext)")
+//    }
+    
+    func imageUrl(boardId: String) -> URL? {
         guard let tim = post.tim, let ext = post.ext else {
             return URL(string: "")
         }
-        return URL(string: "https://i.4cdn.org/v/\(tim)\(ext)")
+        return URL(string: "https://i.4cdn.org/\(boardId)/\(tim)\(ext)")
     }
     
     var timeFromPost: String? {
@@ -111,11 +133,11 @@ extension PostViewModel {
         return post.sub
     }
     
-    var width: CGFloat? {
+    var imageWidth: CGFloat? {
         return CGFloat.init(exactly: NSNumber(value: post.w ?? 0))
     }
     
-    var height: CGFloat? {
+    var imageHeight: CGFloat? {
         return CGFloat.init(exactly: NSNumber(value: post.h ?? 0))
     }
     

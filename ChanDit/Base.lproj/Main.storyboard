@@ -34,7 +34,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="z4D-Iw-lGR">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="40" estimatedSectionFooterHeight="40" translatesAutoresizingMaskIntoConstraints="NO" id="z4D-Iw-lGR">
                                 <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="separatorColor" red="1" green="0.026629825950000002" blue="0.046368285160000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -130,38 +130,11 @@
                                         <connections>
                                             <outlet property="postAuthorName" destination="FvF-I1-xFX" id="Qy0-yf-o4B"/>
                                             <outlet property="postImage" destination="evk-p8-3q2" id="vvJ-vf-fd3"/>
-                                            <outlet property="postImageSize" destination="3nK-Pb-wci" id="2gs-I3-kNa"/>
+                                            <outlet property="postImageSize" destination="3nK-Pb-wci" id="cbX-Pd-tf7"/>
                                             <outlet property="postNumber" destination="VFI-DQ-ZSR" id="rRe-Nc-x3N"/>
                                             <outlet property="postText" destination="EKb-Mp-EEB" id="v4m-NK-bgk"/>
                                             <outlet property="postTimePublishing" destination="Wq3-Ig-w7V" id="jz9-Xe-ST8"/>
                                             <outlet property="postTitle" destination="0Gk-7f-gI0" id="B3Y-aZ-nWS"/>
-                                        </connections>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="viewThreadCell" rowHeight="34" id="058-eO-EYx" customClass="ViewThreadTableViewCell" customModule="ChanDit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="295" width="414" height="34"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="058-eO-EYx" id="fyX-f4-mDr">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="33.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <button opaque="NO" tag="1010" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y0E-LW-nMG">
-                                                    <rect key="frame" x="274" y="2" width="120" height="30"/>
-                                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="120" id="k0G-S2-hgi"/>
-                                                    </constraints>
-                                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <state key="normal" title="View Thread"/>
-                                                </button>
-                                            </subviews>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <constraints>
-                                                <constraint firstItem="Y0E-LW-nMG" firstAttribute="trailing" secondItem="fyX-f4-mDr" secondAttribute="trailingMargin" id="Hzj-mD-Z09"/>
-                                                <constraint firstItem="Y0E-LW-nMG" firstAttribute="centerY" secondItem="fyX-f4-mDr" secondAttribute="centerY" id="OZA-2b-uc9"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="viewThread" destination="Y0E-LW-nMG" id="AGo-sY-kfM"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -276,20 +249,21 @@
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="Ahv-1Q-e3s" secondAttribute="bottom" constant="2" id="8FV-Zh-q5U"/>
                                                 <constraint firstItem="3nr-fu-KmY" firstAttribute="leading" secondItem="uQC-9R-DFB" secondAttribute="leading" constant="10" id="8N8-rA-I8t"/>
+                                                <constraint firstItem="fnB-HW-3x4" firstAttribute="centerX" secondItem="uQC-9R-DFB" secondAttribute="centerX" id="9O4-rP-OWn"/>
                                                 <constraint firstAttribute="trailing" secondItem="Ahv-1Q-e3s" secondAttribute="trailing" id="ArX-qf-h50"/>
                                                 <constraint firstItem="Ahv-1Q-e3s" firstAttribute="top" secondItem="fnB-HW-3x4" secondAttribute="bottom" id="HtL-sR-uJ9"/>
-                                                <constraint firstItem="fnB-HW-3x4" firstAttribute="leading" secondItem="uQC-9R-DFB" secondAttribute="leading" id="Ilc-Sw-nXv"/>
                                                 <constraint firstAttribute="trailing" secondItem="fnB-HW-3x4" secondAttribute="trailing" id="KXC-1t-5BD"/>
+                                                <constraint firstAttribute="trailing" secondItem="fnB-HW-3x4" secondAttribute="trailing" id="LtI-tW-578"/>
                                                 <constraint firstAttribute="trailing" secondItem="xIZ-Fm-oqL" secondAttribute="trailing" constant="10" id="NG7-GF-y25"/>
                                                 <constraint firstItem="xIZ-Fm-oqL" firstAttribute="leading" secondItem="uQC-9R-DFB" secondAttribute="leading" constant="10" id="PK7-mG-rvH"/>
                                                 <constraint firstAttribute="trailing" secondItem="Ahv-1Q-e3s" secondAttribute="trailing" id="Ppx-x1-fzB"/>
                                                 <constraint firstAttribute="trailing" secondItem="3nr-fu-KmY" secondAttribute="trailing" constant="10" id="UY0-q4-5u7"/>
                                                 <constraint firstItem="fnB-HW-3x4" firstAttribute="top" secondItem="3nr-fu-KmY" secondAttribute="bottom" id="YbK-Tf-UGm"/>
                                                 <constraint firstItem="fnB-HW-3x4" firstAttribute="leading" secondItem="uQC-9R-DFB" secondAttribute="leading" id="ZnS-O0-Pa3"/>
+                                                <constraint firstItem="fnB-HW-3x4" firstAttribute="leading" secondItem="uQC-9R-DFB" secondAttribute="leading" id="k9r-wq-DFY"/>
                                                 <constraint firstItem="3nr-fu-KmY" firstAttribute="top" secondItem="xIZ-Fm-oqL" secondAttribute="bottom" id="lWM-Rw-2ie"/>
                                                 <constraint firstItem="3nr-fu-KmY" firstAttribute="top" secondItem="xIZ-Fm-oqL" secondAttribute="bottom" id="mbQ-cy-DQm"/>
                                                 <constraint firstItem="Ahv-1Q-e3s" firstAttribute="leading" secondItem="uQC-9R-DFB" secondAttribute="leading" id="mok-eG-P9E"/>
-                                                <constraint firstAttribute="trailing" secondItem="fnB-HW-3x4" secondAttribute="trailing" id="p0A-YA-MDK"/>
                                                 <constraint firstAttribute="trailing" secondItem="Ahv-1Q-e3s" secondAttribute="trailing" id="plt-0H-0mF"/>
                                                 <constraint firstItem="Ahv-1Q-e3s" firstAttribute="leading" secondItem="uQC-9R-DFB" secondAttribute="leading" id="u0d-y6-Pdz"/>
                                                 <constraint firstItem="Ahv-1Q-e3s" firstAttribute="leading" secondItem="uQC-9R-DFB" secondAttribute="leading" id="yB5-mQ-lX3"/>
@@ -299,7 +273,7 @@
                                         <connections>
                                             <outlet property="postAuthorName" destination="uUY-Ml-qrj" id="CxN-Ed-Lsp"/>
                                             <outlet property="postImage" destination="fnB-HW-3x4" id="gwj-EY-iSv"/>
-                                            <outlet property="postImageSize" destination="miF-6l-mcj" id="E42-bj-zeW"/>
+                                            <outlet property="postImageSize" destination="miF-6l-mcj" id="89i-WP-Kwi"/>
                                             <outlet property="postNumber" destination="f9O-Wa-fLI" id="WZi-2J-Jn7"/>
                                             <outlet property="postText" destination="Ahv-1Q-e3s" id="lpH-du-mX8"/>
                                             <outlet property="postTimePublishing" destination="tVk-jU-TdY" id="N3C-eW-Rkr"/>

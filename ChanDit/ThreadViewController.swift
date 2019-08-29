@@ -13,14 +13,17 @@ class ThreadViewController: UIViewController {
     var threadViewModel = ThreadViewModel()
     var threadNumber: Int!
     @IBOutlet weak var postsTable: UITableView!
+    var selectedBoardId: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         postsTable.dataSource = self
-        
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
         let service = Service()
-        service.loadData(from: URL(string: "https://a.4cdn.org/v/thread/\(threadNumber ?? 1 ).json")!) { (result) in
+        service.loadData(from: URL(string: "https://a.4cdn.org/\(selectedBoardId!)/thread/\(threadNumber!).json")!) { (result) in
             switch result {
             case .success(let data):
                 do {
@@ -41,7 +44,6 @@ class ThreadViewController: UIViewController {
                 break
             }
         }
-        
     }
     
 }
@@ -55,6 +57,7 @@ extension ThreadViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCell") as! PostTableViewCell
         //let thread = pageViewModel.threads[indexPath.section]
         let post = threadViewModel.postViewModel(at: indexPath.row)
+        cell.selectedBoardId = selectedBoardId
         cell.postViewModel = post
         cell.loadCell()
         cell.parentViewController = self

@@ -13,13 +13,4 @@ class ViewThreadTableViewCell: UITableViewCell {
     var originalPostNumber: Int?
     @IBOutlet weak var viewThread: UIButton!
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-    
-//    @IBAction func viewThread() {
-//        print(originalPostNumber)
-//    }
-
 }

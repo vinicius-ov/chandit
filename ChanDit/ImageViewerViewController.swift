@@ -25,17 +25,24 @@ class ImageViewerViewController: UIViewController {
     @IBOutlet weak var imageViewWidth: NSLayoutConstraint!
     @IBOutlet weak var imageViewHeight: NSLayoutConstraint!
     
-    
     var postViewModel: PostViewModel!
+    var boardId: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         scrollView.delegate = self
         
-        imageViewWidth.constant = postViewModel.width ?? 0.0
-        imageViewHeight.constant = postViewModel.height ?? 0.0
+        imageViewWidth.constant = postViewModel.imageWidth ?? 0.0
+        imageViewHeight.constant = postViewModel.imageWidth ?? 0.0
         
-        imageView.kf.setImage(with: postViewModel.imageUrl) { result in
+        imageView.kf.setImage(with: postViewModel.imageUrl(boardId: boardId)) { result in
+            print(result.debugDescription)
+            switch result {
+            case .success(let image):
+                self.imageView.image = image.image
+            case .failure(let failure):
+                break
+            }
             self.loadingIndicator.stopAnimating()
         }
         

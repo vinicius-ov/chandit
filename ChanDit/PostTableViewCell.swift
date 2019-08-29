@@ -11,11 +11,18 @@ import Kingfisher
 
 class PostTableViewCell: UITableViewCell {
     
-    var postViewModel: PostViewModel? = nil
+    var postViewModel: PostViewModel! {
+        didSet {
+            if postViewModel.thumbnailUrl(boardId: selectedBoardId) != nil {
+                postImageSize.constant = 120
+            } else {
+                postImageSize.constant = 0
+            }
+        }
+    }
+    var selectedBoardId: String!
     @IBOutlet weak var postAuthorName: UILabel!
     @IBOutlet weak var postTimePublishing: UILabel!
-    
-    @IBOutlet weak var postImageSize: NSLayoutConstraint!
     
     @IBOutlet weak var postImage: UIImageView! {
         didSet {
@@ -28,7 +35,7 @@ class PostTableViewCell: UITableViewCell {
     var parentViewController: UIViewController!
     
     @IBOutlet weak var postText: UITextView!
-    
+    @IBOutlet weak var postImageSize: NSLayoutConstraint!
     @IBOutlet weak var postTitle: UILabel!
     @IBOutlet weak var postNumber: UILabel!
     
@@ -38,20 +45,16 @@ class PostTableViewCell: UITableViewCell {
     }
     
     func loadCell() {
-        postAuthorName.text = postViewModel?.postAuthorName
+        postAuthorName.text = postViewModel.postAuthorName
         
-        postTitle.set(html: postViewModel?.title)
+        postTitle.set(html: postViewModel.title)
         
-        postNumber.text = "No.\(postViewModel!.number!)"
-        postTimePublishing.text = postViewModel?.timeFromPost
-        postText.set(html: postViewModel?.comment)
+        postNumber.text = "No.\(postViewModel.number!)"
+        postTimePublishing.text = postViewModel.timeFromPost
+        postText.set(html: postViewModel.comment)
         
-        guard let thumbUrl = postViewModel?.thumbnailUrl else {
-            self.postImageSize.constant = 0
-            return
-        }
-        postImage.kf.setImage(with: thumbUrl) { result in
-            self.postImageSize.constant = 120
+        if let thumbUrl = postViewModel.thumbnailUrl(boardId: selectedBoardId) {
+            postImage.kf.setImage(with: thumbUrl)
         }
         
         let tapGesture = UITapGestureRecognizer(target: self, action:
@@ -61,8 +64,10 @@ class PostTableViewCell: UITableViewCell {
         
     }
     
+    
     @objc func viewImage(tapGesture: UITapGestureRecognizer) {
         let viewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "ImageViewerViewController") as! ImageViewerViewController
+        viewController.boardId = selectedBoardId
         viewController.postViewModel = postViewModel
         viewController.modalPresentationStyle = .overCurrentContext
         parentViewController.navigationController?.pushViewController(viewController, animated: true)

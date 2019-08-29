@@ -7,11 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		810F4D8D2316F9FD0003C58A /* Kingfisher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 810F4D8C2316F9FD0003C58A /* Kingfisher.framework */; };
+		810F4D902316FBBD0003C58A /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 810F4D8F2316FBBD0003C58A /* SnapKit.framework */; };
 		814C458B22F4BFF8007007C5 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814C458A22F4BFF8007007C5 /* Service.swift */; };
 		814C458D22F4C67F007007C5 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814C458C22F4C67F007007C5 /* Post.swift */; };
 		814C458F22F86194007007C5 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814C458E22F86194007007C5 /* PostTableViewCell.swift */; };
 		814C459322F868A9007007C5 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 814C459222F868A9007007C5 /* Cartfile */; };
-		814C459822F8691C007007C5 /* Kingfisher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 814C459722F8691C007007C5 /* Kingfisher.framework */; };
 		814CD0792315ABAF0097A23E /* ImageViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814CD0782315ABAF0097A23E /* ImageViewerViewController.swift */; };
 		816ED39922FDB1AC00E13C9E /* PostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816ED39822FDB1AC00E13C9E /* PostViewModel.swift */; };
 		81921BE122F468DD007F4EFC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81921BE022F468DD007F4EFC /* AppDelegate.swift */; };
@@ -21,14 +22,16 @@
 		81921BEB22F468DE007F4EFC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81921BE922F468DE007F4EFC /* LaunchScreen.storyboard */; };
 		81B7896C23104AD20093376D /* ViewThreadTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7896B23104AD20093376D /* ViewThreadTableViewCell.swift */; };
 		81B7896E231060AB0093376D /* ThreadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7896D231060AB0093376D /* ThreadViewController.swift */; };
+		81C26732231804D80060D8A1 /* BoardsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C26731231804D80060D8A1 /* BoardsViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		810F4D8C2316F9FD0003C58A /* Kingfisher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kingfisher.framework; path = Carthage/Build/iOS/Kingfisher.framework; sourceTree = "<group>"; };
+		810F4D8F2316FBBD0003C58A /* SnapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnapKit.framework; path = Carthage/Build/iOS/SnapKit.framework; sourceTree = "<group>"; };
 		814C458A22F4BFF8007007C5 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		814C458C22F4C67F007007C5 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		814C458E22F86194007007C5 /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
 		814C459222F868A9007007C5 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = SOURCE_ROOT; };
-		814C459722F8691C007007C5 /* Kingfisher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kingfisher.framework; path = Carthage/Build/iOS/Kingfisher.framework; sourceTree = "<group>"; };
 		814CD0782315ABAF0097A23E /* ImageViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewerViewController.swift; sourceTree = "<group>"; };
 		816ED39822FDB1AC00E13C9E /* PostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewModel.swift; sourceTree = "<group>"; };
 		81921BDD22F468DD007F4EFC /* ChanDit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChanDit.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -40,6 +43,7 @@
 		81921BEC22F468DE007F4EFC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		81B7896B23104AD20093376D /* ViewThreadTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewThreadTableViewCell.swift; sourceTree = "<group>"; };
 		81B7896D231060AB0093376D /* ThreadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadViewController.swift; sourceTree = "<group>"; };
+		81C26731231804D80060D8A1 /* BoardsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardsViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,7 +51,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				814C459822F8691C007007C5 /* Kingfisher.framework in Frameworks */,
+				810F4D8D2316F9FD0003C58A /* Kingfisher.framework in Frameworks */,
+				810F4D902316FBBD0003C58A /* SnapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -57,7 +62,8 @@
 		814C459622F8691C007007C5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				814C459722F8691C007007C5 /* Kingfisher.framework */,
+				810F4D8F2316FBBD0003C58A /* SnapKit.framework */,
+				810F4D8C2316F9FD0003C58A /* Kingfisher.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -87,6 +93,7 @@
 				814C458A22F4BFF8007007C5 /* Service.swift */,
 				814C458C22F4C67F007007C5 /* Post.swift */,
 				816ED39822FDB1AC00E13C9E /* PostViewModel.swift */,
+				81C26731231804D80060D8A1 /* BoardsViewModel.swift */,
 				81921BE222F468DD007F4EFC /* ViewController.swift */,
 				81B7896B23104AD20093376D /* ViewThreadTableViewCell.swift */,
 				814C458E22F86194007007C5 /* PostTableViewCell.swift */,
@@ -110,7 +117,7 @@
 				81921BD922F468DD007F4EFC /* Sources */,
 				81921BDA22F468DD007F4EFC /* Frameworks */,
 				81921BDB22F468DD007F4EFC /* Resources */,
-				814C459422F868C1007007C5 /* ShellScript */,
+				814C459422F868C1007007C5 /* Carthage */,
 			);
 			buildRules = (
 			);
@@ -169,7 +176,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		814C459422F868C1007007C5 /* ShellScript */ = {
+		814C459422F868C1007007C5 /* Carthage */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -178,11 +185,14 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/Kingfisher.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/SnapKit.framework",
 			);
+			name = Carthage;
 			outputFileListPaths = (
 			);
 			outputPaths = (
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Kingfisher.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SnapKit.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -204,6 +214,7 @@
 				814C458B22F4BFF8007007C5 /* Service.swift in Sources */,
 				81B7896C23104AD20093376D /* ViewThreadTableViewCell.swift in Sources */,
 				814C458D22F4C67F007007C5 /* Post.swift in Sources */,
+				81C26732231804D80060D8A1 /* BoardsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
