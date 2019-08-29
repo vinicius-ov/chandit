@@ -77,12 +77,14 @@ class ViewController: UIViewController {
         }
     }
     
+    #if DEBUG
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?){
         if motion == .motionShake
         {
             postsTable.reloadData()
         }
     }
+    #endif
     
     @objc func hideKeyboard() {
         boardSelector.resignFirstResponder()

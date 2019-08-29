@@ -20,7 +20,6 @@
 		81921BE622F468DD007F4EFC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81921BE422F468DD007F4EFC /* Main.storyboard */; };
 		81921BE822F468DE007F4EFC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 81921BE722F468DE007F4EFC /* Assets.xcassets */; };
 		81921BEB22F468DE007F4EFC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81921BE922F468DE007F4EFC /* LaunchScreen.storyboard */; };
-		81B7896C23104AD20093376D /* ViewThreadTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7896B23104AD20093376D /* ViewThreadTableViewCell.swift */; };
 		81B7896E231060AB0093376D /* ThreadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7896D231060AB0093376D /* ThreadViewController.swift */; };
 		81C26732231804D80060D8A1 /* BoardsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C26731231804D80060D8A1 /* BoardsViewModel.swift */; };
 /* End PBXBuildFile section */
@@ -41,7 +40,6 @@
 		81921BE722F468DE007F4EFC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		81921BEA22F468DE007F4EFC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		81921BEC22F468DE007F4EFC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		81B7896B23104AD20093376D /* ViewThreadTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewThreadTableViewCell.swift; sourceTree = "<group>"; };
 		81B7896D231060AB0093376D /* ThreadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadViewController.swift; sourceTree = "<group>"; };
 		81C26731231804D80060D8A1 /* BoardsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardsViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -95,7 +93,6 @@
 				816ED39822FDB1AC00E13C9E /* PostViewModel.swift */,
 				81C26731231804D80060D8A1 /* BoardsViewModel.swift */,
 				81921BE222F468DD007F4EFC /* ViewController.swift */,
-				81B7896B23104AD20093376D /* ViewThreadTableViewCell.swift */,
 				814C458E22F86194007007C5 /* PostTableViewCell.swift */,
 				81B7896D231060AB0093376D /* ThreadViewController.swift */,
 				814CD0782315ABAF0097A23E /* ImageViewerViewController.swift */,
@@ -212,7 +209,6 @@
 				814C458F22F86194007007C5 /* PostTableViewCell.swift in Sources */,
 				81B7896E231060AB0093376D /* ThreadViewController.swift in Sources */,
 				814C458B22F4BFF8007007C5 /* Service.swift in Sources */,
-				81B7896C23104AD20093376D /* ViewThreadTableViewCell.swift in Sources */,
 				814C458D22F4C67F007007C5 /* Post.swift in Sources */,
 				81C26732231804D80060D8A1 /* BoardsViewModel.swift in Sources */,
 			);
