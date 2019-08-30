@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 
-class ViewController: UIViewController {
+class BoardPagesViewController: UIViewController {
     
     @IBOutlet weak var postsTable: UITableView!
     var pageViewModel = PageViewModel() //deveria ser injetado
@@ -24,6 +24,7 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
         postsTable.dataSource = self
         postsTable.delegate = self
+        postsTable.prefetchDataSource = self
         postsTable.rowHeight = UITableView.automaticDimension
         postsTable.estimatedRowHeight = 400
         
@@ -41,19 +42,19 @@ class ViewController: UIViewController {
         
         let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.plain, target: self, action: #selector(hideKeyboard))
         let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
-        let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItem.Style.plain, target: self, action: #selector(hideKeyboard))
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItem.Style.plain, target: self, action: #selector(hideKeyboardNoAction))
         
         toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
         toolBar.isUserInteractionEnabled = true
         
         boardSelector.inputAccessoryView = toolBar
         
-        fetchData()
+        fetchData(append: false)
         
     }
     
-    func fetchData() {
-        service.loadData(from: URL(string: "https://a.4cdn.org/\(boardsViewModel.selectedBoardId)/1.json")!) { (result) in
+    func fetchData(append: Bool) {
+        service.loadData(from: URL(string: "https://a.4cdn.org/\(boardsViewModel.selectedBoardId)/\(boardsViewModel.nextPage()).json")!) { (result) in
             switch result {
             case .success(let data):
                 do {
@@ -61,11 +62,18 @@ class ViewController: UIViewController {
                         print("error trying to convert data to JSON \(data)")
                         return
                     }
-                    self.pageViewModel.threads = page.threads.map ({ (thread: Thread) in
-                        let tvm = ThreadViewModel.init(thread: thread)
-                        return tvm
-                    })
-                    
+                    if append {
+                        let threads:[ThreadViewModel] = page.threads.map ({ (thread: Thread) in
+                            let tvm = ThreadViewModel.init(thread: thread)
+                            return tvm
+                        })
+                        self.pageViewModel.threads.append(contentsOf: threads)
+                    }else {
+                        self.pageViewModel.threads = page.threads.map ({ (thread: Thread) in
+                            let tvm = ThreadViewModel.init(thread: thread)
+                            return tvm
+                        })
+                    }
                     DispatchQueue.main.async {
                         self.postsTable.reloadData()
                     }
@@ -89,7 +97,11 @@ class ViewController: UIViewController {
     @objc func hideKeyboard() {
         boardSelector.resignFirstResponder()
         postsTable.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-        fetchData()
+        fetchData(append: false)
+    }
+    
+    @objc func hideKeyboardNoAction() {
+        boardSelector.resignFirstResponder()
     }
     
     @objc func navigateToThreadView(_ sender: UIButton) {
@@ -105,7 +117,7 @@ class ViewController: UIViewController {
     
 }
 
-extension ViewController : UITableViewDelegate, UITableViewDataSource {
+extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return pageViewModel.threads[section].posts.count
     }
@@ -154,14 +166,23 @@ extension ViewController : UITableViewDelegate, UITableViewDataSource {
         
         let threadToLaunch = pageViewModel.threadViewModel(at: section).postViewModel(at: 0).number
         viewThreadButton.tag = threadToLaunch!
-        let selector = #selector(ViewController.navigateToThreadView(_:))
+        let selector = #selector(BoardPagesViewController.navigateToThreadView(_:))
         viewThreadButton.addTarget(self, action: selector, for: .touchUpInside)
         return view
     }
     
 }
 
-extension ViewController: UIPickerViewDataSource, UIPickerViewDelegate {
+extension BoardPagesViewController : UITableViewDataSourcePrefetching {
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        if indexPaths.contains([pageViewModel.threads.count-1,0]) {
+            print("RELOAD!!!!")
+            fetchData(append: true)
+        }
+    }
+}
+
+extension BoardPagesViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }

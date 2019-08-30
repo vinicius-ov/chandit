@@ -10,11 +10,21 @@ import UIKit
 
 class BoardsViewModel: NSObject {
     let usIdentifier = "last_board_selected"
+    var page = 0
     
     let boards = [
         BoardData(name: "Anime & Manga", endpoint: "a"),
+        BoardData(name: "Anime/Cute", endpoint: "c"),
+        BoardData(name: "Anime/Wallpapers", endpoint: "w"),
+        BoardData(name: "Mecha", endpoint: "m"),
+        BoardData(name: "Cosplay & CGL", endpoint: "cgl"),
+        BoardData(name: "Cute/Male", endpoint: "m"),
+        BoardData(name: "Flash", endpoint: "f"),
+        BoardData(name: "Transportation", endpoint: "n"),
+        BoardData(name: "Otaku Culture", endpoint: "jp"),
         BoardData(name: "Politically Correct", endpoint: "pol"),
-        BoardData(name: "Video Games", endpoint: "v")
+        BoardData(name: "Video Games", endpoint: "v"),
+        BoardData(name: "Video Game Generals", endpoint: "vg")
     ]
     
     struct BoardData: Encodable,Decodable {
@@ -28,6 +38,11 @@ class BoardsViewModel: NSObject {
         }
         return getBoardByName(name: selected)
         
+    }
+    
+    func nextPage() -> Int {
+        page = page + 1
+        return page
     }
     
     var selectedBoardName: String {
