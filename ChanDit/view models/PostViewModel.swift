@@ -28,6 +28,13 @@ struct ThreadViewModel {
         self.posts = thread.posts.map(PostViewModel.init)
     }
     
+    func findPostIndexByNumber(_ number: Int?) -> Int? {
+        let index = posts.firstIndex(where: { (post) -> Bool in
+            post.number == number
+        })
+        return index
+    }
+    
     init() {
         posts = [PostViewModel]()
     }
@@ -49,24 +56,22 @@ struct PostViewModel {
 extension PostViewModel {
     
     var comment: String? {
-        return post.com
+        let formatString = post.com?.replacingOccurrences(of: "#p", with: "http://a.z/")
+        return formatString
     }
     
     var title: String? {
         return post.sub
     }
     
+    var resto: Int? {
+        return post.resto
+    }
+    
     var number: Int? {
         return post.no
     }
-    
-//    var thumbnailUrl: URL? {
-//        guard let tim = post.tim else {
-//            return URL(string: "")
-//        }
-//        return URL(string: "https://i.4cdn.org/\(boardsViewModel.selectedBoardId)/\(tim)s.jpg")
-//    }
-    
+
     func thumbnailUrl(boardId: String) -> URL? {
         guard let tim = post.tim else {
             return URL(string: "")
@@ -81,14 +86,7 @@ extension PostViewModel {
     var thumbHeight: CGFloat? {
         return CGFloat.init(exactly: NSNumber(value: post.tn_h ?? 0))
     }
-    
-//    var imageUrl: URL? {
-//        guard let tim = post.tim, let ext = post.ext else {
-//            return URL(string: "")
-//        }
-//        return URL(string: "https://i.4cdn.org/v/\(tim)\(ext)")
-//    }
-    
+
     func imageUrl(boardId: String) -> URL? {
         guard let tim = post.tim, let ext = post.ext else {
             return URL(string: "")
@@ -140,8 +138,4 @@ extension PostViewModel {
     var imageHeight: CGFloat? {
         return CGFloat.init(exactly: NSNumber(value: post.h ?? 0))
     }
-    
-    /*
-     Optional("<a href=\"#p475189775\" class=\"quotelink\">&gt;&gt;475189775</a><br>This will never not be hilarious")
-     */
 }

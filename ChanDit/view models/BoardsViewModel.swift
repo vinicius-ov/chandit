@@ -37,7 +37,6 @@ class BoardsViewModel: NSObject {
             return boards.first!
         }
         return getBoardByName(name: selected)
-        
     }
     
     func nextPage() -> Int {
@@ -60,8 +59,6 @@ class BoardsViewModel: NSObject {
     }
     
     func setCurrentBoard(byBoardName name: String) {
-        //let board = getBoardByName(name: name)
-        //let encoded = NSKeyedArchiver.archivedData(withRootObject: board)
         UserDefaults.standard.set(name, forKey: usIdentifier)
     }
     
@@ -71,4 +68,9 @@ class BoardsViewModel: NSObject {
         }
         return filtered.first!
     }
+    
+    func reset() {
+        page = 0
+    }
+
 }

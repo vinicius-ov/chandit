@@ -27,6 +27,7 @@ class BoardPagesViewController: UIViewController {
         postsTable.prefetchDataSource = self
         postsTable.rowHeight = UITableView.automaticDimension
         postsTable.estimatedRowHeight = 400
+        postsTable.isHidden = true
         
         pickerView = UIPickerView()
         pickerView.delegate = self
@@ -76,6 +77,7 @@ class BoardPagesViewController: UIViewController {
                     }
                     DispatchQueue.main.async {
                         self.postsTable.reloadData()
+                        self.postsTable.isHidden = false
                     }
                 }
                 break
@@ -105,7 +107,6 @@ class BoardPagesViewController: UIViewController {
     }
     
     @objc func navigateToThreadView(_ sender: UIButton) {
-        self.threadToLaunch = sender.tag
         performSegue(withIdentifier: "gotoThreadView", sender: self)
     }
     
@@ -113,6 +114,13 @@ class BoardPagesViewController: UIViewController {
         let vc = segue.destination as! ThreadViewController
         vc.threadNumber = self.threadToLaunch
         vc.selectedBoardId = boardsViewModel.selectedBoardId
+    }
+    
+    @IBAction func reloadData(_ sender: Any) {
+        postsTable.isHidden = true
+        postsTable.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+        boardsViewModel.reset()
+        fetchData(append: false)
     }
     
 }
@@ -129,8 +137,8 @@ extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //if indexPath.row < pageViewModel.threads[indexPath.section].posts.count {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCell") as! PostTableViewCell
-        let thread = pageViewModel.threads[indexPath.section]
-        let post = thread.postViewModel(at: indexPath.row)
+        let threadViewModel = pageViewModel.threads[indexPath.section]
+        let post = threadViewModel.postViewModel(at: indexPath.row)
         cell.selectedBoardId = boardsViewModel.selectedBoardId
         cell.postViewModel = post
         
@@ -138,9 +146,21 @@ extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource 
         
         cell.parentViewController = self
         
-        cell.imageViewSelector = { tapGesture in
-            let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ImageViewerViewController") as UIViewController
-            self.present(viewController, animated: true, completion: nil)
+        cell.navigateToMessage = {
+            self.threadToLaunch = threadViewModel.posts.first?.number // !!!!
+            self.navigateToThreadView(UIButton())
+            print("will navigate")
+        }
+        cell.jumpToPost = { (number: Int?) in
+            if let postNumber = number, let index = threadViewModel.findPostIndexByNumber(postNumber) {
+                let indexPath = IndexPath(item: index, section: 0)
+                tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+                UIView.animate(withDuration: 2.0, animations: {
+                    print("esta animando")
+                    tableView.cellForRow(at: indexPath)?.backgroundColor = .red
+                    tableView.cellForRow(at: indexPath)?.backgroundColor = .black
+                })
+            }
         }
         
         return cell
@@ -165,7 +185,7 @@ extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource 
         }
         
         let threadToLaunch = pageViewModel.threadViewModel(at: section).postViewModel(at: 0).number
-        viewThreadButton.tag = threadToLaunch!
+        self.threadToLaunch = threadToLaunch!
         let selector = #selector(BoardPagesViewController.navigateToThreadView(_:))
         viewThreadButton.addTarget(self, action: selector, for: .touchUpInside)
         return view

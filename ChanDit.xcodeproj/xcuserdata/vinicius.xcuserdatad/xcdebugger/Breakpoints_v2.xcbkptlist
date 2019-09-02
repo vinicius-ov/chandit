@@ -26,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ChanDit/ViewController.swift"
-            timestampString = "588632280.848369"
+            timestampString = "588875035.630626"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
-            landmarkName = "viewDidLayoutSubviews()"
+            startingLineNumber = "86"
+            endingLineNumber = "86"
+            landmarkName = "fetchData(append:)"
             landmarkType = "7">
             <Locations>
                <Location
@@ -74,13 +74,93 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ChanDit/PostViewModel.swift"
-            timestampString = "588632280.8484499"
+            timestampString = "588866752.7780139"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "87"
             endingLineNumber = "87"
-            landmarkName = "timeFromPost"
-            landmarkType = "24">
+            landmarkName = "PostViewModel"
+            landmarkType = "21">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ChanDit/controllers/BoardPagesViewController.swift"
+            timestampString = "589147534.313379"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "35"
+            endingLineNumber = "35"
+            landmarkName = "viewDidLoad()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ChanDit/controllers/BoardPagesViewController.swift"
+            timestampString = "589147534.313458"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "65"
+            endingLineNumber = "65"
+            landmarkName = "fetchData(append:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (ChanDit.Service.Result) -&gt; () in ChanDit.BoardPagesViewController.fetchData(append: Swift.Bool) -&gt; ()"
+                  moduleName = "ChanDit"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/vinicius/Documents/projects/ChanDit/ChanDit/controllers/BoardPagesViewController.swift"
+                  timestampString = "589128866.378875"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "65"
+                  endingLineNumber = "65"
+                  offsetFromSymbolStart = "277">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (ChanDit.Service.Result) -&gt; () in ChanDit.BoardPagesViewController.fetchData(append: Swift.Bool) -&gt; ()"
+                  moduleName = "ChanDit"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/vinicius/Documents/projects/ChanDit/ChanDit/controllers/BoardPagesViewController.swift"
+                  timestampString = "589128866.380548"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "65"
+                  endingLineNumber = "65"
+                  offsetFromSymbolStart = "318">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ChanDit/controllers/BoardPagesViewController.swift"
+            timestampString = "589147534.31352"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "32"
+            endingLineNumber = "32"
+            landmarkName = "viewDidLoad()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

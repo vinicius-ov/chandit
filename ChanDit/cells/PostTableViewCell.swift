@@ -39,6 +39,9 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var postTitle: UILabel!
     @IBOutlet weak var postNumber: UILabel!
     
+    var navigateToMessage: (() -> Void)!
+    var jumpToPost: ((Int?) -> Void)!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         postText.delegate = self
@@ -63,7 +66,6 @@ class PostTableViewCell: UITableViewCell {
         postImage.isUserInteractionEnabled = true
         
     }
-    
     
     @objc func viewImage(tapGesture: UITapGestureRecognizer) {
         let viewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "ImageViewerViewController") as! ImageViewerViewController
@@ -115,8 +117,14 @@ extension UITextView {
 
 extension PostTableViewCell: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-        print(URL.absoluteString)
-        //UIApplication.shared.open(URL)
+//        print(URL.absoluteString)
+        let quote = URL.absoluteString.split(separator: "/")
+        let postNumber = Int(quote[2])
+        if parentViewController is BoardPagesViewController {
+            navigateToMessage()
+        }
+        jumpToPost(postNumber)
+        
         return false
     }
 }
