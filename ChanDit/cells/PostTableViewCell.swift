@@ -39,7 +39,7 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var postTitle: UILabel!
     @IBOutlet weak var postNumber: UILabel!
     
-    var navigateToMessage: (() -> Void)!
+    var navigateToMessage: ((Int?) -> Void)!
     var jumpToPost: ((Int?) -> Void)!
     
     override func awakeFromNib() {
@@ -121,10 +121,11 @@ extension PostTableViewCell: UITextViewDelegate {
         let quote = URL.absoluteString.split(separator: "/")
         let postNumber = Int(quote[2])
         if parentViewController is BoardPagesViewController {
-            navigateToMessage()
+            navigateToMessage(postNumber)
+            //jumpToPost(postNumber)
+        } else {
+            jumpToPost(postNumber)
         }
-        jumpToPost(postNumber)
-        
         return false
     }
 }

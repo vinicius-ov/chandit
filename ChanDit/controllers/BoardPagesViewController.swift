@@ -13,7 +13,10 @@ class BoardPagesViewController: UIViewController {
     
     @IBOutlet weak var postsTable: UITableView!
     var pageViewModel = PageViewModel() //deveria ser injetado
-    var threadToLaunch:Int!
+    
+    var threadToLaunch: Int!
+    var postNumberToNavigate: Int!
+    
     var pickerView: UIPickerView!
     @IBOutlet weak var boardSelector: UITextField!
     let boardsViewModel = BoardsViewModel() //deveria ser injetado
@@ -33,6 +36,8 @@ class BoardPagesViewController: UIViewController {
         pickerView.delegate = self
         pickerView.dataSource = self
         boardSelector.inputView = pickerView
+        
+        //navigationController?.hidesBarsOnSwipe = true
         
         boardSelector.text = boardsViewModel.selectedBoardName
         
@@ -113,6 +118,7 @@ class BoardPagesViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let vc = segue.destination as! ThreadViewController
         vc.threadNumber = self.threadToLaunch
+        vc.postNumberToNavigate = self.postNumberToNavigate
         vc.selectedBoardId = boardsViewModel.selectedBoardId
     }
     
@@ -146,21 +152,11 @@ extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource 
         
         cell.parentViewController = self
         
-        cell.navigateToMessage = {
+        cell.navigateToMessage = { (number: Int?) in
             self.threadToLaunch = threadViewModel.posts.first?.number // !!!!
+            self.postNumberToNavigate = number ?? 0
             self.navigateToThreadView(UIButton())
             print("will navigate")
-        }
-        cell.jumpToPost = { (number: Int?) in
-            if let postNumber = number, let index = threadViewModel.findPostIndexByNumber(postNumber) {
-                let indexPath = IndexPath(item: index, section: 0)
-                tableView.scrollToRow(at: indexPath, at: .top, animated: true)
-                UIView.animate(withDuration: 2.0, animations: {
-                    print("esta animando")
-                    tableView.cellForRow(at: indexPath)?.backgroundColor = .red
-                    tableView.cellForRow(at: indexPath)?.backgroundColor = .black
-                })
-            }
         }
         
         return cell

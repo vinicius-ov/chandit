@@ -12,6 +12,7 @@ class ThreadViewController: UIViewController {
 
     var threadViewModel = ThreadViewModel()
     var threadNumber: Int!
+    var postNumberToNavigate: Int!
     @IBOutlet weak var postsTable: UITableView!
     var selectedBoardId: String!
     let service = Service()
@@ -20,6 +21,7 @@ class ThreadViewController: UIViewController {
         super.viewDidLoad()
         postsTable.isHidden = true
         postsTable.dataSource = self
+        postsTable.prefetchDataSource = self
     }
 
     fileprivate func fetchData() {
@@ -38,8 +40,8 @@ class ThreadViewController: UIViewController {
                         self.title = self.threadViewModel.threadTitle
                         self.postsTable.reloadData()
                         self.postsTable.isHidden = false
+                        self.navigateToPost(inTableView: self.postsTable, forIndexPath: nil)
                     }
-                    //self.threadViewModel.findPostByNumber()
                 }
                 break
             case .failure(let error):
@@ -50,6 +52,23 @@ class ThreadViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         fetchData()
+    }
+    
+    func navigateToPost(inTableView tableView: UITableView, forIndexPath indexPath: IndexPath?) {
+        if postNumberToNavigate != nil {
+            let index = self.threadViewModel.findPostIndexByNumber(postNumberToNavigate) ?? 0
+            let indexPathNav = indexPath ?? IndexPath(item: index, section: 0)
+            UIView.animate(withDuration: 0.2, animations: {
+                tableView.scrollToRow(at: indexPathNav, at: .top, animated: false)
+            }, completion: { (done) in
+                UIView.animate(withDuration: 1.0, animations: {
+                    print("esta animando")
+                    tableView.cellForRow(at: indexPathNav)?.backgroundColor = .red
+                    tableView.cellForRow(at: indexPathNav)?.backgroundColor = .black
+                })
+            })
+            postNumberToNavigate = nil
+        }
     }
     
     @IBAction func reloadData(_ sender: Any) {
@@ -75,22 +94,25 @@ extension ThreadViewController: UITableViewDataSource {
         cell.parentViewController = self
         
         cell.jumpToPost = { (number: Int?) in
-            if let postNumber = number, let index = self.threadViewModel.findPostIndexByNumber(postNumber) {
-                let indexPath = IndexPath(item: index, section: 0)
-                UIView.animate(withDuration: 0.2, animations: {
-                    tableView.scrollToRow(at: indexPath, at: .top, animated: false)
-                }, completion: { (done) in
-                    UIView.animate(withDuration: 1.0, animations: {
-                        print("esta animando")
-                        tableView.cellForRow(at: indexPath)?.backgroundColor = .red
-                        tableView.cellForRow(at: indexPath)?.backgroundColor = .black
-                    })
-                }
-                )
+            if let postNumber = number, let index =
+                self.threadViewModel.findPostIndexByNumber(postNumber) {
+                self.postNumberToNavigate = postNumber
+                let indexPathNav = IndexPath(item: index, section: 0)
+                self.navigateToPost(inTableView: tableView, forIndexPath: indexPathNav)
             }
         }
         return cell
     }
     
+}
+
+extension ThreadViewController: UITableViewDataSourcePrefetching {
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        print("\(indexPaths)")
+        if indexPaths.contains([0,threadViewModel.posts.count-1]) {
+            print("RELOAD!!!!")
+            fetchData()
+        }
+    }
     
 }
