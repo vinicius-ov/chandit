@@ -64,6 +64,10 @@ extension PostViewModel {
         return post.sub
     }
     
+    var isSpoiler: Bool {
+        return post.spoiler == 1
+    }
+    
     var resto: Int? {
         return post.resto
     }

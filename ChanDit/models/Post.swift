@@ -35,6 +35,7 @@ struct Post: Decodable {
     var omittedImages: Int? //ommited_images
     var tailSize: Int? //tail_size
     var tripCode: String?
+    var spoiler: Int?
     
     enum CodingKeys: String, CodingKey {
         case no
@@ -63,6 +64,7 @@ struct Post: Decodable {
         case omittedImages = "omitted_images"
         case tailSize = "tail_size"
         case tripCode = "trip"
+        case spoiler
     }
 
 }

@@ -27,6 +27,7 @@ class ImageViewerViewController: UIViewController {
     
     var postViewModel: PostViewModel!
     var boardId: String!
+    var tapGesture: UITapGestureRecognizer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +37,6 @@ class ImageViewerViewController: UIViewController {
         imageViewHeight.constant = postViewModel.imageWidth ?? 0.0
         
         imageView.kf.setImage(with: postViewModel.imageUrl(boardId: boardId)) { result in
-            print(result.debugDescription)
             switch result {
             case .success(let image):
                 self.imageView.image = image.image

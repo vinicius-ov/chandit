@@ -56,8 +56,10 @@ class PostTableViewCell: UITableViewCell {
         postTimePublishing.text = postViewModel.timeFromPost
         postText.set(html: postViewModel.comment)
         
-        if let thumbUrl = postViewModel.thumbnailUrl(boardId: selectedBoardId) {
+        if !postViewModel.isSpoiler, let thumbUrl = postViewModel.thumbnailUrl(boardId: selectedBoardId) {
             postImage.kf.setImage(with: thumbUrl)
+        } else {
+            postImage.image = UIImage(named: "spoiler")
         }
         
         let tapGesture = UITapGestureRecognizer(target: self, action:
@@ -71,7 +73,7 @@ class PostTableViewCell: UITableViewCell {
         let viewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "ImageViewerViewController") as! ImageViewerViewController
         viewController.boardId = selectedBoardId
         viewController.postViewModel = postViewModel
-        viewController.modalPresentationStyle = .overCurrentContext
+        //viewController.modalPresentationStyle = .pageSheet
         parentViewController.navigationController?.pushViewController(viewController, animated: true)
     }
     

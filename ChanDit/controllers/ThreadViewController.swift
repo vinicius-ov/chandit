@@ -108,11 +108,11 @@ extension ThreadViewController: UITableViewDataSource {
 
 extension ThreadViewController: UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-        print("\(indexPaths)")
-        if indexPaths.contains([0,threadViewModel.posts.count-1]) {
-            print("RELOAD!!!!")
-            fetchData()
-        }
+//        print("\(indexPaths)")
+//        if indexPaths.contains([0,threadViewModel.posts.count-1]) {
+//            print("RELOAD!!!!")
+//            fetchData()
+//        }
     }
     
 }
