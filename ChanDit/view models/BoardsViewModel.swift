@@ -74,10 +74,12 @@ class BoardsViewModel: NSObject {
     
     func reset() {
         page = 0
+        resetNavigation()
+    }
+    
+    func resetNavigation() {
         postNumberToNavigate = nil
         threadToLaunch = nil
     }
-    
-    
 
 }

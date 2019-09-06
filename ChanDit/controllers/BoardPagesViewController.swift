@@ -14,9 +14,6 @@ class BoardPagesViewController: UIViewController {
     @IBOutlet weak var postsTable: UITableView!
     var pageViewModel = PageViewModel() //deveria ser injetado
     
-    var threadToLaunch: Int!
-    var postNumberToNavigate: Int!
-    
     var pickerView: UIPickerView!
     @IBOutlet weak var boardSelector: UITextField!
     let boardsViewModel = BoardsViewModel() //deveria ser injetado
@@ -68,17 +65,14 @@ class BoardPagesViewController: UIViewController {
                         print("error trying to convert data to JSON \(data)")
                         return
                     }
+                    let threads:[ThreadViewModel] = page.threads.map ({ (thread: Thread) in
+                        let tvm = ThreadViewModel.init(thread: thread)
+                        return tvm
+                    })
                     if append {
-                        let threads:[ThreadViewModel] = page.threads.map ({ (thread: Thread) in
-                            let tvm = ThreadViewModel.init(thread: thread)
-                            return tvm
-                        })
                         self.pageViewModel.threads.append(contentsOf: threads)
                     }else {
-                        self.pageViewModel.threads = page.threads.map ({ (thread: Thread) in
-                            let tvm = ThreadViewModel.init(thread: thread)
-                            return tvm
-                        })
+                        self.pageViewModel.threads = threads
                     }
                     DispatchQueue.main.async {
                         self.postsTable.reloadData()
@@ -119,8 +113,7 @@ class BoardPagesViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        threadToLaunch = nil
-        postNumberToNavigate = nil
+        boardsViewModel.resetNavigation()
     }
     
     func navigateToThread() {
@@ -129,7 +122,7 @@ class BoardPagesViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let vc = segue.destination as! ThreadViewController
-        let threadViewModel = ThreadViewModel(threadNumberToNavigate: boardsViewModel.threadToLaunch!, postNumberToNavigate: boardsViewModel.postNumberToNavigate!, originBoard: boardsViewModel.selectedBoardId)
+        let threadViewModel = ThreadViewModel(threadNumberToNavigate: boardsViewModel.threadToLaunch!, postNumberToNavigate: boardsViewModel.postNumberToNavigate, originBoard: boardsViewModel.selectedBoardId)
         vc.threadViewModel = threadViewModel
     }
     
