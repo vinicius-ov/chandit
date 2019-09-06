@@ -25,6 +25,7 @@ class ThreadViewController: UIViewController {
         postsTable.prefetchDataSource = self
         postsTable.rowHeight = UITableView.automaticDimension
         postsTable.estimatedRowHeight = 460
+        fetchData()
     }
 
     fileprivate func fetchData() {
@@ -51,10 +52,6 @@ class ThreadViewController: UIViewController {
                 break
             }
         }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        fetchData()
     }
     
     func navigateToPost(inTableView tableView: UITableView, forIndexPath indexPath: IndexPath?) {

@@ -113,6 +113,7 @@ class BoardPagesViewController: UIViewController {
     }
     
     @objc func navigateToThreadView(_ sender: UIButton) {
+        boardsViewModel.threadToLaunch = sender.tag
         navigateToThread()
     }
     
@@ -192,7 +193,7 @@ extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource 
         
         //pageViewModel.setNavigation(forThreadInSection section:Int, forPostInIndex index:Int)
         let threadToLaunch = pageViewModel.threadViewModel(at: section).postViewModel(at: 0).number
-        boardsViewModel.threadToLaunch = threadToLaunch!
+        viewThreadButton.tag = threadToLaunch!
         let selector = #selector(BoardPagesViewController.navigateToThreadView(_:))
         viewThreadButton.addTarget(self, action: selector, for: .touchUpInside)
         return view
