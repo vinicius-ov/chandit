@@ -10,9 +10,10 @@ import UIKit
 
 class ThreadViewController: UIViewController {
 
-    var threadViewModel = ThreadViewModel()
+    var threadViewModel: ThreadViewModel!
     var threadNumber: Int!
-    var postNumberToNavigate: Int!
+    //var postNumberToNavigate: Int!
+    var postNumberToReturn = [Int]()
     @IBOutlet weak var postsTable: UITableView!
     var selectedBoardId: String!
     let service = Service()
@@ -22,10 +23,12 @@ class ThreadViewController: UIViewController {
         postsTable.isHidden = true
         postsTable.dataSource = self
         postsTable.prefetchDataSource = self
+        postsTable.rowHeight = UITableView.automaticDimension
+        postsTable.estimatedRowHeight = 460
     }
 
     fileprivate func fetchData() {
-        service.loadData(from: URL(string: "https://a.4cdn.org/\(selectedBoardId!)/thread/\(threadNumber!).json")!) { (result) in
+        service.loadData(from: URL(string: "https://a.4cdn.org/\(threadViewModel.boardIdToNavigate!)/thread/\(threadViewModel.threadNumberToNavigate!).json")!) { (result) in
             switch result {
             case .success(let data):
                 do {
@@ -55,26 +58,37 @@ class ThreadViewController: UIViewController {
     }
     
     func navigateToPost(inTableView tableView: UITableView, forIndexPath indexPath: IndexPath?) {
-        if postNumberToNavigate != nil {
-            let index = self.threadViewModel.findPostIndexByNumber(postNumberToNavigate) ?? 0
+        guard let postNumberToNavigate = threadViewModel.postNumberToNavigate,
+             let index = self.threadViewModel.findPostIndexByNumber(postNumberToNavigate) else { return }
             let indexPathNav = indexPath ?? IndexPath(item: index, section: 0)
             UIView.animate(withDuration: 0.2, animations: {
                 tableView.scrollToRow(at: indexPathNav, at: .top, animated: false)
             }, completion: { (done) in
                 UIView.animate(withDuration: 1.0, animations: {
-                    print("esta animando")
                     tableView.cellForRow(at: indexPathNav)?.backgroundColor = .red
                     tableView.cellForRow(at: indexPathNav)?.backgroundColor = .black
                 })
             })
-            postNumberToNavigate = nil
-        }
     }
     
     @IBAction func reloadData(_ sender: Any) {
         postsTable.isHidden = true
-        postsTable.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+        //postsTable.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
         fetchData()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        //postNumberToNavigate = nil
+    }
+    
+    @IBAction func returnToQuoteOriginalPost(_ sender: Any) {
+        if !postNumberToReturn.isEmpty {
+            let returnNumber = postNumberToReturn.removeLast()
+            guard let index = threadViewModel.findPostIndexByNumber(returnNumber) else { return }
+            let indexPath = IndexPath(row: index, section: 0)
+            postsTable.scrollToRow(at: indexPath, at: .top, animated: true)
+        }
     }
     
 }
@@ -88,7 +102,7 @@ extension ThreadViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCell") as! PostTableViewCell
         //let thread = pageViewModel.threads[indexPath.section]
         let postViewModel = threadViewModel.postViewModel(at: indexPath.row)
-        cell.selectedBoardId = selectedBoardId
+        cell.selectedBoardId = threadViewModel.boardIdToNavigate
         cell.postViewModel = postViewModel
         cell.loadCell()
         cell.parentViewController = self
@@ -96,7 +110,8 @@ extension ThreadViewController: UITableViewDataSource {
         cell.jumpToPost = { (number: Int?) in
             if let postNumber = number, let index =
                 self.threadViewModel.findPostIndexByNumber(postNumber) {
-                self.postNumberToNavigate = postNumber
+                //self.postNumberToNavigate = postNumber
+                self.postNumberToReturn.append(postViewModel.number!)
                 let indexPathNav = IndexPath(item: index, section: 0)
                 self.navigateToPost(inTableView: tableView, forIndexPath: indexPathNav)
             }

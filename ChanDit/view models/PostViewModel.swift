@@ -18,13 +18,20 @@ struct PageViewModel {
     func threadViewModel(at index: Int) -> ThreadViewModel {
         return self.threads[index]
     }
+    
+    func setNavigation(forThreadInSection section:Int, forPostInIndex index:Int) {
+        
+    }
 }
 
 struct ThreadViewModel {
-    var posts: [PostViewModel]
+    var posts = [PostViewModel]()
+    var threadNumberToNavigate: Int!
+    var postNumberToNavigate: Int?
+    var boardIdToNavigate: String!
     
     init(thread: Thread) {
-        self.posts = [PostViewModel]()
+        //self.posts = [PostViewModel]()
         self.posts = thread.posts.map(PostViewModel.init)
     }
     
@@ -35,9 +42,15 @@ struct ThreadViewModel {
         return index
     }
     
-    init() {
-        posts = [PostViewModel]()
+    init(threadNumberToNavigate: Int, postNumberToNavigate: Int?, originBoard: String?){
+        self.threadNumberToNavigate = threadNumberToNavigate
+        self.postNumberToNavigate = postNumberToNavigate
+        self.boardIdToNavigate = originBoard
     }
+    
+//    init() {
+//        posts = [PostViewModel]()
+//    }
     
     func postViewModel(at index: Int) -> PostViewModel {
         return self.posts[index]
@@ -115,6 +128,21 @@ extension PostViewModel {
         return post.name ?? post.tripCode
     }
     
+    var fileSize: String? {
+        guard let filesize = post.fsize else { return "" }
+        var fsize = Double(filesize)/1024.0
+        var unit = "KiB"
+        if fsize > 1024 {
+            fsize = fsize / 1024
+            unit = "MiB"
+        }
+        return String(format: "%.2f %@",fsize,unit)
+    }
+    
+    var mediaFullName: String? {
+        return "\(post.filename ?? "")\(post.ext ?? "")"
+    }
+    
     fileprivate func getTimeAgo() -> TimeInterval{
         let time = post.time
         
@@ -122,13 +150,6 @@ extension PostViewModel {
         
         let diff = now - Double(time ?? 0)
         return diff
-    }
-    
-    fileprivate func parseQuotes() {
-        let com = post.com
-        print(com)
-        let comment = com?.replacingOccurrences(of: "", with: "")
-        com?.count
     }
     
     var subject: String? {

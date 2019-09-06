@@ -38,6 +38,8 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var postImageSize: NSLayoutConstraint!
     @IBOutlet weak var postTitle: UILabel!
     @IBOutlet weak var postNumber: UILabel!
+    @IBOutlet weak var mediaExtension: UILabel!
+    @IBOutlet weak var mediaSize: UILabel!
     
     var navigateToMessage: ((Int?) -> Void)!
     var jumpToPost: ((Int?) -> Void)!
@@ -59,13 +61,16 @@ class PostTableViewCell: UITableViewCell {
         if !postViewModel.isSpoiler, let thumbUrl = postViewModel.thumbnailUrl(boardId: selectedBoardId) {
             postImage.kf.setImage(with: thumbUrl)
         } else {
-            postImage.image = UIImage(named: "spoiler")
+            postImage.kf.setImage(with: URL(string: "https://s.4cdn.org/image/spoiler.png")!)
         }
         
         let tapGesture = UITapGestureRecognizer(target: self, action:
             #selector(viewImage(tapGesture:)))
         postImage.addGestureRecognizer(tapGesture)
         postImage.isUserInteractionEnabled = true
+        
+        mediaSize.text = postViewModel.fileSize
+        mediaExtension.text = postViewModel.mediaFullName
         
     }
     
