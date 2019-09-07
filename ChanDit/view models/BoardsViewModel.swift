@@ -8,38 +8,42 @@
 
 import UIKit
 
-class BoardsViewModel: NSObject {
+class BoardsViewModel {
     let usIdentifier = "last_board_selected"
     var page = 0
     
     var postNumberToNavigate:Int? = 0
     var threadToLaunch:Int? = 0
     
-    let boards = [
-        BoardData(name: "Anime & Manga", endpoint: "a"),
-        BoardData(name: "Anime/Cute", endpoint: "c"),
-        BoardData(name: "Anime/Wallpapers", endpoint: "w"),
-        BoardData(name: "Mecha", endpoint: "m"),
-        BoardData(name: "Cosplay & CGL", endpoint: "cgl"),
-        BoardData(name: "Cute/Male", endpoint: "m"),
-        BoardData(name: "Flash", endpoint: "f"),
-        BoardData(name: "Transportation", endpoint: "n"),
-        BoardData(name: "Otaku Culture", endpoint: "jp"),
-        BoardData(name: "Politically Correct", endpoint: "pol"),
-        BoardData(name: "Video Games", endpoint: "v"),
-        BoardData(name: "Video Game Generals", endpoint: "vg")
-    ]
+    var boards: [Board]
+//        BoardData(name: "Anime & Manga", endpoint: "a"),
+//        BoardData(name: "Anime/Cute", endpoint: "c"),
+//        BoardData(name: "Anime/Wallpapers", endpoint: "w"),
+//        BoardData(name: "Mecha", endpoint: "m"),
+//        BoardData(name: "Cosplay & CGL", endpoint: "cgl"),
+//        BoardData(name: "Cute/Male", endpoint: "m"),
+//        BoardData(name: "Flash", endpoint: "f"),
+//        BoardData(name: "Transportation", endpoint: "n"),
+//        BoardData(name: "Otaku Culture", endpoint: "jp"),
+//        BoardData(name: "Politically Correct", endpoint: "pol"),
+//        BoardData(name: "Video Games", endpoint: "v"),
+//        BoardData(name: "Video Game Generals", endpoint: "vg")
+//    ]
     
-    struct BoardData: Encodable,Decodable {
-        var name: String
-        var endpoint: String
+//    struct BoardData: Encodable,Decodable {
+//        var name: String
+//        var endpoint: String
+//    }
+    
+    init() {
+        boards = [Board]()
     }
     
-    private var currentBoard: BoardData? {
+    private var currentBoard: Board? {
         guard let selected = UserDefaults.standard.string(forKey: usIdentifier) else {
-            return boards.first!
+            return boards.first
         }
-        return getBoardByName(name: selected)
+        return getBoardByName(title: selected)
     }
     
     func nextPage() -> Int {
@@ -49,25 +53,25 @@ class BoardsViewModel: NSObject {
     
     var selectedBoardName: String {
         guard let selected = currentBoard else {
-            return boards.first!.name
+            return boards.first!.title!
         }
-        return selected.name
+        return selected.title!
     }
 
-    var selectedBoardId: String {
+    var selectedBoardId: String? {
         guard let selected = currentBoard else {
-            return boards.first!.endpoint
+            return boards.first?.board
         }
-        return selected.endpoint
+        return selected.board!
     }
     
     func setCurrentBoard(byBoardName name: String) {
         UserDefaults.standard.set(name, forKey: usIdentifier)
     }
     
-    func getBoardByName(name: String) -> BoardData{
+    func getBoardByName(title: String) -> Board {
         let filtered = boards.filter {
-            $0.name == name
+            $0.title == title
         }
         return filtered.first!
     }

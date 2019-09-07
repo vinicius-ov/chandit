@@ -36,7 +36,6 @@ class BoardPagesViewController: UIViewController {
         
         //navigationController?.hidesBarsOnSwipe = true
         
-        boardSelector.text = boardsViewModel.selectedBoardName
         
         let toolBar = UIToolbar()
         toolBar.barStyle = UIBarStyle.default
@@ -52,12 +51,14 @@ class BoardPagesViewController: UIViewController {
         
         boardSelector.inputAccessoryView = toolBar
         
-        fetchData(append: false)
+        fetchBoards()
+        //fetchData(append: false)
         
     }
     
     func fetchData(append: Bool) {
-        service.loadData(from: URL(string: "https://a.4cdn.org/\(boardsViewModel.selectedBoardId)/\(boardsViewModel.nextPage()).json")!) { (result) in
+        let url = URL(string: "https://a.4cdn.org/\(boardsViewModel.selectedBoardId!)/\(boardsViewModel.nextPage()).json")
+        service.loadData(from: url!) { (result) in
             switch result {
             case .success(let data):
                 do {
@@ -78,6 +79,28 @@ class BoardPagesViewController: UIViewController {
                         self.postsTable.reloadData()
                         self.postsTable.isHidden = false
                     }
+                }
+                break
+            case .failure(let error):
+                break
+            }
+        }
+    }
+    
+    func fetchBoards() {
+        service.loadData(from: URL(string: "https://a.4cdn.org/boards.json")!) { (result) in
+            switch result {
+            case .success(let data):
+                do {
+                    guard let boards = try? JSONDecoder().decode(Boards.self, from: data) else {
+                        print("BOARDS error trying to convert data to JSON \(data)")
+                        return
+                    }
+                    self.boardsViewModel.boards = boards.boards!
+                    DispatchQueue.main.async {
+                        self.boardSelector.text = self.boardsViewModel.selectedBoardName
+                    }
+                    self.fetchData(append: false)
                 }
                 break
             case .failure(let error):
@@ -213,13 +236,13 @@ extension BoardPagesViewController: UIPickerViewDataSource, UIPickerViewDelegate
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return boardsViewModel.boards[row].name
+        return boardsViewModel.boards[row].title
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let name = boardsViewModel.boards[row].name
+        let name = boardsViewModel.boards[row].title
         boardSelector.text = name
-        boardsViewModel.setCurrentBoard(byBoardName: name)
+        boardsViewModel.setCurrentBoard(byBoardName: name!)
     }
     
 }
