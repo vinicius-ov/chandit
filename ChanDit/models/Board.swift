@@ -8,7 +8,15 @@
 
 import UIKit
 
-struct Board: Decodable {
+struct Board: Decodable, Comparable {
+    static func < (lhs: Board, rhs: Board) -> Bool {
+        return lhs.title! < rhs.title!
+    }
+    
+    static func == (lhs: Board, rhs: Board) -> Bool {
+        return lhs.title! == rhs.title!
+    }
+    
     var board: String?
     var title: String?
     var wsBoard: Int?

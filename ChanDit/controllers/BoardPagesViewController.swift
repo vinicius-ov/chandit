@@ -35,7 +35,9 @@ class BoardPagesViewController: UIViewController {
         boardSelector.inputView = pickerView
         
         //navigationController?.hidesBarsOnSwipe = true
+        //boardSelector.text = boardsViewModel.getBoardIndexByTitle(title: boardsViewModel.currentBoard?.title)
         
+        //pickerView.selectRow(boardsViewModel.getCurrentBoardIndex() ?? 0, inComponent: 0, animated: false)
         
         let toolBar = UIToolbar()
         toolBar.barStyle = UIBarStyle.default
@@ -78,6 +80,11 @@ class BoardPagesViewController: UIViewController {
                     DispatchQueue.main.async {
                         self.postsTable.reloadData()
                         self.postsTable.isHidden = false
+                        self.pickerView.selectRow(self.boardsViewModel.getCurrentBoardIndex() ?? 0,
+                                                  inComponent: 0,
+                                                  animated: true)
+                        
+                        
                     }
                 }
                 break
@@ -96,7 +103,7 @@ class BoardPagesViewController: UIViewController {
                         print("BOARDS error trying to convert data to JSON \(data)")
                         return
                     }
-                    self.boardsViewModel.boards = boards.boards!
+                    self.boardsViewModel.boards = boards.boards!.sorted()
                     DispatchQueue.main.async {
                         self.boardSelector.text = self.boardsViewModel.selectedBoardName
                     }
@@ -120,6 +127,11 @@ class BoardPagesViewController: UIViewController {
     
     @objc func hideKeyboard() {
         boardSelector.resignFirstResponder()
+        
+        let title = boardsViewModel.boards[ pickerView.selectedRow(inComponent: 0)].title!
+        boardSelector.text = title
+        boardsViewModel.setCurrentBoard(byBoardName: title)
+        
         boardsViewModel.reset()
         postsTable.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
         fetchData(append: false)
@@ -127,6 +139,7 @@ class BoardPagesViewController: UIViewController {
     
     @objc func hideKeyboardNoAction() {
         boardSelector.resignFirstResponder()
+        boardSelector.text = boardsViewModel.currentBoard?.title
     }
     
     @objc func navigateToThreadView(_ sender: UIButton) {
@@ -238,12 +251,5 @@ extension BoardPagesViewController: UIPickerViewDataSource, UIPickerViewDelegate
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return boardsViewModel.boards[row].title
     }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let name = boardsViewModel.boards[row].title
-        boardSelector.text = name
-        boardsViewModel.setCurrentBoard(byBoardName: name!)
-    }
-    
 }
 
