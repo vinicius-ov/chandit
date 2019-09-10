@@ -10,15 +10,15 @@ import UIKit
 
 struct Board: Decodable, Comparable {
     static func < (lhs: Board, rhs: Board) -> Bool {
-        return lhs.title! < rhs.title!
+        return lhs.title < rhs.title
     }
     
     static func == (lhs: Board, rhs: Board) -> Bool {
-        return lhs.title! == rhs.title!
+        return lhs.title == rhs.title
     }
     
     var board: String?
-    var title: String?
+    var title: String
     var wsBoard: Int?
     var perPage: Int?
     var pages: Int?
@@ -32,6 +32,7 @@ struct Board: Decodable, Comparable {
     var metaDescription: String?
     var customSpoilers: Int?
     var isArchived: Int?
+    var is18Plus: Bool?
     
     enum CodingKeys: String, CodingKey {
         case board

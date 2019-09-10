@@ -83,8 +83,6 @@ class BoardPagesViewController: UIViewController {
                         self.pickerView.selectRow(self.boardsViewModel.getCurrentBoardIndex() ?? 0,
                                                   inComponent: 0,
                                                   animated: true)
-                        
-                        
                     }
                 }
                 break
@@ -128,8 +126,13 @@ class BoardPagesViewController: UIViewController {
     @objc func hideKeyboard() {
         boardSelector.resignFirstResponder()
         
-        let title = boardsViewModel.boards[ pickerView.selectedRow(inComponent: 0)].title!
+        
+        
+        let title = boardsViewModel.boards[ pickerView.selectedRow(inComponent: 0)].title
         boardSelector.text = title
+        
+        let board = boardsViewModel.getBoardByTitle(title: title)
+        print("ADULT: \(boardsViewModel.isAdult(title: title))")
         boardsViewModel.setCurrentBoard(byBoardName: title)
         
         boardsViewModel.reset()
