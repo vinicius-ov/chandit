@@ -75,13 +75,21 @@ class PostTableViewCell: UITableViewCell {
     }
     
     @objc func viewImage(tapGesture: UITapGestureRecognizer) {
-        let viewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "ImageViewerViewController") as! ImageViewerViewController
+        let ext = postViewModel.post.ext
+        if ext == "webm" {
+            let viewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "PlaybackViewController") as! PlaybackViewController
+            viewController.mediaURL = postViewModel.imageUrl(boardId: selectedBoardId)
+            parentViewController.navigationController?.pushViewController(viewController, animated: true)
+        } else {
+            let viewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "ImageViewerViewController") as! ImageViewerViewController
+        
         viewController.boardId = selectedBoardId
         viewController.postViewModel = postViewModel
         //viewController.modalPresentationStyle = .pageSheet
+        
         parentViewController.navigationController?.pushViewController(viewController, animated: true)
     }
-    
+    }
 }
 
 extension UILabel {

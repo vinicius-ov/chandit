@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		810B4A052327CCF100E7ECC9 /* PlaybackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810B4A032327CCF100E7ECC9 /* PlaybackViewController.swift */; };
+		810B4A062327CCF100E7ECC9 /* PlaybackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 810B4A042327CCF100E7ECC9 /* PlaybackViewController.xib */; };
 		810F4D8D2316F9FD0003C58A /* Kingfisher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 810F4D8C2316F9FD0003C58A /* Kingfisher.framework */; };
 		810F4D902316FBBD0003C58A /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 810F4D8F2316FBBD0003C58A /* SnapKit.framework */; };
 		814C458B22F4BFF8007007C5 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814C458A22F4BFF8007007C5 /* Service.swift */; };
@@ -43,6 +45,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		810B4A032327CCF100E7ECC9 /* PlaybackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackViewController.swift; sourceTree = "<group>"; };
+		810B4A042327CCF100E7ECC9 /* PlaybackViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlaybackViewController.xib; sourceTree = "<group>"; };
 		810F4D8C2316F9FD0003C58A /* Kingfisher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kingfisher.framework; path = Carthage/Build/iOS/Kingfisher.framework; sourceTree = "<group>"; };
 		810F4D8F2316FBBD0003C58A /* SnapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnapKit.framework; path = Carthage/Build/iOS/SnapKit.framework; sourceTree = "<group>"; };
 		814C458A22F4BFF8007007C5 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
@@ -186,6 +190,8 @@
 				81921BE222F468DD007F4EFC /* BoardPagesViewController.swift */,
 				81B7896D231060AB0093376D /* ThreadViewController.swift */,
 				814CD0782315ABAF0097A23E /* ImageViewerViewController.swift */,
+				810B4A032327CCF100E7ECC9 /* PlaybackViewController.swift */,
+				810B4A042327CCF100E7ECC9 /* PlaybackViewController.xib */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -284,6 +290,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				810B4A062327CCF100E7ECC9 /* PlaybackViewController.xib in Resources */,
 				81921BEB22F468DE007F4EFC /* LaunchScreen.storyboard in Resources */,
 				81921BE822F468DE007F4EFC /* Assets.xcassets in Resources */,
 				814C459322F868A9007007C5 /* Cartfile in Resources */,
@@ -326,6 +333,7 @@
 				814CD0792315ABAF0097A23E /* ImageViewerViewController.swift in Sources */,
 				816ED39922FDB1AC00E13C9E /* PostViewModel.swift in Sources */,
 				81AC6B92231D53A400502931 /* Board.swift in Sources */,
+				810B4A052327CCF100E7ECC9 /* PlaybackViewController.swift in Sources */,
 				81921BE322F468DD007F4EFC /* BoardPagesViewController.swift in Sources */,
 				81921BE122F468DD007F4EFC /* AppDelegate.swift in Sources */,
 				814C458F22F86194007007C5 /* PostTableViewCell.swift in Sources */,

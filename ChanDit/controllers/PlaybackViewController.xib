@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PlaybackViewController" customModule="ChanDit" customModuleProvider="target"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" restorationIdentifier="PlaybackViewController" id="jc2-cj-1JF">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C4B-gB-uRM" userLabel="Movie View">
+                    <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NbG-AJ-Ni9">
+                    <rect key="frame" x="184.5" y="696" width="45" height="30"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                    <state key="normal" title="Pause"/>
+                    <state key="selected" title="Play"/>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="C4B-gB-uRM" firstAttribute="bottom" secondItem="VdL-HY-gzC" secondAttribute="bottom" id="7gO-hg-gX6"/>
+                <constraint firstItem="VdL-HY-gzC" firstAttribute="bottom" secondItem="NbG-AJ-Ni9" secondAttribute="bottom" constant="136" id="C5z-5e-4sK"/>
+                <constraint firstItem="C4B-gB-uRM" firstAttribute="leading" secondItem="VdL-HY-gzC" secondAttribute="leading" id="Fug-rx-CQU"/>
+                <constraint firstItem="NbG-AJ-Ni9" firstAttribute="centerX" secondItem="VdL-HY-gzC" secondAttribute="centerX" id="chp-c8-1Lw"/>
+                <constraint firstItem="C4B-gB-uRM" firstAttribute="top" secondItem="VdL-HY-gzC" secondAttribute="top" id="dmK-YE-fjd"/>
+                <constraint firstItem="C4B-gB-uRM" firstAttribute="trailing" secondItem="VdL-HY-gzC" secondAttribute="trailing" id="soC-v8-TcN"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="VdL-HY-gzC"/>
+        </view>
+    </objects>
+</document>
