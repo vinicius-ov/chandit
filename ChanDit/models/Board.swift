@@ -8,11 +8,19 @@
 
 import UIKit
 
-struct Board: Decodable {
+struct Board: Decodable, Comparable {
+    static func < (lhs: Board, rhs: Board) -> Bool {
+        return lhs.title < rhs.title
+    }
+    
+    static func == (lhs: Board, rhs: Board) -> Bool {
+        return lhs.title == rhs.title
+    }
+    
     var board: String?
-    var title: String?
+    var title: String
     var wsBoard: Int?
-    var per_page: Int?
+    var perPage: Int?
     var pages: Int?
     var maxFilesize: Int?
     var maxWebmFilesize: Int?
@@ -20,19 +28,17 @@ struct Board: Decodable {
     var maxWebmDuration: Int?
     var bumpLimit: Int?
     var imageLimit: Int?
-//    var cooldowns: {
-//        varthreads: 600,
-//        varreplies: 60,
-//        varimages: 60
-//    }
+    var cooldowns: Cooldowns?
     var metaDescription: String?
+    var customSpoilers: Int?
     var isArchived: Int?
+    var is18Plus: Bool?
     
     enum CodingKeys: String, CodingKey {
         case board
         case title
         case wsBoard = "ws_board"
-        case per_page
+        case perPage = "per_page"
         case pages
         case maxFilesize = "max_filesize"
         case maxWebmFilesize = "max_webm_filesize"
@@ -40,10 +46,25 @@ struct Board: Decodable {
         case maxWebmDuration = "max_webm_duration"
         case bumpLimit = "bump_limit"
         case imageLimit = "image_limit"
+        case cooldowns
         case metaDescription = "meta_description"
         case isArchived = "is_archived"
+        case customSpoilers = "custom_spoilers"
     }
 }
+
+struct Cooldowns: Decodable{
+    var threads: Int?
+    var replies: Int?
+    var images: Int?
+}
+
 struct Boards: Decodable {
-    let boards: [Board]
+    let boards: [Board]?
+    let trollFlags: [String:String]?
+    
+    enum CodingKeys: String, CodingKey {
+        case boards
+        case trollFlags = "troll_flags"
+    }
 }

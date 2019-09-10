@@ -35,8 +35,9 @@ class BoardPagesViewController: UIViewController {
         boardSelector.inputView = pickerView
         
         //navigationController?.hidesBarsOnSwipe = true
+        //boardSelector.text = boardsViewModel.getBoardIndexByTitle(title: boardsViewModel.currentBoard?.title)
         
-        boardSelector.text = boardsViewModel.selectedBoardName
+        //pickerView.selectRow(boardsViewModel.getCurrentBoardIndex() ?? 0, inComponent: 0, animated: false)
         
         let toolBar = UIToolbar()
         toolBar.barStyle = UIBarStyle.default
@@ -52,12 +53,14 @@ class BoardPagesViewController: UIViewController {
         
         boardSelector.inputAccessoryView = toolBar
         
-        fetchData(append: false)
+        fetchBoards()
+        //fetchData(append: false)
         
     }
     
     func fetchData(append: Bool) {
-        service.loadData(from: URL(string: "https://a.4cdn.org/\(boardsViewModel.selectedBoardId)/\(boardsViewModel.nextPage()).json")!) { (result) in
+        let url = URL(string: "https://a.4cdn.org/\(boardsViewModel.selectedBoardId!)/\(boardsViewModel.nextPage()).json")
+        service.loadData(from: url!) { (result) in
             switch result {
             case .success(let data):
                 do {
@@ -77,7 +80,32 @@ class BoardPagesViewController: UIViewController {
                     DispatchQueue.main.async {
                         self.postsTable.reloadData()
                         self.postsTable.isHidden = false
+                        self.pickerView.selectRow(self.boardsViewModel.getCurrentBoardIndex() ?? 0,
+                                                  inComponent: 0,
+                                                  animated: true)
                     }
+                }
+                break
+            case .failure(let error):
+                break
+            }
+        }
+    }
+    
+    func fetchBoards() {
+        service.loadData(from: URL(string: "https://a.4cdn.org/boards.json")!) { (result) in
+            switch result {
+            case .success(let data):
+                do {
+                    guard let boards = try? JSONDecoder().decode(Boards.self, from: data) else {
+                        print("BOARDS error trying to convert data to JSON \(data)")
+                        return
+                    }
+                    self.boardsViewModel.boards = boards.boards!.sorted()
+                    DispatchQueue.main.async {
+                        self.boardSelector.text = self.boardsViewModel.selectedBoardName
+                    }
+                    self.fetchData(append: false)
                 }
                 break
             case .failure(let error):
@@ -97,6 +125,16 @@ class BoardPagesViewController: UIViewController {
     
     @objc func hideKeyboard() {
         boardSelector.resignFirstResponder()
+        
+        
+        
+        let title = boardsViewModel.boards[ pickerView.selectedRow(inComponent: 0)].title
+        boardSelector.text = title
+        
+        let board = boardsViewModel.getBoardByTitle(title: title)
+        print("ADULT: \(boardsViewModel.isAdult(title: title))")
+        boardsViewModel.setCurrentBoard(byBoardName: title)
+        
         boardsViewModel.reset()
         postsTable.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
         fetchData(append: false)
@@ -104,6 +142,7 @@ class BoardPagesViewController: UIViewController {
     
     @objc func hideKeyboardNoAction() {
         boardSelector.resignFirstResponder()
+        boardSelector.text = boardsViewModel.currentBoard?.title
     }
     
     @objc func navigateToThreadView(_ sender: UIButton) {
@@ -213,14 +252,7 @@ extension BoardPagesViewController: UIPickerViewDataSource, UIPickerViewDelegate
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return boardsViewModel.boards[row].name
+        return boardsViewModel.boards[row].title
     }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let name = boardsViewModel.boards[row].name
-        boardSelector.text = name
-        boardsViewModel.setCurrentBoard(byBoardName: name)
-    }
-    
 }
 
