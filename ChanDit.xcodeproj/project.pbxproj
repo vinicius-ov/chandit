@@ -195,7 +195,6 @@
 				81B7896D231060AB0093376D /* ThreadViewController.swift */,
 				814CD0782315ABAF0097A23E /* ImageViewerViewController.swift */,
 				810B4A032327CCF100E7ECC9 /* PlaybackViewController.swift */,
-				810B4A042327CCF100E7ECC9 /* PlaybackViewController.xib */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -212,6 +211,7 @@
 		81AC6B8F2319866B00502931 /* storyboards */ = {
 			isa = PBXGroup;
 			children = (
+				810B4A042327CCF100E7ECC9 /* PlaybackViewController.xib */,
 				81921BE422F468DD007F4EFC /* Main.storyboard */,
 				81921BE922F468DE007F4EFC /* LaunchScreen.storyboard */,
 			);
