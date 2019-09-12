@@ -76,10 +76,10 @@ class PostTableViewCell: UITableViewCell {
     
     @objc func viewImage(tapGesture: UITapGestureRecognizer) {
         let ext = postViewModel.post.ext
-        if ext == "webm" {
-            let viewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "PlaybackViewController") as! PlaybackViewController
+        if ext == ".webm" {
+            let viewController = PlaybackViewController(nibName: "PlaybackViewController", bundle: Bundle.main)
             viewController.mediaURL = postViewModel.imageUrl(boardId: selectedBoardId)
-            parentViewController.navigationController?.pushViewController(viewController, animated: true)
+            parentViewController.navigationController?.present(viewController, animated: true, completion: nil)
         } else {
             let viewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "ImageViewerViewController") as! ImageViewerViewController
         
