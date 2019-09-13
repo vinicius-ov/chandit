@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8107019F232C20CF00C8F0E4 /* MultipleSimulatorsStartup.sh in Resources */ = {isa = PBXBuildFile; fileRef = 8107019E232C20CF00C8F0E4 /* MultipleSimulatorsStartup.sh */; };
 		810B4A052327CCF100E7ECC9 /* PlaybackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810B4A032327CCF100E7ECC9 /* PlaybackViewController.swift */; };
 		810B4A062327CCF100E7ECC9 /* PlaybackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 810B4A042327CCF100E7ECC9 /* PlaybackViewController.xib */; };
 		810F4D8D2316F9FD0003C58A /* Kingfisher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 810F4D8C2316F9FD0003C58A /* Kingfisher.framework */; };
@@ -14,7 +15,6 @@
 		814C458B22F4BFF8007007C5 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814C458A22F4BFF8007007C5 /* Service.swift */; };
 		814C458D22F4C67F007007C5 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814C458C22F4C67F007007C5 /* Post.swift */; };
 		814C458F22F86194007007C5 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814C458E22F86194007007C5 /* PostTableViewCell.swift */; };
-		814C459322F868A9007007C5 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 814C459222F868A9007007C5 /* Cartfile */; };
 		814CD0792315ABAF0097A23E /* ImageViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814CD0782315ABAF0097A23E /* ImageViewerViewController.swift */; };
 		816ED39922FDB1AC00E13C9E /* PostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816ED39822FDB1AC00E13C9E /* PostViewModel.swift */; };
 		81921BE122F468DD007F4EFC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81921BE022F468DD007F4EFC /* AppDelegate.swift */; };
@@ -46,6 +46,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8107019C232C208200C8F0E4 /* SimulatorsList.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = SimulatorsList.txt; sourceTree = "<group>"; };
+		8107019E232C20CF00C8F0E4 /* MultipleSimulatorsStartup.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = MultipleSimulatorsStartup.sh; sourceTree = "<group>"; };
 		810B4A032327CCF100E7ECC9 /* PlaybackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackViewController.swift; sourceTree = "<group>"; };
 		810B4A042327CCF100E7ECC9 /* PlaybackViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlaybackViewController.xib; sourceTree = "<group>"; };
 		810F4D8C2316F9FD0003C58A /* Kingfisher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kingfisher.framework; path = Carthage/Build/iOS/Kingfisher.framework; sourceTree = "<group>"; };
@@ -149,6 +151,8 @@
 			isa = PBXGroup;
 			children = (
 				814C459222F868A9007007C5 /* Cartfile */,
+				8107019C232C208200C8F0E4 /* SimulatorsList.txt */,
+				8107019E232C20CF00C8F0E4 /* MultipleSimulatorsStartup.sh */,
 				81921BDF22F468DD007F4EFC /* ChanDit */,
 				81921BDE22F468DD007F4EFC /* Products */,
 				814C459622F8691C007007C5 /* Frameworks */,
@@ -246,6 +250,7 @@
 				81921BDA22F468DD007F4EFC /* Frameworks */,
 				81921BDB22F468DD007F4EFC /* Resources */,
 				814C459422F868C1007007C5 /* Carthage */,
+				810701A0232C213E00C8F0E4 /* Multiple Simulators */,
 			);
 			buildRules = (
 			);
@@ -297,7 +302,7 @@
 				810B4A062327CCF100E7ECC9 /* PlaybackViewController.xib in Resources */,
 				81921BEB22F468DE007F4EFC /* LaunchScreen.storyboard in Resources */,
 				81921BE822F468DE007F4EFC /* Assets.xcassets in Resources */,
-				814C459322F868A9007007C5 /* Cartfile in Resources */,
+				8107019F232C20CF00C8F0E4 /* MultipleSimulatorsStartup.sh in Resources */,
 				81921BE622F468DD007F4EFC /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -305,6 +310,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		810701A0232C213E00C8F0E4 /* Multiple Simulators */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Multiple Simulators";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "custom_sim=`xcrun simctl list | grep 'Custom Simulators' | awk -F'[()]' '{print $2}'`\nif [ ! -z \"${custom_sim}\" ] && [ \"${TARGET_DEVICE_IDENTIFIER}\" = \"${custom_sim}\" ]; then\n/bin/sh multipleSimulatorsStartup.sh\nfi\n";
+		};
 		814C459422F868C1007007C5 /* Carthage */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
