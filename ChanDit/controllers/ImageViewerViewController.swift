@@ -40,11 +40,36 @@ class ImageViewerViewController: UIViewController {
             switch result {
             case .success(let image):
                 self.imageView.image = image.image
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(self.saveImage))
             case .failure(let failure):
                 break
             }
             self.loadingIndicator.stopAnimating()
         }
+        //navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self., action: saveImage)
+    }
+    
+    @objc func saveImage() {
+        self.navigationItem.rightBarButtonItem?.isEnabled = false
+        guard let img = self.imageView.image else { return }
+        UIImageWriteToSavedPhotosAlbum(img, self, #selector(showSuccessToast(_:error:contextInfo:)),nil)
+    }
+    
+    @objc func showSuccessToast(_ image:UIImage, error:Error?, contextInfo: UnsafeMutableRawPointer?) {
+        self.navigationItem.rightBarButtonItem?.isEnabled = true
+        let label = UILabel(frame: CGRect(x: 0, y: view.frame.height*0.9, width: view.frame.width, height: 25))
+        label.backgroundColor = .red
+        label.textAlignment = .center
+        label.text = "Photo was saved to the camera roll."
+        label.textColor = .white
+        //label.sizeToFit()
+        view.addSubview(label)
+        UIView.animate(withDuration: 2.0, delay: 1.0, animations: {
+            label.alpha = 0
+        }) { finished in
+            label.removeFromSuperview()
+        }
+        
         
     }
     
