@@ -69,7 +69,7 @@ struct PostViewModel {
 extension PostViewModel {
     
     var comment: String? {
-        let formatString = post.com?.replacingOccurrences(of: "#p", with: "http://a.z/")
+        let formatString = post.com?.replacingOccurrences(of: "#p", with: "chandit://")
         return formatString
     }
     

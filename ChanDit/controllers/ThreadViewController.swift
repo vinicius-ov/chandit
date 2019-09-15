@@ -44,7 +44,7 @@ class ThreadViewController: UIViewController {
                         self.title = self.threadViewModel.threadTitle
                         self.postsTable.reloadData()
                         self.postsTable.isHidden = false
-                        self.navigateToPost(inTableView: self.postsTable, forIndexPath: nil)
+                        self.navigateToPost(inTableView: self.postsTable)
                     }
                 }
                 break
@@ -54,10 +54,10 @@ class ThreadViewController: UIViewController {
         }
     }
     
-    func navigateToPost(inTableView tableView: UITableView, forIndexPath indexPath: IndexPath?) {
+    func navigateToPost(inTableView tableView: UITableView) {
         guard let postNumberToNavigate = threadViewModel.postNumberToNavigate,
              let index = self.threadViewModel.findPostIndexByNumber(postNumberToNavigate) else { return }
-            let indexPathNav = indexPath ?? IndexPath(item: index, section: 0)
+            let indexPathNav = IndexPath(item: index, section: 0)
             UIView.animate(withDuration: 0.2, animations: {
                 tableView.scrollToRow(at: indexPathNav, at: .top, animated: false)
             }, completion: { (done) in
@@ -105,12 +105,10 @@ extension ThreadViewController: UITableViewDataSource {
         cell.parentViewController = self
         
         cell.jumpToPost = { (number: Int?) in
-            if let postNumber = number, let index =
-                self.threadViewModel.findPostIndexByNumber(postNumber) {
-                //self.postNumberToNavigate = postNumber
+            if let postNumber = number {
                 self.postNumberToReturn.append(postViewModel.number!)
-                let indexPathNav = IndexPath(item: index, section: 0)
-                self.navigateToPost(inTableView: tableView, forIndexPath: indexPathNav)
+                self.threadViewModel.postNumberToNavigate = postNumber
+                self.navigateToPost(inTableView: tableView)
             }
         }
         return cell

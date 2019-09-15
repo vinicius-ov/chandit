@@ -196,7 +196,7 @@ extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource 
         cell.parentViewController = self
         
         cell.navigateToMessage = { (number: Int?) in
-            self.boardsViewModel.postNumberToNavigate = number!
+            self.boardsViewModel.postNumberToNavigate = number
             self.boardsViewModel.threadToLaunch = threadViewModel.posts.first!.number!
             self.navigateToThread()
             print("will navigate")
