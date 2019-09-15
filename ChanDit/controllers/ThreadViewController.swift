@@ -69,9 +69,9 @@ class ThreadViewController: UIViewController {
     }
     
     @IBAction func reloadData(_ sender: Any) {
-        postsTable.isHidden = true
-        //postsTable.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-        fetchData()
+        self.postsTable.isHidden = true
+        self.threadViewModel.reset()
+        self.fetchData()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -125,4 +125,21 @@ extension ThreadViewController: UITableViewDataSourcePrefetching {
 //        }
     }
     
+}
+
+extension UIViewController {
+    func callAlertView(title: String, message: String, actions: [UIAlertAction]) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        actions.forEach {
+            alert.addAction($0)
+        }
+        if actions.isEmpty {
+            let actionOk = UIAlertAction(title: "Ok", style: .default, handler: nil)
+            alert.addAction(actionOk)
+            
+        } else {
+            alert.preferredAction = actions.first!
+        }
+        present(alert, animated: true, completion: nil)
+    }
 }

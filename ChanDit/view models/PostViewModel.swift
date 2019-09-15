@@ -48,9 +48,9 @@ struct ThreadViewModel {
         self.boardIdToNavigate = originBoard
     }
     
-//    init() {
-//        posts = [PostViewModel]()
-//    }
+    mutating func reset() {
+        postNumberToNavigate = nil
+    }
     
     func postViewModel(at index: Int) -> PostViewModel {
         return self.posts[index]

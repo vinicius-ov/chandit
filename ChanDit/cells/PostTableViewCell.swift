@@ -143,9 +143,13 @@ extension PostTableViewCell: UITextViewDelegate {
                 jumpToPost(postNumber)
             }
         } else {
-            //var urlString = "firefox://open-url?url=\(URL.absoluteString)"
-            //let uerrele = Foundation.URL.init(string: urlString)
-            UIApplication.shared.open(URL)
+            //see https://stackoverflow.com/questions/39949169/swift-open-url-in-a-specific-browser-tab for other browsers deeplinks
+            let actionOk = UIAlertAction(title: "OK", style: .default) { (action) in
+                UIApplication.shared.open(URL)
+            }
+            let actionCancel = UIAlertAction(title: "Cancel", style: .default)
+            parentViewController.callAlertView(title: "Exit ChanDit", message: "This link will take you outside ChanDit. You are in your own. Proceed?", actions: [actionOk,actionCancel])
+            
         }
         return false
     }
