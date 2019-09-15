@@ -82,13 +82,13 @@ class PostTableViewCell: UITableViewCell {
             parentViewController.navigationController?.present(viewController, animated: true, completion: nil)
         } else {
             let viewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "ImageViewerViewController") as! ImageViewerViewController
-        
-        viewController.boardId = selectedBoardId
-        viewController.postViewModel = postViewModel
-        //viewController.modalPresentationStyle = .pageSheet
-        
-        parentViewController.navigationController?.pushViewController(viewController, animated: true)
-    }
+            
+            viewController.boardId = selectedBoardId
+            viewController.postViewModel = postViewModel
+            //viewController.modalPresentationStyle = .pageSheet
+            
+            parentViewController.navigationController?.pushViewController(viewController, animated: true)
+        }
     }
 }
 
@@ -132,17 +132,28 @@ extension UITextView {
 
 extension PostTableViewCell: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-//        print(URL.absoluteString)
+        print(URL.absoluteString)
         let quote = URL.absoluteString.split(separator: "/")
-        let postNumber = Int(quote[2])
-        if parentViewController is BoardPagesViewController {
-            navigateToMessage(postNumber)
-            //jumpToPost(postNumber)
+        if quote.first == "chandit:" {
+            let postNumber = Int(quote.last!)
+            if parentViewController is BoardPagesViewController {
+                navigateToMessage(postNumber)
+                //jumpToPost(postNumber)
+            } else {
+                jumpToPost(postNumber)
+            }
         } else {
-            jumpToPost(postNumber)
+            //see https://stackoverflow.com/questions/39949169/swift-open-url-in-a-specific-browser-tab for other browsers deeplinks
+            let actionOk = UIAlertAction(title: "OK", style: .default) { (action) in
+                UIApplication.shared.open(URL)
+            }
+            let actionCancel = UIAlertAction(title: "Cancel", style: .default)
+            parentViewController.callAlertView(title: "Exit ChanDit", message: "This link will take you outside ChanDit. You are in your own. Proceed?", actions: [actionOk,actionCancel])
+            
         }
         return false
     }
+    
 }
 
 

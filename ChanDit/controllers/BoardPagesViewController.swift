@@ -33,6 +33,7 @@ class BoardPagesViewController: UIViewController {
         pickerView.delegate = self
         pickerView.dataSource = self
         boardSelector.inputView = pickerView
+        boardSelector.isEnabled = false
         
         //navigationController?.hidesBarsOnSwipe = true
         //boardSelector.text = boardsViewModel.getBoardIndexByTitle(title: boardsViewModel.currentBoard?.title)
@@ -83,6 +84,7 @@ class BoardPagesViewController: UIViewController {
                         self.pickerView.selectRow(self.boardsViewModel.getCurrentBoardIndex() ?? 0,
                                                   inComponent: 0,
                                                   animated: true)
+                        self.boardSelector.isEnabled = true
                     }
                 }
                 break
@@ -196,7 +198,7 @@ extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource 
         cell.parentViewController = self
         
         cell.navigateToMessage = { (number: Int?) in
-            self.boardsViewModel.postNumberToNavigate = number!
+            self.boardsViewModel.postNumberToNavigate = number
             self.boardsViewModel.threadToLaunch = threadViewModel.posts.first!.number!
             self.navigateToThread()
             print("will navigate")

@@ -43,6 +43,8 @@
 		F2C400F12327371000BFCC89 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2C400F02327370F00BFCC89 /* VideoToolbox.framework */; };
 		F2DEFCFA23273CA90031FD98 /* MobileVLCKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2DEFCF923273CA90031FD98 /* MobileVLCKit.framework */; };
 		F2DEFD03232AC97F0031FD98 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F2DEFD02232AC97F0031FD98 /* libc++.tbd */; };
+		F2DEFD06232DD4690031FD98 /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2DEFD04232DD4690031FD98 /* WebViewViewController.swift */; };
+		F2DEFD07232DD4690031FD98 /* WebViewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2DEFD05232DD4690031FD98 /* WebViewViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -85,6 +87,8 @@
 		F2DEFCF923273CA90031FD98 /* MobileVLCKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileVLCKit.framework; path = Carthage/Build/iOS/MobileVLCKit.framework; sourceTree = "<group>"; };
 		F2DEFCFB23273D840031FD98 /* SwiftSimplePlayback-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SwiftSimplePlayback-Bridging-Header.h"; sourceTree = "<group>"; };
 		F2DEFD02232AC97F0031FD98 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		F2DEFD04232DD4690031FD98 /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
+		F2DEFD05232DD4690031FD98 /* WebViewViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WebViewViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -195,6 +199,7 @@
 				81B7896D231060AB0093376D /* ThreadViewController.swift */,
 				814CD0782315ABAF0097A23E /* ImageViewerViewController.swift */,
 				810B4A032327CCF100E7ECC9 /* PlaybackViewController.swift */,
+				F2DEFD04232DD4690031FD98 /* WebViewViewController.swift */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -211,6 +216,7 @@
 		81AC6B8F2319866B00502931 /* storyboards */ = {
 			isa = PBXGroup;
 			children = (
+				F2DEFD05232DD4690031FD98 /* WebViewViewController.xib */,
 				810B4A042327CCF100E7ECC9 /* PlaybackViewController.xib */,
 				81921BE422F468DD007F4EFC /* Main.storyboard */,
 				81921BE922F468DE007F4EFC /* LaunchScreen.storyboard */,
@@ -294,6 +300,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F2DEFD07232DD4690031FD98 /* WebViewViewController.xib in Resources */,
 				810B4A062327CCF100E7ECC9 /* PlaybackViewController.xib in Resources */,
 				81921BEB22F468DE007F4EFC /* LaunchScreen.storyboard in Resources */,
 				81921BE822F468DE007F4EFC /* Assets.xcassets in Resources */,
@@ -344,6 +351,7 @@
 				81B7896E231060AB0093376D /* ThreadViewController.swift in Sources */,
 				814C458B22F4BFF8007007C5 /* Service.swift in Sources */,
 				814C458D22F4C67F007007C5 /* Post.swift in Sources */,
+				F2DEFD06232DD4690031FD98 /* WebViewViewController.swift in Sources */,
 				81C26732231804D80060D8A1 /* BoardsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
