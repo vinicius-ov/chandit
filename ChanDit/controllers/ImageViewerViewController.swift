@@ -46,7 +46,6 @@ class ImageViewerViewController: UIViewController {
             }
             self.loadingIndicator.stopAnimating()
         }
-        //navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self., action: saveImage)
     }
     
     @objc func saveImage() {
@@ -55,22 +54,11 @@ class ImageViewerViewController: UIViewController {
         UIImageWriteToSavedPhotosAlbum(img, self, #selector(showSuccessToast(_:error:contextInfo:)),nil)
     }
     
+    
+    
     @objc func showSuccessToast(_ image:UIImage, error:Error?, contextInfo: UnsafeMutableRawPointer?) {
         self.navigationItem.rightBarButtonItem?.isEnabled = true
-        let label = UILabel(frame: CGRect(x: 0, y: view.frame.height*0.9, width: view.frame.width, height: 25))
-        label.backgroundColor = .red
-        label.textAlignment = .center
-        label.text = "Photo was saved to the camera roll."
-        label.textColor = .white
-        //label.sizeToFit()
-        view.addSubview(label)
-        UIView.animate(withDuration: 2.0, delay: 1.0, animations: {
-            label.alpha = 0
-        }) { finished in
-            label.removeFromSuperview()
-        }
-        
-        
+        self.showToast(message: "Photo was saved to the camera roll.", textColor: nil, backgroundColor: nil)
     }
     
     fileprivate func updateMinZoomScaleForSize(_ size: CGSize) {
@@ -110,7 +98,20 @@ extension ImageViewerViewController: UIScrollViewDelegate {
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
         updateConstraintsForSize(view.bounds.size)
     }
-    
-    
+}
 
+extension UIViewController {
+    func showToast(message:String, textColor: UIColor?, backgroundColor: UIColor?) {
+        let label = UILabel(frame: CGRect(x: 0, y: view.frame.height*0.9, width: view.frame.width, height: 25))
+        label.backgroundColor = backgroundColor ?? .red
+        label.textAlignment = .center
+        label.text = message
+        label.textColor = textColor ?? .white
+        view.addSubview(label)
+        UIView.animate(withDuration: 2.0, delay: 1.0, animations: {
+            label.alpha = 0
+        }) { finished in
+            label.removeFromSuperview()
+        }
+    }
 }

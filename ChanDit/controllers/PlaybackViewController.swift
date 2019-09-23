@@ -57,12 +57,28 @@ class PlaybackViewController: UIViewController {
         mediaPlayer.stop()
         self.dismiss(animated: true, completion: nil)
     }
+    
+    @IBAction func saveImage(_ sender: Any) {
+        self.navigationItem.rightBarButtonItem?.isEnabled = false
+        let img = mediaPlayer.media.url //else { return }
+       UISaveVideoAtPathToSavedPhotosAlbum(img.absoluteString,nil,nil,nil) //UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(mediaURL!.absoluteString)
+        //UIImageWriteToSavedPhotosAlbum(img, self, #selector(showSuccessToast(_:error:contextInfo:)),nil)
+    }
+    
+    func createFile() {
+        let fileName = "Test"
+        let documentDirURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        let fileURL = documentDirURL.appendingPathComponent(fileName).appendingPathExtension("txt")
+        print("File PAth: \(fileURL.path)")
+    }
 }
 
 extension PlaybackViewController: VLCMediaPlayerDelegate {
     func mediaPlayerStateChanged(_ aNotification: Notification!) {
         if mediaPlayer.state == .stopped {
-            self.dismiss(animated: true, completion: nil)
+            //self.dismiss(animated: true, completion: nil)
+            mediaPlayer.rewind()
+            mediaPlayer.play()
         }
     }
 }
