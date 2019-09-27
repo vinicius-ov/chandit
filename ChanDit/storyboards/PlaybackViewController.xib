@@ -27,46 +27,47 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C4B-gB-uRM" userLabel="Movie View">
                     <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NbG-AJ-Ni9">
-                    <rect key="frame" x="184.5" y="822" width="45" height="30"/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                    <state key="normal" title="Pause"/>
-                    <state key="selected" title="Play"/>
-                    <connections>
-                        <action selector="handlePlayPause:" destination="-1" eventType="touchUpInside" id="EXk-db-6pd"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6H0-eC-eRB">
-                    <rect key="frame" x="248" y="822" width="58" height="30"/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                    <state key="normal" title="Unmute"/>
-                    <state key="selected" title="Mute"/>
-                    <connections>
-                        <action selector="handleToggleAudio:" destination="-1" eventType="touchUpInside" id="a6q-AN-FB6"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iKW-o1-cbZ">
-                    <rect key="frame" x="116" y="822" width="42" height="30"/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                    <state key="normal" title="Close"/>
-                    <connections>
-                        <action selector="closeView:" destination="-1" eventType="touchUpInside" id="sYe-s6-rCZ"/>
-                    </connections>
-                </button>
+                <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="NEc-3V-BSD">
+                    <rect key="frame" x="114.5" y="822" width="185" height="30"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iKW-o1-cbZ">
+                            <rect key="frame" x="0.0" y="0.0" width="42" height="30"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                            <state key="normal" title="Close"/>
+                            <connections>
+                                <action selector="closeView:" destination="-1" eventType="touchUpInside" id="sYe-s6-rCZ"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6H0-eC-eRB">
+                            <rect key="frame" x="62" y="0.0" width="58" height="30"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                            <state key="normal" title="Unmute"/>
+                            <state key="selected" title="Mute"/>
+                            <connections>
+                                <action selector="handleToggleAudio:" destination="-1" eventType="touchUpInside" id="a6q-AN-FB6"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NbG-AJ-Ni9">
+                            <rect key="frame" x="140" y="0.0" width="45" height="30"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                            <state key="normal" title="Pause"/>
+                            <state key="selected" title="Play"/>
+                            <connections>
+                                <action selector="handlePlayPause:" destination="-1" eventType="touchUpInside" id="EXk-db-6pd"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                </stackView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="VdL-HY-gzC" firstAttribute="bottom" secondItem="iKW-o1-cbZ" secondAttribute="bottom" constant="10" id="1Aq-ad-OjR"/>
-                <constraint firstItem="6H0-eC-eRB" firstAttribute="centerX" secondItem="jc2-cj-1JF" secondAttribute="centerX" constant="70" id="4pL-q5-1ZE"/>
                 <constraint firstItem="C4B-gB-uRM" firstAttribute="bottom" secondItem="VdL-HY-gzC" secondAttribute="bottom" id="7gO-hg-gX6"/>
                 <constraint firstItem="C4B-gB-uRM" firstAttribute="leading" secondItem="VdL-HY-gzC" secondAttribute="leading" id="Fug-rx-CQU"/>
-                <constraint firstItem="NbG-AJ-Ni9" firstAttribute="centerX" secondItem="jc2-cj-1JF" secondAttribute="centerX" id="Hfq-84-y0S"/>
                 <constraint firstItem="sYO-ap-QLq" firstAttribute="centerX" secondItem="jc2-cj-1JF" secondAttribute="centerX" id="KCi-fr-Qyy"/>
+                <constraint firstItem="VdL-HY-gzC" firstAttribute="bottom" secondItem="NEc-3V-BSD" secondAttribute="bottom" constant="10" id="Q4m-wy-Fjq"/>
                 <constraint firstItem="C4B-gB-uRM" firstAttribute="top" secondItem="VdL-HY-gzC" secondAttribute="top" id="dmK-YE-fjd"/>
-                <constraint firstItem="VdL-HY-gzC" firstAttribute="bottom" secondItem="6H0-eC-eRB" secondAttribute="bottom" constant="10" id="eVt-Z7-sgI"/>
-                <constraint firstItem="iKW-o1-cbZ" firstAttribute="centerX" secondItem="jc2-cj-1JF" secondAttribute="centerX" constant="-70" id="jTa-HJ-Q0b"/>
+                <constraint firstItem="NEc-3V-BSD" firstAttribute="centerX" secondItem="jc2-cj-1JF" secondAttribute="centerX" id="ikS-B8-whW"/>
                 <constraint firstItem="C4B-gB-uRM" firstAttribute="trailing" secondItem="VdL-HY-gzC" secondAttribute="trailing" id="soC-v8-TcN"/>
-                <constraint firstItem="VdL-HY-gzC" firstAttribute="bottom" secondItem="NbG-AJ-Ni9" secondAttribute="bottom" constant="10" id="u0i-ms-2Ac"/>
                 <constraint firstItem="sYO-ap-QLq" firstAttribute="centerY" secondItem="jc2-cj-1JF" secondAttribute="centerY" id="u1T-49-Dr1"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="VdL-HY-gzC"/>

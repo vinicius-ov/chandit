@@ -11,6 +11,7 @@ import UIKit
 class PlaybackViewController: UIViewController {
     //let mediaURL:String? = nil
     var mediaURL:URL? = nil
+    var filename = "filename_my_file"
     
     @IBOutlet weak var movieView: UIView!
     
@@ -62,7 +63,9 @@ class PlaybackViewController: UIViewController {
 extension PlaybackViewController: VLCMediaPlayerDelegate {
     func mediaPlayerStateChanged(_ aNotification: Notification!) {
         if mediaPlayer.state == .stopped {
-            self.dismiss(animated: true, completion: nil)
+            //self.dismiss(animated: true, completion: nil)
+            mediaPlayer.rewind()
+            mediaPlayer.play()
         }
     }
 }
