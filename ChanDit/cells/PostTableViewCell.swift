@@ -43,6 +43,7 @@ class PostTableViewCell: UITableViewCell {
     
     var navigateToMessage: ((Int?) -> Void)!
     var jumpToPost: ((Int?) -> Void)!
+    weak var tapDelegate: CellTapInteractionDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -79,15 +80,12 @@ class PostTableViewCell: UITableViewCell {
         if ext == ".webm" {
             let viewController = PlaybackViewController(nibName: "PlaybackViewController", bundle: Bundle.main)
             viewController.mediaURL = postViewModel.imageUrl(boardId: selectedBoardId)
-            parentViewController.navigationController?.present(viewController, animated: true, completion: nil)
+            tapDelegate?.imageTapped(viewController)
         } else {
             let viewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "ImageViewerViewController") as! ImageViewerViewController
-            
             viewController.boardId = selectedBoardId
             viewController.postViewModel = postViewModel
-            //viewController.modalPresentationStyle = .pageSheet
-            
-            parentViewController.navigationController?.pushViewController(viewController, animated: true)
+            tapDelegate?.imageTapped(viewController)
         }
     }
 }
@@ -136,19 +134,20 @@ extension PostTableViewCell: UITextViewDelegate {
         let quote = URL.absoluteString.split(separator: "/")
         if quote.first == "chandit:" {
             let postNumber = Int(quote.last!)
-            if parentViewController is BoardPagesViewController {
-                navigateToMessage(postNumber)
-                //jumpToPost(postNumber)
-            } else {
-                jumpToPost(postNumber)
-            }
+            tapDelegate?.linkTapped(postNumber, self.thread
+//            if parentViewController is BoardPagesViewController {
+//                navigateToMessage(postNumber)
+//                //jumpToPost(postNumber)
+//            } else {
+//                jumpToPost(postNumber)
+//            }
         } else {
             //see https://stackoverflow.com/questions/39949169/swift-open-url-in-a-specific-browser-tab for other browsers deeplinks
             let actionOk = UIAlertAction(title: "OK", style: .default) { (action) in
                 UIApplication.shared.open(URL)
             }
             let actionCancel = UIAlertAction(title: "Cancel", style: .default)
-            parentViewController.callAlertView(title: "Exit ChanDit", message: "This link will take you outside ChanDit. You are in your own. Proceed?", actions: [actionOk,actionCancel])
+            tapDelegate?.presentAlertExitingApp([actionOk,actionCancel])
             
         }
         return false
