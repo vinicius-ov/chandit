@@ -270,7 +270,6 @@ extension BoardPagesViewController: CellTapInteractionDelegate {
         self.boardsViewModel.postNumberToNavigate = postNumber
         self.boardsViewModel.threadToLaunch = opNumber
         self.navigateToThread()
-        print("will navigate")
     }
     
     func presentAlertExitingApp(_ actions: [UIAlertAction]) {
@@ -278,7 +277,7 @@ extension BoardPagesViewController: CellTapInteractionDelegate {
     }
     
     func imageTapped(_ viewController: UIViewController) {
-        navigationController?.present(viewController, animated: true, completion: nil)
+        show(viewController, sender: self)
     }
     
     

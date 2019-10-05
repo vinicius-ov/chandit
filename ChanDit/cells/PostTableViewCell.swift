@@ -41,8 +41,6 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var mediaExtension: UILabel!
     @IBOutlet weak var mediaSize: UILabel!
     
-    var navigateToMessage: ((Int?) -> Void)!
-    var jumpToPost: ((Int?) -> Void)!
     weak var tapDelegate: CellTapInteractionDelegate?
     
     override func awakeFromNib() {
@@ -134,7 +132,7 @@ extension PostTableViewCell: UITextViewDelegate {
         let quote = URL.absoluteString.split(separator: "/")
         if quote.first == "chandit:" {
             let postNumber = Int(quote.last!)
-            tapDelegate?.linkTapped(postNumber, self.thread
+            tapDelegate?.linkTapped(postNumber: postNumber!, opNumber: postViewModel.resto!)
 //            if parentViewController is BoardPagesViewController {
 //                navigateToMessage(postNumber)
 //                //jumpToPost(postNumber)
