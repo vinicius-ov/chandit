@@ -27,10 +27,9 @@ class PlaybackViewController: UIViewController {
     }
     
     func setupMediaPLayer() {
-        guard let url = mediaURL else { return }
+        setupMedia()
         mediaPlayer.delegate = self
         mediaPlayer.drawable = movieView
-        mediaPlayer.media = VLCMedia(url: url)
         mediaPlayer.audio.volume = 0
     }
     
@@ -58,14 +57,22 @@ class PlaybackViewController: UIViewController {
         mediaPlayer.stop()
         self.dismiss(animated: true, completion: nil)
     }
+    
+    fileprivate func setupMedia() {
+        guard let url = mediaURL else { return }
+        mediaPlayer.media = VLCMedia(url: url)
+    }
 }
 
 extension PlaybackViewController: VLCMediaPlayerDelegate {
     func mediaPlayerStateChanged(_ aNotification: Notification!) {
         if mediaPlayer.state == .stopped {
-            //self.dismiss(animated: true, completion: nil)
-            mediaPlayer.rewind()
+            setupMedia()
             mediaPlayer.play()
         }
+    }
+    func mediaPlayerTimeChanged(_ aNotification: Notification!) {
+        print(mediaPlayer.time.debugDescription)
+        print(mediaPlayer.remainingTime.debugDescription)
     }
 }
