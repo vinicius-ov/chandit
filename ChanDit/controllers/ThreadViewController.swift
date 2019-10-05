@@ -44,7 +44,7 @@ class ThreadViewController: UIViewController {
                         self.title = self.threadViewModel.threadTitle
                         self.postsTable.reloadData()
                         self.postsTable.isHidden = false
-                        self.navigateToPost(inTableView: self.postsTable)
+                        self.navigateToPost()
                     }
                 }
                 break
@@ -54,16 +54,16 @@ class ThreadViewController: UIViewController {
         }
     }
     
-    func navigateToPost(inTableView tableView: UITableView) {
+    func navigateToPost() {
         guard let postNumberToNavigate = threadViewModel.postNumberToNavigate,
              let index = self.threadViewModel.findPostIndexByNumber(postNumberToNavigate) else { return }
             let indexPathNav = IndexPath(item: index, section: 0)
             UIView.animate(withDuration: 0.2, animations: {
-                tableView.scrollToRow(at: indexPathNav, at: .top, animated: false)
+                self.postsTable.scrollToRow(at: indexPathNav, at: .top, animated: false)
             }, completion: { (done) in
                 UIView.animate(withDuration: 1.0, animations: {
-                    tableView.cellForRow(at: indexPathNav)?.backgroundColor = .red
-                    tableView.cellForRow(at: indexPathNav)?.backgroundColor = .black
+                    self.postsTable.cellForRow(at: indexPathNav)?.backgroundColor = .red
+                    self.postsTable.cellForRow(at: indexPathNav)?.backgroundColor = .black
                 })
             })
     }
@@ -103,14 +103,7 @@ extension ThreadViewController: UITableViewDataSource {
         cell.postViewModel = postViewModel
         cell.loadCell()
         cell.parentViewController = self
-        
-        cell.jumpToPost = { (number: Int?) in
-            if let postNumber = number {
-                self.postNumberToReturn.append(postViewModel.number!)
-                self.threadViewModel.postNumberToNavigate = postNumber
-                self.navigateToPost(inTableView: tableView)
-            }
-        }
+        cell.tapDelegate = self
         return cell
     }
     
@@ -142,4 +135,22 @@ extension UIViewController {
         }
         present(alert, animated: true, completion: nil)
     }
+}
+
+extension ThreadViewController: CellTapInteractionDelegate {
+    func linkTapped(postNumber: Int, opNumber: Int) {
+        self.postNumberToReturn.append(postNumber)
+        self.threadViewModel.postNumberToNavigate = postNumber
+        self.navigateToPost()
+    }
+    
+    func imageTapped(_ viewController: UIViewController) {
+        show(viewController, sender: self)
+    }
+    
+    func presentAlertExitingApp(_ actions: [UIAlertAction]) {
+        callAlertView(title: "Exit ChanDit", message: "This link will take you outside ChanDit. You are in your own. Proceed?", actions: actions)
+    }
+    
+    
 }

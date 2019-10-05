@@ -9,6 +9,12 @@
 import UIKit
 import SnapKit
 
+protocol CellTapInteractionDelegate: class {
+    func linkTapped(postNumber: Int, opNumber: Int)
+    func imageTapped(_ viewController: UIViewController)
+    func presentAlertExitingApp(_ actions: [UIAlertAction])
+}
+
 class BoardPagesViewController: UIViewController {
     
     @IBOutlet weak var postsTable: UITableView!
@@ -195,14 +201,15 @@ extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource 
         
         cell.loadCell()
         
-        cell.parentViewController = self
+        //cell.parentViewController = self
+        cell.tapDelegate = self
         
-        cell.navigateToMessage = { (number: Int?) in
-            self.boardsViewModel.postNumberToNavigate = number
-            self.boardsViewModel.threadToLaunch = threadViewModel.posts.first!.number!
-            self.navigateToThread()
-            print("will navigate")
-        }
+//        cell.navigateToMessage = { (number: Int?) in
+//            self.boardsViewModel.postNumberToNavigate = number
+//            self.boardsViewModel.threadToLaunch = threadViewModel.posts.first!.number!
+//            self.navigateToThread()
+//            print("will navigate")
+//        }
         
         return cell
         
@@ -256,5 +263,23 @@ extension BoardPagesViewController: UIPickerViewDataSource, UIPickerViewDelegate
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return boardsViewModel.boards[row].title
     }
+}
+
+extension BoardPagesViewController: CellTapInteractionDelegate {
+    func linkTapped(postNumber: Int, opNumber: Int) {
+        self.boardsViewModel.postNumberToNavigate = postNumber
+        self.boardsViewModel.threadToLaunch = opNumber
+        self.navigateToThread()
+    }
+    
+    func presentAlertExitingApp(_ actions: [UIAlertAction]) {
+        callAlertView(title: "Exit ChanDit", message: "This link will take you outside ChanDit. You are in your own. Proceed?", actions: actions)
+    }
+    
+    func imageTapped(_ viewController: UIViewController) {
+        show(viewController, sender: self)
+    }
+    
+    
 }
 

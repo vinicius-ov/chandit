@@ -49,9 +49,15 @@ class ImageViewerViewController: UIViewController {
     }
     
     @objc func saveImage() {
-        self.navigationItem.rightBarButtonItem?.isEnabled = false
-        guard let img = self.imageView.image else { return }
-        UIImageWriteToSavedPhotosAlbum(img, self, #selector(showSuccessToast(_:error:contextInfo:)),nil)
+//        self.navigationItem.rightBarButtonItem?.isEnabled = false
+//        guard let img = self.imageView.image else { return }
+//        UIImageWriteToSavedPhotosAlbum(img, self, #selector(showSuccessToast(_:error:contextInfo:)),nil)
+        
+        let string = "result link from service"
+        let activityViewController =
+            UIActivityViewController(activityItems: [string],
+                                     applicationActivities: nil)
+        present(activityViewController, animated: true)
     }
     
     
