@@ -31,9 +31,8 @@ class PostTableViewCell: UITableViewCell {
         }
     }
     
-    @objc var imageViewSelector: ((UITapGestureRecognizer) -> Void)!
-    var parentViewController: UIViewController!
-    
+    @IBOutlet weak var titleSize: NSLayoutConstraint!
+    @IBOutlet weak var anal: NSLayoutConstraint!
     @IBOutlet weak var postText: UITextView!
     @IBOutlet weak var postImageSize: NSLayoutConstraint!
     @IBOutlet weak var postTitle: UILabel!
@@ -51,7 +50,13 @@ class PostTableViewCell: UITableViewCell {
     func loadCell() {
         postAuthorName.text = postViewModel.postAuthorName
         
-        postTitle.set(html: postViewModel.title)
+        if let title = postViewModel.title, !title.isEmpty {
+            anal.constant = 30.0
+            postTitle.set(html: title)
+        } else {
+            //postTitle.set(html: "")
+            anal.constant = 0.0
+        }
         
         postNumber.text = "No.\(postViewModel.number!)"
         postTimePublishing.text = postViewModel.timeFromPost

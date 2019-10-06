@@ -23,6 +23,9 @@ class ThreadViewController: UIViewController {
         postsTable.isHidden = true
         postsTable.dataSource = self
         postsTable.prefetchDataSource = self
+        
+        postsTable.register(UINib(nibName: "PostCell", bundle: nil), forCellReuseIdentifier: "postCellIdentifier")
+        
         postsTable.rowHeight = UITableView.automaticDimension
         postsTable.estimatedRowHeight = 460
         fetchData()
@@ -96,13 +99,12 @@ extension ThreadViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "postCell") as! PostTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as! PostTableViewCell
         //let thread = pageViewModel.threads[indexPath.section]
         let postViewModel = threadViewModel.postViewModel(at: indexPath.row)
         cell.selectedBoardId = threadViewModel.boardIdToNavigate
         cell.postViewModel = postViewModel
         cell.loadCell()
-        cell.parentViewController = self
         cell.tapDelegate = self
         return cell
     }
