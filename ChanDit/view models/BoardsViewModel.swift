@@ -59,7 +59,7 @@ class BoardsViewModel {
         guard let selected = currentBoard else {
             return boards.first!.title
         }
-        return selected.title
+        return "/\(selected.board)/ - \(selected.title)"
     }
     
     func  isAdult(title: String) -> Bool? {
@@ -72,11 +72,16 @@ class BoardsViewModel {
         guard let selected = currentBoard else {
             return boards.first?.board
         }
-        return selected.board!
+        return selected.board
     }
     
-    func setCurrentBoard(byBoardName name: String) {
-        UserDefaults.standard.set(name, forKey: usIdentifier)
+//    func setCurrentBoard(byBoardName name: String) {
+//        UserDefaults.standard.set(name, forKey: usIdentifier)
+//    }
+    
+    func setCurrentBoard(byIndex index: Int) {
+        let board = boards[index]
+        UserDefaults.standard.set(board.title, forKey: usIdentifier)
     }
     
     func getBoardByTitle(title: String) -> Board {
@@ -89,6 +94,10 @@ class BoardsViewModel {
     func getCurrentBoardIndex() -> Int?{
         let board = currentBoard
         return boards.firstIndex(of: board!)
+    }
+    
+    func completeBoardName(atRow row: Int) -> String {
+        return "/\(boards[row].board)/ - \(boards[row].title)"
     }
     
     func reset() {
