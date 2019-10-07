@@ -15,8 +15,21 @@ protocol CellTapInteractionDelegate: class {
     func presentAlertExitingApp(_ actions: [UIAlertAction])
 }
 
-class BoardPagesViewController: UIViewController {
+class BaseViewController: UIViewController {
+    override var shouldAutorotate: Bool {
+        get {
+            return false
+        }
+    }
     
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        get {
+            return .portrait
+        }
+    }
+}
+
+class BoardPagesViewController: BaseViewController {
     @IBOutlet weak var postsTable: UITableView!
     var pageViewModel = PageViewModel() //deveria ser injetado
     

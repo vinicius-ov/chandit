@@ -19,6 +19,7 @@ class PlaybackViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.isNavigationBarHidden = true
         setupMediaPLayer()
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -55,7 +56,8 @@ class PlaybackViewController: UIViewController {
     
     @IBAction func closeView(_ sender: Any) {
         mediaPlayer.stop()
-        self.dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
+        navigationController?.isNavigationBarHidden = false
     }
     
     fileprivate func setupMedia() {

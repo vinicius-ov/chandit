@@ -8,8 +8,7 @@
 
 import UIKit
 
-class ThreadViewController: UIViewController {
-
+class ThreadViewController: BaseViewController {
     var threadViewModel: ThreadViewModel!
     var threadNumber: Int!
     var postNumberToReturn = [Int]()
