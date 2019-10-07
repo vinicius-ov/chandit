@@ -42,10 +42,10 @@ class BoardPagesViewController: UIViewController {
         boardSelector.isEnabled = false
         boardSelector.tintColor = .clear
         
-        if #available(iOS 13.0, *) {
-            // Always adopt a light interface style.
-            overrideUserInterfaceStyle = .light
-        }
+//        if #available(iOS 13.0, *) {
+//            // Always adopt a light interface style.
+//            overrideUserInterfaceStyle = .light
+//        }
         
         postsTable.register(UINib(nibName: "PostCell", bundle: nil), forCellReuseIdentifier: "postCellIdentifier")
         

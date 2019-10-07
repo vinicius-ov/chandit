@@ -31,14 +31,15 @@ class PostTableViewCell: UITableViewCell {
         }
     }
     
+    @IBOutlet weak var postCommentSize: NSLayoutConstraint!
     @IBOutlet weak var titleSize: NSLayoutConstraint!
-    @IBOutlet weak var anal: NSLayoutConstraint!
     @IBOutlet weak var postText: UITextView!
     @IBOutlet weak var postImageSize: NSLayoutConstraint!
     @IBOutlet weak var postTitle: UILabel!
     @IBOutlet weak var postNumber: UILabel!
     @IBOutlet weak var mediaExtension: UILabel!
     @IBOutlet weak var mediaSize: UILabel!
+    
     
     weak var tapDelegate: CellTapInteractionDelegate?
     
@@ -51,16 +52,23 @@ class PostTableViewCell: UITableViewCell {
         postAuthorName.text = postViewModel.postAuthorName
         
         if let title = postViewModel.title, !title.isEmpty {
-            anal.constant = 30.0
+            titleSize.constant = 30.0
             postTitle.set(html: title)
+            postTitle.text = "\(postTitle.text!)"
         } else {
-            //postTitle.set(html: "")
-            anal.constant = 0.0
+            titleSize.constant = 0.0
         }
         
         postNumber.text = "No.\(postViewModel.number!)"
         postTimePublishing.text = postViewModel.timeFromPost
-        postText.set(html: postViewModel.comment)
+        
+        //not good, needs to calculate size
+        if let comment = postViewModel.comment, !comment.isEmpty {
+            postText.set(html: postViewModel.comment)
+            postCommentSize.constant = 81.0
+        } else {
+            postCommentSize.constant = 0.0
+        }
         
         if !postViewModel.isSpoiler, let thumbUrl = postViewModel.thumbnailUrl(boardId: selectedBoardId) {
             postImage.kf.setImage(with: thumbUrl)
