@@ -51,7 +51,7 @@ class BoardPagesViewController: UIViewController {
         toolBar.tintColor = UIColor.black
         toolBar.sizeToFit()
         
-        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.plain, target: self, action: #selector(hideKeyboard))
+        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.plain, target: self, action: #selector(didSelectBoardFromPicker))
         let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
         let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItem.Style.plain, target: self, action: #selector(hideKeyboardNoAction))
         
@@ -61,8 +61,6 @@ class BoardPagesViewController: UIViewController {
         boardSelector.inputAccessoryView = toolBar
         
         fetchBoards()
-        //fetchData(append: false)
-        
     }
     
     func fetchData(append: Bool) {
@@ -131,17 +129,17 @@ class BoardPagesViewController: UIViewController {
     }
     #endif
     
-    @objc func hideKeyboard() {
+    @objc func didSelectBoardFromPicker() {
         boardSelector.resignFirstResponder()
-        
-        
-        
-        let title = boardsViewModel.boards[ pickerView.selectedRow(inComponent: 0)].title
+        updateBoardSelector()
+    }
+    
+    func updateBoardSelector() {
+        let index = pickerView.selectedRow(inComponent: 0)
+        let title = boardsViewModel.completeBoardName(atRow: index)
         boardSelector.text = title
         
-        let board = boardsViewModel.getBoardByTitle(title: title)
-        print("ADULT: \(boardsViewModel.isAdult(title: title))")
-        boardsViewModel.setCurrentBoard(byBoardName: title)
+        boardsViewModel.setCurrentBoard(byIndex: index)
         
         boardsViewModel.reset()
         postsTable.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
@@ -192,7 +190,6 @@ extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //if indexPath.row < pageViewModel.threads[indexPath.section].posts.count {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCell") as! PostTableViewCell
         let threadViewModel = pageViewModel.threads[indexPath.section]
         let post = threadViewModel.postViewModel(at: indexPath.row)
@@ -200,19 +197,9 @@ extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource 
         cell.postViewModel = post
         
         cell.loadCell()
-        
-        //cell.parentViewController = self
         cell.tapDelegate = self
         
-//        cell.navigateToMessage = { (number: Int?) in
-//            self.boardsViewModel.postNumberToNavigate = number
-//            self.boardsViewModel.threadToLaunch = threadViewModel.posts.first!.number!
-//            self.navigateToThread()
-//            print("will navigate")
-//        }
-        
         return cell
-        
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -232,7 +219,6 @@ extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource 
             make.width.equalTo(120)
         }
         
-        //pageViewModel.setNavigation(forThreadInSection section:Int, forPostInIndex index:Int)
         let threadToLaunch = pageViewModel.threadViewModel(at: section).postViewModel(at: 0).number
         viewThreadButton.tag = threadToLaunch!
         let selector = #selector(BoardPagesViewController.navigateToThreadView(_:))
@@ -261,7 +247,7 @@ extension BoardPagesViewController: UIPickerViewDataSource, UIPickerViewDelegate
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return boardsViewModel.boards[row].title
+        return boardsViewModel.completeBoardName(atRow: row)
     }
 }
 
