@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Photos
 
 class ImageViewerViewController: UIViewController {
 
@@ -33,6 +34,10 @@ class ImageViewerViewController: UIViewController {
         super.viewDidLoad()
         scrollView.delegate = self
         
+        let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(willDismiss))
+        swipeUp.direction = .up
+        view.addGestureRecognizer(swipeUp)
+        
         imageViewWidth.constant = postViewModel.imageWidth ?? 0.0
         imageViewHeight.constant = postViewModel.imageWidth ?? 0.0
         
@@ -48,23 +53,38 @@ class ImageViewerViewController: UIViewController {
         }
     }
     
-    @objc func saveImage() {
-//        self.navigationItem.rightBarButtonItem?.isEnabled = false
-//        guard let img = self.imageView.image else { return }
-//        UIImageWriteToSavedPhotosAlbum(img, self, #selector(showSuccessToast(_:error:contextInfo:)),nil)
-        
-        let string = "result link from service"
-        let activityViewController =
-            UIActivityViewController(activityItems: [string],
-                                     applicationActivities: nil)
-        present(activityViewController, animated: true)
+    @objc
+    func willDismiss() {
+        dismiss(animated: true, completion: nil)
     }
     
+    @objc func saveImage() {
+        self.navigationItem.rightBarButtonItem?.isEnabled = false
+        guard let img = self.imageView.image else { return }
+        PHPhotoLibrary.requestAuthorization( { (PHAuthorizationStatus) in
+            //empty
+        })
+        if PHPhotoLibrary.authorizationStatus() == .authorized {
+            let url = self.postViewModel.imageUrl(boardId: self.boardId)!
+            let data = try? Data(contentsOf:  url)
+            PHPhotoLibrary.shared().performChanges({
+                PHAssetCreationRequest.forAsset().addResource(with: .photo, data: data!, options: nil)
+            }) { (success, error) in
+                if success {
+                    self.navigationItem.rightBarButtonItem?.isEnabled = true
+                    self.showSuccessToast()
+                }
+            }
+        } else {
+            self.navigationItem.rightBarButtonItem?.isEnabled = true
+            self.showToast(message: "Not authorized to save images in Camera Roll. Go to Settings to fix this.", textColor: nil, backgroundColor: nil)
+        }
+        }
     
-    
-    @objc func showSuccessToast(_ image:UIImage, error:Error?, contextInfo: UnsafeMutableRawPointer?) {
-        self.navigationItem.rightBarButtonItem?.isEnabled = true
-        self.showToast(message: "Photo was saved to the camera roll.", textColor: nil, backgroundColor: nil)
+    func showSuccessToast() {
+        DispatchQueue.main.async {
+            self.showToast(message: "Photo was saved to the camera roll.", textColor: UIColor.black, backgroundColor: UIColor(named: "lightGreenSuccess"))
+        }
     }
     
     fileprivate func updateMinZoomScaleForSize(_ size: CGSize) {
@@ -113,6 +133,8 @@ extension UIViewController {
         label.textAlignment = .center
         label.text = message
         label.textColor = textColor ?? .white
+        label.numberOfLines = 0
+        label.sizeToFit()
         view.addSubview(label)
         UIView.animate(withDuration: 2.0, delay: 1.0, animations: {
             label.alpha = 0

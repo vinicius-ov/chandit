@@ -53,11 +53,16 @@ class BoardPagesViewController: BaseViewController {
         pickerView.dataSource = self
         boardSelector.inputView = pickerView
         boardSelector.isEnabled = false
+        boardSelector.tintColor = .clear
+        
+//        if #available(iOS 13.0, *) {
+//            // Always adopt a light interface style.
+//            overrideUserInterfaceStyle = .light
+//        }
+        
+        postsTable.register(UINib(nibName: "PostCell", bundle: nil), forCellReuseIdentifier: "postCellIdentifier")
         
         //navigationController?.hidesBarsOnSwipe = true
-        //boardSelector.text = boardsViewModel.getBoardIndexByTitle(title: boardsViewModel.currentBoard?.title)
-        
-        //pickerView.selectRow(boardsViewModel.getCurrentBoardIndex() ?? 0, inComponent: 0, animated: false)
         
         let toolBar = UIToolbar()
         toolBar.barStyle = UIBarStyle.default
@@ -203,7 +208,7 @@ extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "postCell") as! PostTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as! PostTableViewCell
         let threadViewModel = pageViewModel.threads[indexPath.section]
         let post = threadViewModel.postViewModel(at: indexPath.row)
         cell.selectedBoardId = boardsViewModel.selectedBoardId

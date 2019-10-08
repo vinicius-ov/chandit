@@ -31,15 +31,15 @@ class PostTableViewCell: UITableViewCell {
         }
     }
     
-    @objc var imageViewSelector: ((UITapGestureRecognizer) -> Void)!
-    var parentViewController: UIViewController!
-    
+    @IBOutlet weak var postCommentSize: NSLayoutConstraint!
+    @IBOutlet weak var titleSize: NSLayoutConstraint!
     @IBOutlet weak var postText: UITextView!
     @IBOutlet weak var postImageSize: NSLayoutConstraint!
     @IBOutlet weak var postTitle: UILabel!
     @IBOutlet weak var postNumber: UILabel!
     @IBOutlet weak var mediaExtension: UILabel!
     @IBOutlet weak var mediaSize: UILabel!
+    
     
     weak var tapDelegate: CellTapInteractionDelegate?
     
@@ -51,11 +51,24 @@ class PostTableViewCell: UITableViewCell {
     func loadCell() {
         postAuthorName.text = postViewModel.postAuthorName
         
-        postTitle.set(html: postViewModel.title)
+        if let title = postViewModel.title, !title.isEmpty {
+            titleSize.constant = 30.0
+            postTitle.set(html: title)
+            postTitle.text = "\(postTitle.text!)"
+        } else {
+            titleSize.constant = 0.0
+        }
         
         postNumber.text = "No.\(postViewModel.number!)"
         postTimePublishing.text = postViewModel.timeFromPost
-        postText.set(html: postViewModel.comment)
+        
+        //not good, needs to calculate size
+        if let comment = postViewModel.comment, !comment.isEmpty {
+            postText.set(html: postViewModel.comment)
+            postCommentSize.constant = 81.0
+        } else {
+            postCommentSize.constant = 0.0
+        }
         
         if !postViewModel.isSpoiler, let thumbUrl = postViewModel.thumbnailUrl(boardId: selectedBoardId) {
             postImage.kf.setImage(with: thumbUrl)

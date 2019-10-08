@@ -26,6 +26,7 @@
 		81AC6B92231D53A400502931 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AC6B91231D53A400502931 /* Board.swift */; };
 		81B7896E231060AB0093376D /* ThreadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7896D231060AB0093376D /* ThreadViewController.swift */; };
 		81C26732231804D80060D8A1 /* BoardsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C26731231804D80060D8A1 /* BoardsViewModel.swift */; };
+		F2BAFFE223495AAB006D2CEE /* PostCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2BAFFE123495AAB006D2CEE /* PostCell.xib */; };
 		F2C400DC232734ED00BFCC89 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2C400D2232734EB00BFCC89 /* QuartzCore.framework */; };
 		F2C400DD232734ED00BFCC89 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2C400D3232734EC00BFCC89 /* CoreVideo.framework */; };
 		F2C400DE232734ED00BFCC89 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2C400D4232734EC00BFCC89 /* UIKit.framework */; };
@@ -70,6 +71,7 @@
 		81AC6B91231D53A400502931 /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		81B7896D231060AB0093376D /* ThreadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadViewController.swift; sourceTree = "<group>"; };
 		81C26731231804D80060D8A1 /* BoardsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardsViewModel.swift; sourceTree = "<group>"; };
+		F2BAFFE123495AAB006D2CEE /* PostCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostCell.xib; sourceTree = "<group>"; };
 		F2C400D2232734EB00BFCC89 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		F2C400D3232734EC00BFCC89 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		F2C400D4232734EC00BFCC89 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -223,6 +225,7 @@
 				810B4A042327CCF100E7ECC9 /* PlaybackViewController.xib */,
 				81921BE422F468DD007F4EFC /* Main.storyboard */,
 				81921BE922F468DE007F4EFC /* LaunchScreen.storyboard */,
+				F2BAFFE123495AAB006D2CEE /* PostCell.xib */,
 			);
 			path = storyboards;
 			sourceTree = "<group>";
@@ -306,6 +309,7 @@
 				F2DEFD07232DD4690031FD98 /* WebViewViewController.xib in Resources */,
 				810B4A062327CCF100E7ECC9 /* PlaybackViewController.xib in Resources */,
 				81921BEB22F468DE007F4EFC /* LaunchScreen.storyboard in Resources */,
+				F2BAFFE223495AAB006D2CEE /* PostCell.xib in Resources */,
 				81921BE822F468DE007F4EFC /* Assets.xcassets in Resources */,
 				814C459322F868A9007007C5 /* Cartfile in Resources */,
 				81921BE622F468DD007F4EFC /* Main.storyboard in Resources */,
