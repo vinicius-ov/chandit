@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2DDB9D7B234BAE0F002C249F /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DDB9D7A234BAE0F002C249F /* BaseNavigationController.swift */; };
 		810B4A052327CCF100E7ECC9 /* PlaybackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810B4A032327CCF100E7ECC9 /* PlaybackViewController.swift */; };
 		810B4A062327CCF100E7ECC9 /* PlaybackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 810B4A042327CCF100E7ECC9 /* PlaybackViewController.xib */; };
 		810F4D8D2316F9FD0003C58A /* Kingfisher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 810F4D8C2316F9FD0003C58A /* Kingfisher.framework */; };
@@ -49,6 +50,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2DDB9D7A234BAE0F002C249F /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
 		810B4A032327CCF100E7ECC9 /* PlaybackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackViewController.swift; sourceTree = "<group>"; };
 		810B4A042327CCF100E7ECC9 /* PlaybackViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlaybackViewController.xib; sourceTree = "<group>"; };
 		810F4D8C2316F9FD0003C58A /* Kingfisher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kingfisher.framework; path = Carthage/Build/iOS/Kingfisher.framework; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 				814CD0782315ABAF0097A23E /* ImageViewerViewController.swift */,
 				810B4A032327CCF100E7ECC9 /* PlaybackViewController.swift */,
 				F2DEFD04232DD4690031FD98 /* WebViewViewController.swift */,
+				2DDB9D7A234BAE0F002C249F /* BaseNavigationController.swift */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -345,6 +348,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2DDB9D7B234BAE0F002C249F /* BaseNavigationController.swift in Sources */,
 				814CD0792315ABAF0097A23E /* ImageViewerViewController.swift in Sources */,
 				816ED39922FDB1AC00E13C9E /* PostViewModel.swift in Sources */,
 				81AC6B92231D53A400502931 /* Board.swift in Sources */,

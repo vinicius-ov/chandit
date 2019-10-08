@@ -8,11 +8,9 @@
 
 import UIKit
 
-class ThreadViewController: UIViewController {
-
+class ThreadViewController: BaseViewController {
     var threadViewModel: ThreadViewModel!
     var threadNumber: Int!
-    //var postNumberToNavigate: Int!
     var postNumberToReturn = [Int]()
     @IBOutlet weak var postsTable: UITableView!
     var selectedBoardId: String!
@@ -79,7 +77,6 @@ class ThreadViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        //postNumberToNavigate = nil
     }
     
     @IBAction func returnToQuoteOriginalPost(_ sender: Any) {
@@ -153,6 +150,4 @@ extension ThreadViewController: CellTapInteractionDelegate {
     func presentAlertExitingApp(_ actions: [UIAlertAction]) {
         callAlertView(title: "Exit ChanDit", message: "This link will take you outside ChanDit. You are in your own. Proceed?", actions: actions)
     }
-    
-    
 }

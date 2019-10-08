@@ -10,14 +10,14 @@ import UIKit
 
 struct Board: Decodable, Comparable {
     static func < (lhs: Board, rhs: Board) -> Bool {
-        return lhs.title < rhs.title
+        return lhs.board < rhs.board
     }
     
     static func == (lhs: Board, rhs: Board) -> Bool {
-        return lhs.title == rhs.title
+        return lhs.board == rhs.board
     }
     
-    var board: String?
+    var board: String
     var title: String
     var wsBoard: Int?
     var perPage: Int?
