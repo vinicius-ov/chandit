@@ -65,7 +65,7 @@ class PostTableViewCell: UITableViewCell {
         //not good, needs to calculate size
         if let comment = postViewModel.comment, !comment.isEmpty {
             postText.set(html: postViewModel.comment)
-            postCommentSize.constant = 81.0
+            postCommentSize.constant = postText.intrinsicContentSize.height//81.0
         } else {
             postCommentSize.constant = 0.0
         }
@@ -146,12 +146,6 @@ extension PostTableViewCell: UITextViewDelegate {
         if quote.first == "chandit:" {
             let postNumber = Int(quote.last!)
             tapDelegate?.linkTapped(postNumber: postNumber!, opNumber: postViewModel.resto!)
-//            if parentViewController is BoardPagesViewController {
-//                navigateToMessage(postNumber)
-//                //jumpToPost(postNumber)
-//            } else {
-//                jumpToPost(postNumber)
-//            }
         } else {
             //see https://stackoverflow.com/questions/39949169/swift-open-url-in-a-specific-browser-tab for other browsers deeplinks
             let actionOk = UIAlertAction(title: "OK", style: .default) { (action) in
