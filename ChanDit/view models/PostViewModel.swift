@@ -9,14 +9,14 @@
 import UIKit
 
 struct PageViewModel {
-    var threads: [ThreadViewModel]
+    var threads: NSMutableOrderedSet!
     
     init() {
-        self.threads = [ThreadViewModel]()
+        self.threads = NSMutableOrderedSet()
     }
     
     func threadViewModel(at index: Int) -> ThreadViewModel {
-        return self.threads[index]
+        return self.threads![index] as! ThreadViewModel
     }
     
     func setNavigation(forThreadInSection section:Int, forPostInIndex index:Int) {
@@ -24,7 +24,11 @@ struct PageViewModel {
     }
 }
 
-struct ThreadViewModel {
+struct ThreadViewModel: Equatable {
+    static func == (lhs: ThreadViewModel, rhs: ThreadViewModel) -> Bool {
+        return false
+    }
+    
     var posts = [PostViewModel]()
     var threadNumberToNavigate: Int!
     var postNumberToNavigate: Int?
