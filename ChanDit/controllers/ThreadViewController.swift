@@ -20,7 +20,6 @@ class ThreadViewController: BaseViewController {
         super.viewDidLoad()
         postsTable.isHidden = true
         postsTable.dataSource = self
-        postsTable.prefetchDataSource = self
         
         postsTable.register(UINib(nibName: "PostCell", bundle: nil), forCellReuseIdentifier: "postCellIdentifier")
         
@@ -105,18 +104,6 @@ extension ThreadViewController: UITableViewDataSource {
         cell.tapDelegate = self
         return cell
     }
-    
-}
-
-extension ThreadViewController: UITableViewDataSourcePrefetching {
-    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-        print("\(indexPaths)")
-//        if indexPaths.contains([0,threadViewModel.posts.count-1]) {
-//            print("RELOAD!!!!")
-//            fetchData()
-//        }
-    }
-    
 }
 
 extension UIViewController {

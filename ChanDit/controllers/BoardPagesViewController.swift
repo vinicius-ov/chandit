@@ -107,13 +107,12 @@ class BoardPagesViewController: BaseViewController {
                         let tvm = ThreadViewModel.init(thread: thread)
                         return tvm
                     })
-                    if append {
-                        self.pageViewModel.threads.append(contentsOf: threads)
-                    }else {
-                        self.pageViewModel.threads = threads
-                    }
+                        self.pageViewModel.threads.addObjects(from: threads)
                     DispatchQueue.main.async {
                         self.postsTable.reloadData()
+                        if !append {
+                            self.postsTable.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                        }
                         self.postsTable.isHidden = false
                         self.pickerView.selectRow(self.boardsViewModel.getCurrentBoardIndex() ?? 0,
                                                   inComponent: 0,
@@ -149,15 +148,6 @@ class BoardPagesViewController: BaseViewController {
             }
         }
     }
-    
-    #if DEBUG
-    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?){
-        if motion == .motionShake
-        {
-            postsTable.reloadData()
-        }
-    }
-    #endif
     
     @objc func didSelectBoardFromPicker() {
         boardSelector.resignFirstResponder()
@@ -202,8 +192,9 @@ class BoardPagesViewController: BaseViewController {
     }
     
     @IBAction func reloadData(_ sender: Any) {
+        print(pageViewModel.threads.count)
         postsTable.isHidden = true
-        postsTable.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+        pageViewModel.threads.removeAllObjects()
         boardsViewModel.reset()
         fetchData(append: false)
     }
@@ -212,7 +203,7 @@ class BoardPagesViewController: BaseViewController {
 
 extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return pageViewModel.threads[section].posts.count
+        return (pageViewModel.threads[section] as! ThreadViewModel).posts.count
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -222,7 +213,7 @@ extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as! PostTableViewCell
         let threadViewModel = pageViewModel.threads[indexPath.section]
-        let post = threadViewModel.postViewModel(at: indexPath.row)
+        let post = (threadViewModel as! ThreadViewModel).postViewModel(at: indexPath.row)
         cell.selectedBoardId = boardsViewModel.selectedBoardId
         cell.postViewModel = post
         
@@ -260,7 +251,7 @@ extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource 
 
 extension BoardPagesViewController : UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-        if indexPaths.contains([pageViewModel.threads.count-1,0]) {
+        if indexPaths.contains([pageViewModel.threads.count-3,0]) {
             print("RELOAD!!!!")
             fetchData(append: true)
         }
@@ -296,6 +287,4 @@ extension BoardPagesViewController: CellTapInteractionDelegate {
         show(viewController, sender: self)
     }
     
-    
 }
-
