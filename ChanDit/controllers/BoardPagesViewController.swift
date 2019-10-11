@@ -45,7 +45,7 @@ class BoardPagesViewController: BaseViewController {
         postsTable.delegate = self
         postsTable.prefetchDataSource = self
         postsTable.rowHeight = UITableView.automaticDimension
-        postsTable.estimatedRowHeight = 460
+        postsTable.estimatedRowHeight = 260
         postsTable.isHidden = true
         
         pickerView = UIPickerView()
@@ -72,13 +72,25 @@ class BoardPagesViewController: BaseViewController {
         let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.plain, target: self, action: #selector(didSelectBoardFromPicker))
         let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
         let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItem.Style.plain, target: self, action: #selector(hideKeyboardNoAction))
+        cancelButton.tintColor = .white
+        doneButton.tintColor = .white
         
         toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
         toolBar.isUserInteractionEnabled = true
         
+        let swipeToTop = UISwipeGestureRecognizer(target: self, action: #selector(scrollToTop))
+        swipeToTop.direction = .down
+        swipeToTop.numberOfTouchesRequired = 2
+        postsTable.addGestureRecognizer(swipeToTop)
+        
         boardSelector.inputAccessoryView = toolBar
         
         fetchBoards()
+    }
+    
+    @objc
+    func scrollToTop() {
+        print("poqw")
     }
     
     func fetchData(append: Bool) {

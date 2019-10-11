@@ -25,7 +25,7 @@ class ThreadViewController: BaseViewController {
         postsTable.register(UINib(nibName: "PostCell", bundle: nil), forCellReuseIdentifier: "postCellIdentifier")
         
         postsTable.rowHeight = UITableView.automaticDimension
-        postsTable.estimatedRowHeight = 460
+        postsTable.estimatedRowHeight = 260
         fetchData()
     }
 
