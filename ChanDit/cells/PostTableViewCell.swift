@@ -10,7 +10,6 @@ import UIKit
 import Kingfisher
 
 class PostTableViewCell: UITableViewCell {
-    
     var postViewModel: PostViewModel! {
         didSet {
             if postViewModel.thumbnailUrl(boardId: selectedBoardId) != nil {
@@ -39,7 +38,6 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var postNumber: UILabel!
     @IBOutlet weak var mediaExtension: UILabel!
     @IBOutlet weak var mediaSize: UILabel!
-    
     
     weak var tapDelegate: CellTapInteractionDelegate?
     
