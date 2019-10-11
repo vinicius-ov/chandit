@@ -95,15 +95,12 @@ class BoardPagesViewController: BaseViewController {
                         let tvm = ThreadViewModel.init(thread: thread)
                         return tvm
                     })
-//                    if append {
                         self.pageViewModel.threads.addObjects(from: threads)
-//                    }else {
-//                        self.pageViewModel.threads = NSMutableOrderedSet()
-//
-//                    }
                     DispatchQueue.main.async {
                         self.postsTable.reloadData()
-                        self.postsTable.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                        if !append {
+                            self.postsTable.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                        }
                         self.postsTable.isHidden = false
                         self.pickerView.selectRow(self.boardsViewModel.getCurrentBoardIndex() ?? 0,
                                                   inComponent: 0,
@@ -185,7 +182,6 @@ class BoardPagesViewController: BaseViewController {
     @IBAction func reloadData(_ sender: Any) {
         print(pageViewModel.threads.count)
         postsTable.isHidden = true
-        //postsTable.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
         pageViewModel.threads.removeAllObjects()
         boardsViewModel.reset()
         fetchData(append: false)
@@ -243,7 +239,7 @@ extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource 
 
 extension BoardPagesViewController : UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-        if indexPaths.contains([pageViewModel.threads.count-1,0]) {
+        if indexPaths.contains([pageViewModel.threads.count-3,0]) {
             print("RELOAD!!!!")
             fetchData(append: true)
         }
@@ -279,6 +275,4 @@ extension BoardPagesViewController: CellTapInteractionDelegate {
         show(viewController, sender: self)
     }
     
-    
 }
-
