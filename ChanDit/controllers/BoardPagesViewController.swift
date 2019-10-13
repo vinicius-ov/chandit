@@ -55,15 +55,8 @@ class BoardPagesViewController: BaseViewController {
         boardSelector.isEnabled = false
         boardSelector.tintColor = .clear
         
-//        if #available(iOS 13.0, *) {
-//            // Always adopt a light interface style.
-//            overrideUserInterfaceStyle = .light
-//        }
-        
         postsTable.register(UINib(nibName: "PostCell", bundle: nil), forCellReuseIdentifier: "postCellIdentifier")
-        
-        //navigationController?.hidesBarsOnSwipe = true
-        
+                
         let toolBar = UIToolbar()
         toolBar.barStyle = UIBarStyle.default
         toolBar.tintColor = UIColor.black
@@ -155,14 +148,13 @@ class BoardPagesViewController: BaseViewController {
     }
     
     func updateBoardSelector() {
+        postsTable.isHidden = true
         let index = pickerView.selectedRow(inComponent: 0)
         let title = boardsViewModel.completeBoardName(atRow: index)
         boardSelector.text = title
-        
         boardsViewModel.setCurrentBoard(byIndex: index)
-        
         boardsViewModel.reset()
-        postsTable.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+        pageViewModel.threads.removeAllObjects()
         fetchData(append: false)
     }
     

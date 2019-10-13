@@ -10,30 +10,19 @@ import UIKit
 import Kingfisher
 
 class PostTableViewCell: UITableViewCell {
-    var postViewModel: PostViewModel! {
-        didSet {
-            if postViewModel.thumbnailUrl(boardId: selectedBoardId) != nil {
-                postImageSize.constant = 120
-            } else {
-                postImageSize.constant = 0
-            }
-        }
-    }
+    var postViewModel: PostViewModel!
     var selectedBoardId: String!
+    
     @IBOutlet weak var postAuthorName: UILabel!
     @IBOutlet weak var postTimePublishing: UILabel!
     
     @IBOutlet weak var postImage: UIImageView! {
         didSet {
-            postImage.clipsToBounds = true
             postImage.kf.indicatorType = .activity
         }
     }
     
-    @IBOutlet weak var postCommentSize: NSLayoutConstraint!
-    @IBOutlet weak var titleSize: NSLayoutConstraint!
     @IBOutlet weak var postText: UITextView!
-    @IBOutlet weak var postImageSize: NSLayoutConstraint!
     @IBOutlet weak var postTitle: UILabel!
     @IBOutlet weak var postNumber: UILabel!
     @IBOutlet weak var mediaExtension: UILabel!
@@ -50,11 +39,9 @@ class PostTableViewCell: UITableViewCell {
         postAuthorName.text = postViewModel.postAuthorName
         
         if let title = postViewModel.title, !title.isEmpty {
-            titleSize.constant = 30.0
             postTitle.set(html: title)
-            postTitle.text = "\(postTitle.text!)"
         } else {
-            titleSize.constant = 0.0
+            postTitle.text = ""
         }
         
         postNumber.text = "No.\(postViewModel.number!)"
@@ -63,15 +50,16 @@ class PostTableViewCell: UITableViewCell {
         //not good, needs to calculate size
         if let comment = postViewModel.comment, !comment.isEmpty {
             postText.set(html: postViewModel.comment)
-            postCommentSize.constant = postText.intrinsicContentSize.height//81.0
         } else {
-            postCommentSize.constant = 0.0
+            postText.text = ""
         }
         
-        if !postViewModel.isSpoiler, let thumbUrl = postViewModel.thumbnailUrl(boardId: selectedBoardId) {
+        if let thumbUrl = postViewModel.thumbnailUrl(boardId: selectedBoardId) {
             postImage.kf.setImage(with: thumbUrl)
+            thumbSizeConstraint?.constant = 160
         } else {
-            postImage.kf.setImage(with: URL(string: "https://s.4cdn.org/image/spoiler.png")!)
+            thumbSizeConstraint?.constant = 0
+            postImage.image = nil
         }
         
         let tapGesture = UITapGestureRecognizer(target: self, action:
@@ -82,6 +70,10 @@ class PostTableViewCell: UITableViewCell {
         mediaSize.text = postViewModel.fileSize
         mediaExtension.text = postViewModel.mediaFullName
         
+    }
+    
+    var thumbSizeConstraint: NSLayoutConstraint? {
+        return postImage.constraint(withIdentifier: "thumbnail_size")
     }
     
     @objc func viewImage(tapGesture: UITapGestureRecognizer) {
@@ -155,7 +147,10 @@ extension PostTableViewCell: UITextViewDelegate {
         }
         return false
     }
-    
 }
 
-
+extension UIView {
+    func constraint(withIdentifier: String) -> NSLayoutConstraint? {
+        return self.constraints.filter { $0.identifier == withIdentifier }.first
+    }
+}

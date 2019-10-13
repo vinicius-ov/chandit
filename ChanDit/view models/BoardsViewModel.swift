@@ -17,28 +17,6 @@ class BoardsViewModel {
     
     var boards: [Board]
     
-    let adult  = [
-        "Sexy Beautiful Women",
-        "Hardcore",
-        "Handsome Men",
-        "Hentai",
-        "Ecchi",
-        "Yuri",
-        "Hentai/Alternative",
-        "Yaoi",
-        "Torrents",
-        "High Resolution",
-        "Adult GIF",
-        "Adult Cartoons",
-        "Adult Requests",
-        "Random",
-        "ROBOT9001",
-        "Politically Incorrect",
-        "International/Random",
-        "Cams & Meetups",
-        "Shit 4chan Says"
-    ]
-    
     init() {
         boards = [Board]()
     }
@@ -62,11 +40,9 @@ class BoardsViewModel {
         return "/\(selected.board)/ - \(selected.title)"
     }
     
-    func  isAdult(title: String) -> Bool? {
-        let board = getBoardByTitle(title: title)
-        return adult.contains(board.title)
-        //return board.is18Plus
-    }
+//    var isAdult: Bool {
+//        return boards.first?.wsBoard
+//    }
 
     var selectedBoardId: String? {
         guard let selected = currentBoard else {
@@ -74,10 +50,6 @@ class BoardsViewModel {
         }
         return selected.board
     }
-    
-//    func setCurrentBoard(byBoardName name: String) {
-//        UserDefaults.standard.set(name, forKey: usIdentifier)
-//    }
     
     func setCurrentBoard(byIndex index: Int) {
         let board = boards[index]
