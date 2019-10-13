@@ -55,15 +55,8 @@ class BoardPagesViewController: BaseViewController {
         boardSelector.isEnabled = false
         boardSelector.tintColor = .clear
         
-//        if #available(iOS 13.0, *) {
-//            // Always adopt a light interface style.
-//            overrideUserInterfaceStyle = .light
-//        }
-        
         postsTable.register(UINib(nibName: "PostCell", bundle: nil), forCellReuseIdentifier: "postCellIdentifier")
-        
-        //navigationController?.hidesBarsOnSwipe = true
-        
+                
         let toolBar = UIToolbar()
         toolBar.barStyle = UIBarStyle.default
         toolBar.tintColor = UIColor.black

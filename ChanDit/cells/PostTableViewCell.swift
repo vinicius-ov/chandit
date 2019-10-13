@@ -16,7 +16,11 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var postAuthorName: UILabel!
     @IBOutlet weak var postTimePublishing: UILabel!
     
-    @IBOutlet weak var postImage: UIImageView!
+    @IBOutlet weak var postImage: UIImageView! {
+        didSet {
+            postImage.kf.indicatorType = .activity
+        }
+    }
     
     @IBOutlet weak var postText: UITextView!
     @IBOutlet weak var postTitle: UILabel!
