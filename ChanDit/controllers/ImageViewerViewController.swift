@@ -71,8 +71,7 @@ class ImageViewerViewController: UIViewController {
             //empty
         })
         if PHPhotoLibrary.authorizationStatus() == .authorized {
-            let url = self.postViewModel.imageUrl(boardId: self.boardId)!
-            let data = try? Data(contentsOf:  url)
+            let data = img.jpegData(compressionQuality: 5)
             PHPhotoLibrary.shared().performChanges({
                 PHAssetCreationRequest.forAsset().addResource(with: .photo, data: data!, options: nil)
             }) { (success, error) in
@@ -138,13 +137,15 @@ extension ImageViewerViewController: UIScrollViewDelegate {
 
 extension UIViewController {
     func showToast(message:String, textColor: UIColor?, backgroundColor: UIColor?) {
-        let label = UILabel(frame: CGRect(x: 0, y: view.frame.height*0.9, width: view.frame.width, height: 25))
+        let label = UILabel(frame: CGRect(x: view.frame.origin.x, y: view.frame.height*0.9, width: view.frame.width, height: 30))
         label.backgroundColor = backgroundColor ?? .red
+        label.clipsToBounds = true
         label.textAlignment = .center
+        label.center.x = self.view.center.x
         label.text = message
         label.textColor = textColor ?? .white
         label.numberOfLines = 0
-        label.sizeToFit()
+        label.baselineAdjustment = .alignCenters
         view.addSubview(label)
         UIView.animate(withDuration: 2.0, delay: 1.0, animations: {
             label.alpha = 0
