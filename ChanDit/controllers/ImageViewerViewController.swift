@@ -55,7 +55,7 @@ class ImageViewerViewController: UIViewController {
         { result in
             switch result {
             case .success(let image):
-                //self.updateMinZoomScaleForSize(self.view.bounds.size)
+                self.updateConstraintsForSize(self.view.bounds.size)
                 self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(self.saveImage))
             case .failure(let failure):
                 break
@@ -76,8 +76,9 @@ class ImageViewerViewController: UIViewController {
                 PHAssetCreationRequest.forAsset().addResource(with: .photo, data: data!, options: nil)
             }) { (success, error) in
                 if success {
-                    self.navigationItem.rightBarButtonItem?.isEnabled = true
-                    self.showSuccessToast()
+                    DispatchQueue.main.async { self.navigationItem.rightBarButtonItem?.isEnabled = true
+                        self.showSuccessToast()
+                    }
                 }
             }
         } else {
@@ -87,9 +88,7 @@ class ImageViewerViewController: UIViewController {
     }
     
     func showSuccessToast() {
-        DispatchQueue.main.async {
             self.showToast(message: "Photo was saved to the camera roll.", textColor: UIColor.black, backgroundColor: UIColor(named: "lightGreenSuccess"))
-        }
     }
     
     fileprivate func updateMinZoomScaleForSize(_ size: CGSize) {
@@ -120,6 +119,7 @@ class ImageViewerViewController: UIViewController {
         imageViewLeadingConstraint.constant = xOffset
         imageViewTrailingConstraint.constant = xOffset
         
+        print("\(xOffset) x \(yOffset)")
         view.layoutIfNeeded()
     }
     
@@ -141,11 +141,9 @@ extension UIViewController {
         label.backgroundColor = backgroundColor ?? .red
         label.clipsToBounds = true
         label.textAlignment = .center
-        label.center.x = self.view.center.x
         label.text = message
         label.textColor = textColor ?? .white
         label.numberOfLines = 0
-        label.baselineAdjustment = .alignCenters
         view.addSubview(label)
         UIView.animate(withDuration: 2.0, delay: 1.0, animations: {
             label.alpha = 0

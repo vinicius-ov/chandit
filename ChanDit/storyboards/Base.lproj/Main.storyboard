@@ -124,7 +124,6 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="postsTable" destination="fJ7-qD-JGi" id="CMa-cc-ePT"/>
-                        <segue destination="pL5-zk-GKd" kind="show" identifier="presentMedia" id="wKb-ai-omX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6u4-uQ-h6m" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -132,62 +131,63 @@
             <point key="canvasLocation" x="808.69565217391312" y="18.75"/>
         </scene>
         <!--Image Viewer View Controller-->
-        <scene sceneID="I1Y-3E-NjS">
+        <scene sceneID="ibO-8N-uTU">
             <objects>
-                <viewController storyboardIdentifier="ImageViewerViewController" id="pL5-zk-GKd" customClass="ImageViewerViewController" customModule="ChanDit" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="DqW-c3-doV">
+                <viewController storyboardIdentifier="ImageViewerViewController" id="09Z-5s-KFv" customClass="ImageViewerViewController" customModule="ChanDit" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Jas-jw-QoR">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="BcI-vB-K4w">
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="nTf-kc-WXY">
                                 <rect key="frame" x="188.5" y="429.5" width="37" height="37"/>
+                                <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </activityIndicatorView>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0HF-k7-7C1">
-                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I91-bu-PWs">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6Ju-hY-bFz">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zwx-xE-SAO">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="818"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="818" id="6af-Oi-3Kd"/>
-                                            <constraint firstAttribute="width" constant="414" id="cEr-uN-Lel"/>
+                                            <constraint firstAttribute="height" constant="818" id="CWc-Yd-7Lm"/>
+                                            <constraint firstAttribute="width" constant="414" id="ash-mN-EUH"/>
                                         </constraints>
                                     </imageView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="6Ju-hY-bFz" secondAttribute="trailing" id="Gxv-od-XGi"/>
-                                    <constraint firstAttribute="bottom" secondItem="6Ju-hY-bFz" secondAttribute="bottom" id="WCA-9r-Wal"/>
-                                    <constraint firstItem="6Ju-hY-bFz" firstAttribute="top" secondItem="0HF-k7-7C1" secondAttribute="top" id="XHD-Dp-6O6"/>
-                                    <constraint firstItem="6Ju-hY-bFz" firstAttribute="leading" secondItem="0HF-k7-7C1" secondAttribute="leading" id="lxx-ce-3DP"/>
+                                    <constraint firstItem="zwx-xE-SAO" firstAttribute="top" secondItem="I91-bu-PWs" secondAttribute="top" id="CIa-V8-pxB"/>
+                                    <constraint firstItem="zwx-xE-SAO" firstAttribute="leading" secondItem="I91-bu-PWs" secondAttribute="leading" id="ajE-HH-sbs"/>
+                                    <constraint firstAttribute="bottom" secondItem="zwx-xE-SAO" secondAttribute="bottom" id="jHl-bE-wAy"/>
+                                    <constraint firstAttribute="trailing" secondItem="zwx-xE-SAO" secondAttribute="trailing" id="wtB-V0-dWi"/>
                                 </constraints>
                             </scrollView>
                         </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="WPq-y8-onS" firstAttribute="bottom" secondItem="0HF-k7-7C1" secondAttribute="bottom" id="8q8-5D-oJI"/>
-                            <constraint firstItem="0HF-k7-7C1" firstAttribute="leading" secondItem="WPq-y8-onS" secondAttribute="leading" id="NCW-gy-T4P"/>
-                            <constraint firstItem="WPq-y8-onS" firstAttribute="trailing" secondItem="0HF-k7-7C1" secondAttribute="trailing" id="NMf-ST-qzZ"/>
-                            <constraint firstItem="BcI-vB-K4w" firstAttribute="centerY" secondItem="DqW-c3-doV" secondAttribute="centerY" id="ZLD-hR-63h"/>
-                            <constraint firstItem="BcI-vB-K4w" firstAttribute="centerX" secondItem="DqW-c3-doV" secondAttribute="centerX" id="j0v-Dx-cVa"/>
-                            <constraint firstItem="0HF-k7-7C1" firstAttribute="top" secondItem="WPq-y8-onS" secondAttribute="top" id="khP-v3-qIF"/>
+                            <constraint firstItem="X3Z-75-K64" firstAttribute="bottom" secondItem="I91-bu-PWs" secondAttribute="bottom" id="6pm-9W-Fei"/>
+                            <constraint firstItem="nTf-kc-WXY" firstAttribute="centerX" secondItem="Jas-jw-QoR" secondAttribute="centerX" id="8PU-aL-f71"/>
+                            <constraint firstItem="I91-bu-PWs" firstAttribute="top" secondItem="X3Z-75-K64" secondAttribute="top" id="GeK-Ow-JrW"/>
+                            <constraint firstItem="I91-bu-PWs" firstAttribute="leading" secondItem="X3Z-75-K64" secondAttribute="leading" id="car-Tw-QAh"/>
+                            <constraint firstItem="X3Z-75-K64" firstAttribute="trailing" secondItem="I91-bu-PWs" secondAttribute="trailing" id="lUh-Xf-H5a"/>
+                            <constraint firstItem="nTf-kc-WXY" firstAttribute="centerY" secondItem="Jas-jw-QoR" secondAttribute="centerY" id="zIo-DN-21b"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="WPq-y8-onS"/>
+                        <viewLayoutGuide key="safeArea" id="X3Z-75-K64"/>
                     </view>
-                    <navigationItem key="navigationItem" id="AhH-H8-nvn"/>
+                    <navigationItem key="navigationItem" id="qwV-g5-bSd"/>
                     <connections>
-                        <outlet property="imageView" destination="6Ju-hY-bFz" id="oIA-v2-okU"/>
-                        <outlet property="imageViewBottomConstraint" destination="WCA-9r-Wal" id="rh1-mj-ELc"/>
-                        <outlet property="imageViewHeight" destination="6af-Oi-3Kd" id="0mN-uZ-H6X"/>
-                        <outlet property="imageViewLeadingConstraint" destination="lxx-ce-3DP" id="wBV-dr-ytx"/>
-                        <outlet property="imageViewTopConstraint" destination="XHD-Dp-6O6" id="FaU-aB-Cgj"/>
-                        <outlet property="imageViewTrailingConstraint" destination="Gxv-od-XGi" id="mCK-Ih-yL2"/>
-                        <outlet property="imageViewWidth" destination="cEr-uN-Lel" id="7aL-8e-QQe"/>
-                        <outlet property="loadingIndicator" destination="BcI-vB-K4w" id="8av-XG-501"/>
-                        <outlet property="scrollView" destination="0HF-k7-7C1" id="i1b-l0-mDi"/>
+                        <outlet property="imageView" destination="zwx-xE-SAO" id="m4S-C7-nHR"/>
+                        <outlet property="imageViewBottomConstraint" destination="jHl-bE-wAy" id="ssf-Db-c36"/>
+                        <outlet property="imageViewHeight" destination="CWc-Yd-7Lm" id="oW6-uq-5mX"/>
+                        <outlet property="imageViewLeadingConstraint" destination="ajE-HH-sbs" id="lPP-Nk-R2c"/>
+                        <outlet property="imageViewTopConstraint" destination="CIa-V8-pxB" id="Oaf-Ko-K4l"/>
+                        <outlet property="imageViewTrailingConstraint" destination="wtB-V0-dWi" id="oge-P9-0WO"/>
+                        <outlet property="imageViewWidth" destination="ash-mN-EUH" id="QR9-X2-LXE"/>
+                        <outlet property="loadingIndicator" destination="nTf-kc-WXY" id="q5h-il-zXd"/>
+                        <outlet property="scrollView" destination="I91-bu-PWs" id="jgL-ME-iRN"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="wBT-hE-3bE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5ZC-BM-hXa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1648" y="19"/>
+            <point key="canvasLocation" x="1645" y="19"/>
         </scene>
     </scenes>
 </document>
