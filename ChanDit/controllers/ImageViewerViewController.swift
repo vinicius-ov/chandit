@@ -8,6 +8,7 @@
 
 import UIKit
 import Photos
+import Kingfisher
 
 class ImageViewerViewController: UIViewController {
 
@@ -38,24 +39,29 @@ class ImageViewerViewController: UIViewController {
         swipeUp.direction = .up
         view.addGestureRecognizer(swipeUp)
         
-        imageViewWidth.constant = postViewModel.imageWidth ?? 0.0
-        imageViewHeight.constant = postViewModel.imageWidth ?? 0.0
-        
-        imageView.kf.setImage(with: postViewModel.imageUrl(boardId: boardId)) { result in
+        imageViewWidth.constant =  postViewModel.imageWidth ?? 0.0
+        imageViewHeight.constant = postViewModel.imageHeight ?? 0.0
+        imageView.bounds.size.width = postViewModel.imageWidth ?? 0.0
+        imageView.bounds.size.height = postViewModel.imageHeight ?? 0.0
+    }
+    
+    @objc
+    func willDismiss() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        imageView.kf.setImage(with: postViewModel.imageUrl(boardId: boardId))
+        { result in
             switch result {
             case .success(let image):
-                self.imageView.image = image.image
+                self.updateConstraintsForSize(self.view.bounds.size)
                 self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(self.saveImage))
             case .failure(let failure):
                 break
             }
             self.loadingIndicator.stopAnimating()
         }
-    }
-    
-    @objc
-    func willDismiss() {
-        dismiss(animated: true, completion: nil)
     }
     
     @objc func saveImage() {
@@ -65,26 +71,24 @@ class ImageViewerViewController: UIViewController {
             //empty
         })
         if PHPhotoLibrary.authorizationStatus() == .authorized {
-            let url = self.postViewModel.imageUrl(boardId: self.boardId)!
-            let data = try? Data(contentsOf:  url)
+            let data = img.jpegData(compressionQuality: 5)
             PHPhotoLibrary.shared().performChanges({
                 PHAssetCreationRequest.forAsset().addResource(with: .photo, data: data!, options: nil)
             }) { (success, error) in
                 if success {
-                    self.navigationItem.rightBarButtonItem?.isEnabled = true
-                    self.showSuccessToast()
+                    DispatchQueue.main.async { self.navigationItem.rightBarButtonItem?.isEnabled = true
+                        self.showSuccessToast()
+                    }
                 }
             }
         } else {
             self.navigationItem.rightBarButtonItem?.isEnabled = true
             self.showToast(message: "Not authorized to save images in Camera Roll. Go to Settings to fix this.", textColor: nil, backgroundColor: nil)
         }
-        }
+    }
     
     func showSuccessToast() {
-        DispatchQueue.main.async {
             self.showToast(message: "Photo was saved to the camera roll.", textColor: UIColor.black, backgroundColor: UIColor(named: "lightGreenSuccess"))
-        }
     }
     
     fileprivate func updateMinZoomScaleForSize(_ size: CGSize) {
@@ -94,6 +98,10 @@ class ImageViewerViewController: UIViewController {
         
         scrollView.minimumZoomScale = minScale
         scrollView.zoomScale = minScale
+        print("---")
+        print(imageView.bounds)
+        print("\(widthScale) - \(heightScale) - \(minScale)")
+        print("---")
     }
     
     override func viewWillLayoutSubviews() {
@@ -111,6 +119,7 @@ class ImageViewerViewController: UIViewController {
         imageViewLeadingConstraint.constant = xOffset
         imageViewTrailingConstraint.constant = xOffset
         
+        print("\(xOffset) x \(yOffset)")
         view.layoutIfNeeded()
     }
     
@@ -128,13 +137,13 @@ extension ImageViewerViewController: UIScrollViewDelegate {
 
 extension UIViewController {
     func showToast(message:String, textColor: UIColor?, backgroundColor: UIColor?) {
-        let label = UILabel(frame: CGRect(x: 0, y: view.frame.height*0.9, width: view.frame.width, height: 25))
+        let label = UILabel(frame: CGRect(x: view.frame.origin.x, y: view.frame.height*0.9, width: view.frame.width, height: 30))
         label.backgroundColor = backgroundColor ?? .red
+        label.clipsToBounds = true
         label.textAlignment = .center
         label.text = message
         label.textColor = textColor ?? .white
         label.numberOfLines = 0
-        label.sizeToFit()
         view.addSubview(label)
         UIView.animate(withDuration: 2.0, delay: 1.0, animations: {
             label.alpha = 0
