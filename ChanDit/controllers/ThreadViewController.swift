@@ -48,7 +48,7 @@ class ThreadViewController: BaseViewController {
                     }
                 }
                 break
-            case .failure(let error):
+            case .failure(_):
                 break
             }
         }

@@ -56,7 +56,8 @@ class BoardPagesViewController: BaseViewController {
         boardSelector.tintColor = .clear
         
         postsTable.register(UINib(nibName: "PostCell", bundle: nil), forCellReuseIdentifier: "postCellIdentifier")
-                
+            postsTable.register(UINib(nibName: "ThreadFooterView", bundle: nil), forHeaderFooterViewReuseIdentifier: ThreadFooterView.reuseIdentifier)
+        
         let toolBar = UIToolbar()
         toolBar.barStyle = UIBarStyle.default
         toolBar.tintColor = UIColor.black
@@ -114,7 +115,7 @@ class BoardPagesViewController: BaseViewController {
                     }
                 }
                 break
-            case .failure(let error):
+            case .failure(_):
                 break
             }
         }
@@ -136,7 +137,7 @@ class BoardPagesViewController: BaseViewController {
                     self.fetchData(append: false)
                 }
                 break
-            case .failure(let error):
+            case .failure(_):
                 break
             }
         }
@@ -216,29 +217,18 @@ extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let view = UIView()
-        view.backgroundColor = .darkGray
-        let viewThreadButton = UIButton()
         
-        viewThreadButton.setTitle("View Thread", for: .normal)
-        viewThreadButton.backgroundColor = .gray
-        viewThreadButton.setTitleColor(.white, for: .normal)
-        viewThreadButton.sizeToFit()
-        view.addSubview(viewThreadButton)
+        let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "ThreadFooterView") as! ThreadFooterView
         
-        viewThreadButton.snp.makeConstraints { (make) -> Void in
-            make.centerY.equalTo(view)
-            make.trailing.equalTo(-10)
-            make.width.equalTo(120)
+        guard let threadToLaunch = pageViewModel.threadViewModel(at: section).postViewModel(at: 0).number else {
+            return footerView
         }
         
-        let threadToLaunch = pageViewModel.threadViewModel(at: section).postViewModel(at: 0).number
-        viewThreadButton.tag = threadToLaunch!
-        let selector = #selector(BoardPagesViewController.navigateToThreadView(_:))
-        viewThreadButton.addTarget(self, action: selector, for: .touchUpInside)
-        return view
+        footerView.threadToNavigate = threadToLaunch
+        footerView.delegate = self
+        
+        return footerView
     }
-    
 }
 
 extension BoardPagesViewController : UITableViewDataSourcePrefetching {
@@ -279,4 +269,11 @@ extension BoardPagesViewController: CellTapInteractionDelegate {
         show(viewController, sender: self)
     }
     
+}
+
+extension BoardPagesViewController: ThreadFooterViewDelegate {
+    func threadFooterView(_ footer: ThreadFooterView, didTapButtonInSection section: Int) {
+        self.boardsViewModel.threadToLaunch = footer.threadToNavigate
+        self.navigateToThread()
+    }
 }

@@ -54,10 +54,10 @@ class ImageViewerViewController: UIViewController {
         imageView.kf.setImage(with: postViewModel.imageUrl(boardId: boardId))
         { result in
             switch result {
-            case .success(let image):
+            case .success(_):
                 self.updateConstraintsForSize(self.view.bounds.size)
                 self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(self.saveImage))
-            case .failure(let failure):
+            case .failure(_):
                 break
             }
             self.loadingIndicator.stopAnimating()
