@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="iE8-IW-Miu">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="iE8-IW-Miu">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,6 +18,7 @@
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="barTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </navigationBar>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="nJV-JG-3ys"/>
@@ -59,6 +62,8 @@
                         <textField key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" id="35t-vQ-ASH">
                             <rect key="frame" x="97" y="5" width="220" height="34"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
                         </textField>
@@ -129,65 +134,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6u4-uQ-h6m" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="808.69565217391312" y="18.75"/>
-        </scene>
-        <!--Image Viewer View Controller-->
-        <scene sceneID="ibO-8N-uTU">
-            <objects>
-                <viewController storyboardIdentifier="ImageViewerViewController" id="09Z-5s-KFv" customClass="ImageViewerViewController" customModule="ChanDit" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Jas-jw-QoR">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="nTf-kc-WXY">
-                                <rect key="frame" x="188.5" y="429.5" width="37" height="37"/>
-                                <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </activityIndicatorView>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I91-bu-PWs">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
-                                <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zwx-xE-SAO">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="818"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="818" id="CWc-Yd-7Lm"/>
-                                            <constraint firstAttribute="width" constant="414" id="ash-mN-EUH"/>
-                                        </constraints>
-                                    </imageView>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="zwx-xE-SAO" firstAttribute="top" secondItem="I91-bu-PWs" secondAttribute="top" id="CIa-V8-pxB"/>
-                                    <constraint firstItem="zwx-xE-SAO" firstAttribute="leading" secondItem="I91-bu-PWs" secondAttribute="leading" id="ajE-HH-sbs"/>
-                                    <constraint firstAttribute="bottom" secondItem="zwx-xE-SAO" secondAttribute="bottom" id="jHl-bE-wAy"/>
-                                    <constraint firstAttribute="trailing" secondItem="zwx-xE-SAO" secondAttribute="trailing" id="wtB-V0-dWi"/>
-                                </constraints>
-                            </scrollView>
-                        </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <constraints>
-                            <constraint firstItem="X3Z-75-K64" firstAttribute="bottom" secondItem="I91-bu-PWs" secondAttribute="bottom" id="6pm-9W-Fei"/>
-                            <constraint firstItem="nTf-kc-WXY" firstAttribute="centerX" secondItem="Jas-jw-QoR" secondAttribute="centerX" id="8PU-aL-f71"/>
-                            <constraint firstItem="I91-bu-PWs" firstAttribute="top" secondItem="X3Z-75-K64" secondAttribute="top" id="GeK-Ow-JrW"/>
-                            <constraint firstItem="I91-bu-PWs" firstAttribute="leading" secondItem="X3Z-75-K64" secondAttribute="leading" id="car-Tw-QAh"/>
-                            <constraint firstItem="X3Z-75-K64" firstAttribute="trailing" secondItem="I91-bu-PWs" secondAttribute="trailing" id="lUh-Xf-H5a"/>
-                            <constraint firstItem="nTf-kc-WXY" firstAttribute="centerY" secondItem="Jas-jw-QoR" secondAttribute="centerY" id="zIo-DN-21b"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="X3Z-75-K64"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="qwV-g5-bSd"/>
-                    <connections>
-                        <outlet property="imageView" destination="zwx-xE-SAO" id="m4S-C7-nHR"/>
-                        <outlet property="imageViewBottomConstraint" destination="jHl-bE-wAy" id="ssf-Db-c36"/>
-                        <outlet property="imageViewHeight" destination="CWc-Yd-7Lm" id="oW6-uq-5mX"/>
-                        <outlet property="imageViewLeadingConstraint" destination="ajE-HH-sbs" id="lPP-Nk-R2c"/>
-                        <outlet property="imageViewTopConstraint" destination="CIa-V8-pxB" id="Oaf-Ko-K4l"/>
-                        <outlet property="imageViewTrailingConstraint" destination="wtB-V0-dWi" id="oge-P9-0WO"/>
-                        <outlet property="imageViewWidth" destination="ash-mN-EUH" id="QR9-X2-LXE"/>
-                        <outlet property="loadingIndicator" destination="nTf-kc-WXY" id="q5h-il-zXd"/>
-                        <outlet property="scrollView" destination="I91-bu-PWs" id="jgL-ME-iRN"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="5ZC-BM-hXa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1645" y="19"/>
         </scene>
     </scenes>
 </document>

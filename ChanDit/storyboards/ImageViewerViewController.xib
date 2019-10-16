@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ImageViewerViewController" customModule="ChanDit" customModuleProvider="target">
+            <connections>
+                <outlet property="imageView" destination="0nz-iC-y4W" id="eMN-M0-PjE"/>
+                <outlet property="imageViewBottomConstraint" destination="PuB-88-hfB" id="PYa-UQ-XFF"/>
+                <outlet property="imageViewHeight" destination="w9J-Qe-lGJ" id="nf5-ya-qc4"/>
+                <outlet property="imageViewLeadingConstraint" destination="tgC-ee-8Su" id="veg-bP-2Os"/>
+                <outlet property="imageViewTopConstraint" destination="xvQ-4K-jaD" id="YGv-Rh-bTF"/>
+                <outlet property="imageViewTrailingConstraint" destination="Itw-wO-Q7W" id="Jen-K9-usH"/>
+                <outlet property="imageViewWidth" destination="VbS-LU-DVS" id="UNF-RY-MTP"/>
+                <outlet property="loadingIndicator" destination="g1d-ft-3gO" id="gzu-gV-FVF"/>
+                <outlet property="scrollView" destination="ST4-nc-m3y" id="Rbo-Iz-cjQ"/>
+                <outlet property="view" destination="RBz-0o-wSO" id="agL-je-sCv"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="RBz-0o-wSO">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="g1d-ft-3gO">
+                    <rect key="frame" x="188.5" y="429.5" width="37" height="37"/>
+                    <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </activityIndicatorView>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ST4-nc-m3y">
+                    <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0nz-iC-y4W">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="818"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="414" id="VbS-LU-DVS"/>
+                                <constraint firstAttribute="height" constant="818" id="w9J-Qe-lGJ"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="0nz-iC-y4W" secondAttribute="trailing" id="Itw-wO-Q7W"/>
+                        <constraint firstAttribute="bottom" secondItem="0nz-iC-y4W" secondAttribute="bottom" id="PuB-88-hfB"/>
+                        <constraint firstItem="0nz-iC-y4W" firstAttribute="leading" secondItem="ST4-nc-m3y" secondAttribute="leading" id="tgC-ee-8Su"/>
+                        <constraint firstItem="0nz-iC-y4W" firstAttribute="top" secondItem="ST4-nc-m3y" secondAttribute="top" id="xvQ-4K-jaD"/>
+                    </constraints>
+                </scrollView>
+            </subviews>
+            <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+            <constraints>
+                <constraint firstItem="9KD-iU-h2y" firstAttribute="bottom" secondItem="ST4-nc-m3y" secondAttribute="bottom" id="5Y2-PD-S7G"/>
+                <constraint firstItem="g1d-ft-3gO" firstAttribute="centerY" secondItem="RBz-0o-wSO" secondAttribute="centerY" id="JMk-vA-UXN"/>
+                <constraint firstItem="ST4-nc-m3y" firstAttribute="leading" secondItem="9KD-iU-h2y" secondAttribute="leading" id="UUp-cd-cEp"/>
+                <constraint firstItem="ST4-nc-m3y" firstAttribute="top" secondItem="9KD-iU-h2y" secondAttribute="top" id="bkB-3w-Vvn"/>
+                <constraint firstItem="9KD-iU-h2y" firstAttribute="trailing" secondItem="ST4-nc-m3y" secondAttribute="trailing" id="eRw-hr-eie"/>
+                <constraint firstItem="g1d-ft-3gO" firstAttribute="centerX" secondItem="RBz-0o-wSO" secondAttribute="centerX" id="hGQ-kG-Q1P"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="9KD-iU-h2y"/>
+        </view>
+    </objects>
+</document>

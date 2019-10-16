@@ -83,7 +83,7 @@ class PostTableViewCell: UITableViewCell {
             viewController.mediaURL = postViewModel.imageUrl(boardId: selectedBoardId)
             tapDelegate?.imageTapped(viewController)
         } else {
-            let viewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "ImageViewerViewController") as! ImageViewerViewController
+            let viewController = ImageViewerViewController(nibName: "ImageViewerViewController", bundle: Bundle.main)
             viewController.boardId = selectedBoardId
             viewController.postViewModel = postViewModel
             tapDelegate?.imageTapped(viewController)
