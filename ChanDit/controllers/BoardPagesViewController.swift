@@ -56,7 +56,7 @@ class BoardPagesViewController: BaseViewController {
         boardSelector.tintColor = .clear
         
         postsTable.register(UINib(nibName: "PostCell", bundle: nil), forCellReuseIdentifier: "postCellIdentifier")
-            postsTable.register(UINib(nibName: "ThreadFooterView", bundle: nil), forHeaderFooterViewReuseIdentifier: ThreadFooterView.reuseIdentifier)
+        postsTable.register(UINib(nibName: "ThreadFooterView", bundle: nil), forHeaderFooterViewReuseIdentifier: ThreadFooterView.reuseIdentifier)
         
         let toolBar = UIToolbar()
         toolBar.barStyle = UIBarStyle.default
@@ -220,11 +220,13 @@ extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource 
         
         let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "ThreadFooterView") as! ThreadFooterView
         
-        guard let threadToLaunch = pageViewModel.threadViewModel(at: section).postViewModel(at: 0).number else {
+        guard let threadToLaunch = pageViewModel.threadViewModel(at: section).postViewModel(at: 0) else {
             return footerView
         }
         
-        footerView.threadToNavigate = threadToLaunch
+        footerView.threadToNavigate = threadToLaunch.number
+        footerView.imagesCount.text = "\(threadToLaunch.images ?? 0) (\(threadToLaunch.omittedImages ?? 0))"
+        footerView.postsCount.text = "\(threadToLaunch.replies ?? 0) (\(threadToLaunch.omittedPosts ?? 0))"
         footerView.delegate = self
         
         return footerView
@@ -272,7 +274,7 @@ extension BoardPagesViewController: CellTapInteractionDelegate {
 }
 
 extension BoardPagesViewController: ThreadFooterViewDelegate {
-    func threadFooterView(_ footer: ThreadFooterView, didTapButtonInSection section: Int) {
+    func threadFooterView(_ footer: ThreadFooterView, threadToNavigate section: Int) {
         self.boardsViewModel.threadToLaunch = footer.threadToNavigate
         self.navigateToThread()
     }

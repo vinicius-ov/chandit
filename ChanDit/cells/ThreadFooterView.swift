@@ -2,7 +2,7 @@
 import UIKit
 
 protocol ThreadFooterViewDelegate: class {
-    func threadFooterView(_ footer: ThreadFooterView, didTapButtonInSection section: Int)
+    func threadFooterView(_ footer: ThreadFooterView, threadToNavigate number: Int)
 }
 
 class ThreadFooterView: UITableViewHeaderFooterView {
@@ -12,10 +12,11 @@ class ThreadFooterView: UITableViewHeaderFooterView {
 
     @IBOutlet weak var postsCount: UILabel!
     @IBOutlet weak var imagesCount: UILabel!
-
+    @IBOutlet weak var navigateButton: UIButton!
+    
     var threadToNavigate: Int!
         
     @IBAction func didTapButton(_ sender: AnyObject) {
-        //delegate?.customHeader(self, didTapButtonInSection: section)
+        delegate?.threadFooterView(self, threadToNavigate: threadToNavigate)
     }
 }

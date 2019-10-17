@@ -56,7 +56,10 @@ struct ThreadViewModel: Equatable {
         postNumberToNavigate = nil
     }
     
-    func postViewModel(at index: Int) -> PostViewModel {
+    func postViewModel(at index: Int) -> PostViewModel? {
+        if self.posts.isEmpty {
+            return nil
+        }
         return self.posts[index]
     }
     
@@ -64,6 +67,7 @@ struct ThreadViewModel: Equatable {
         let op = posts.first!
         return op.title ?? op.subject ?? ""
     }
+    
 }
 
 struct PostViewModel {
@@ -166,5 +170,21 @@ extension PostViewModel {
     
     var imageHeight: CGFloat? {
         return CGFloat.init(exactly: NSNumber(value: post.h ?? 0))
+    }
+    
+    var replies: Int? {
+            return post.replies
+        }
+    
+    var images: Int? {
+        return post.images
+
+    }
+    var omittedPosts: Int? {
+        return post.omittedPosts
+    }
+
+    var omittedImages: Int? {
+        return post.omittedImages
     }
 }
