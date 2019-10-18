@@ -29,6 +29,7 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var mediaSize: UILabel!
     
     weak var tapDelegate: CellTapInteractionDelegate?
+    var tappedUrl: URL?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -62,10 +63,13 @@ class PostTableViewCell: UITableViewCell {
             postImage.image = nil
         }
         
-        let tapGesture = UITapGestureRecognizer(target: self, action:
-            #selector(viewImage(tapGesture:)))
-        postImage.addGestureRecognizer(tapGesture)
-        postImage.isUserInteractionEnabled = true
+        postImage.addGestureRecognizer(
+            UITapGestureRecognizer(target: self,
+                                   action: #selector(viewImage(_:))))
+        postText.addGestureRecognizer(
+            UITapGestureRecognizer(target: self,
+                                   action: #selector(tappedLink(_:))))
+        
         
         mediaSize.text = postViewModel.fileSize
         mediaExtension.text = postViewModel.mediaFullName
@@ -76,7 +80,7 @@ class PostTableViewCell: UITableViewCell {
         return postImage.constraint(withIdentifier: "thumbnail_size")
     }
     
-    @objc func viewImage(tapGesture: UITapGestureRecognizer) {
+    @objc func viewImage(_ sender: Any) {
         let ext = postViewModel.post.ext
         if ext == ".webm" {
             let viewController = PlaybackViewController(nibName: "PlaybackViewController", bundle: Bundle.main)
@@ -87,6 +91,24 @@ class PostTableViewCell: UITableViewCell {
             viewController.boardId = selectedBoardId
             viewController.postViewModel = postViewModel
             tapDelegate?.imageTapped(viewController)
+        }
+    }
+    
+    @objc
+    func tappedLink(_ sender: Any) {
+        guard let tappedUrl = tappedUrl else { return }
+        let quote = tappedUrl.absoluteString.split(separator: "/")
+        if quote.first == "chandit:" {
+            let postNumber = Int(quote.last!)
+            tapDelegate?.linkTapped(postNumber: postNumber!, opNumber: postViewModel.resto!)
+        } else {
+            //see https://stackoverflow.com/questions/39949169/swift-open-url-in-a-specific-browser-tab for other browsers deeplinks
+            let actionOk = UIAlertAction(title: "OK", style: .default) { (action) in
+                UIApplication.shared.open(tappedUrl)
+            }
+            let actionCancel = UIAlertAction(title: "Cancel", style: .default)
+            tapDelegate?.presentAlertExitingApp([actionOk,actionCancel])
+            
         }
     }
 }
@@ -131,20 +153,7 @@ extension UITextView {
 
 extension PostTableViewCell: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-        print(URL.absoluteString)
-        let quote = URL.absoluteString.split(separator: "/")
-        if quote.first == "chandit:" {
-            let postNumber = Int(quote.last!)
-            tapDelegate?.linkTapped(postNumber: postNumber!, opNumber: postViewModel.resto!)
-        } else {
-            //see https://stackoverflow.com/questions/39949169/swift-open-url-in-a-specific-browser-tab for other browsers deeplinks
-            let actionOk = UIAlertAction(title: "OK", style: .default) { (action) in
-                UIApplication.shared.open(URL)
-            }
-            let actionCancel = UIAlertAction(title: "Cancel", style: .default)
-            tapDelegate?.presentAlertExitingApp([actionOk,actionCancel])
-            
-        }
+        tappedUrl = URL
         return false
     }
 }

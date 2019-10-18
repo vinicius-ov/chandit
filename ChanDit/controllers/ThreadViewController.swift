@@ -124,6 +124,10 @@ extension ThreadViewController: UITableViewDelegate {
         
         return footerView
     }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        print("drag")
+    }
 }
 
 extension UIViewController {
