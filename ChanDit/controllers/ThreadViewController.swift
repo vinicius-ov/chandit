@@ -20,8 +20,10 @@ class ThreadViewController: BaseViewController {
         super.viewDidLoad()
         postsTable.isHidden = true
         postsTable.dataSource = self
+        postsTable.delegate = self
         
         postsTable.register(UINib(nibName: "PostCell", bundle: nil), forCellReuseIdentifier: "postCellIdentifier")
+        postsTable.register(UINib(nibName: "ThreadFooterView", bundle: nil), forHeaderFooterViewReuseIdentifier: ThreadFooterView.reuseIdentifier)
         
         postsTable.rowHeight = UITableView.automaticDimension
         postsTable.estimatedRowHeight = 260
@@ -48,7 +50,7 @@ class ThreadViewController: BaseViewController {
                     }
                 }
                 break
-            case .failure(let error):
+            case .failure(_):
                 break
             }
         }
@@ -103,6 +105,24 @@ extension ThreadViewController: UITableViewDataSource {
         cell.loadCell()
         cell.tapDelegate = self
         return cell
+    }
+}
+
+extension ThreadViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        
+        let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "ThreadFooterView") as! ThreadFooterView
+        
+        guard let threadToLaunch = threadViewModel.postViewModel(at: 0) else {
+            return footerView
+        }
+        
+        footerView.threadToNavigate = threadToLaunch.number
+        footerView.imagesCount.text = "\(threadToLaunch.images ?? 0) (\(threadToLaunch.omittedImages ?? 0))"
+        footerView.postsCount.text = "\(threadToLaunch.replies ?? 0) (\(threadToLaunch.omittedPosts ?? 0))"
+        footerView.navigateButton.isHidden = true
+        
+        return footerView
     }
 }
 
