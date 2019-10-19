@@ -98,10 +98,6 @@ class ImageViewerViewController: UIViewController {
         
         scrollView.minimumZoomScale = minScale
         scrollView.zoomScale = minScale
-        print("---")
-        print(imageView.bounds)
-        print("\(widthScale) - \(heightScale) - \(minScale)")
-        print("---")
     }
     
     override func viewWillLayoutSubviews() {
@@ -119,7 +115,6 @@ class ImageViewerViewController: UIViewController {
         imageViewLeadingConstraint.constant = xOffset
         imageViewTrailingConstraint.constant = xOffset
         
-        print("\(xOffset) x \(yOffset)")
         view.layoutIfNeeded()
     }
     

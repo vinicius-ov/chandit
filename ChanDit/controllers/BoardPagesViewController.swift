@@ -212,7 +212,7 @@ extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource 
         
         cell.loadCell()
         cell.tapDelegate = self
-        
+                
         return cell
     }
     
@@ -230,6 +230,13 @@ extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource 
         footerView.delegate = self
         
         return footerView
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as! PostTableViewCell
+        let threadViewModel = pageViewModel.threads[indexPath.section]
+        let post = (threadViewModel as! ThreadViewModel).postViewModel(at: indexPath.row)
+        cell.postText.set(html: post?.comment)
     }
 }
 
