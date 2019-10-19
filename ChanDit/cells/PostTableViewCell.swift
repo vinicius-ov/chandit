@@ -58,8 +58,10 @@ class PostTableViewCell: UITableViewCell {
         if let thumbUrl = postViewModel.thumbnailUrl(boardId: selectedBoardId) {
             postImage.kf.setImage(with: thumbUrl)
             thumbSizeConstraint?.constant = 160
+            postImage.isHidden = false
         } else {
-            thumbSizeConstraint?.constant = 0
+            //thumbSizeConstraint?.constant = 0
+            postImage.isHidden = true
             postImage.image = nil
         }
         
@@ -104,7 +106,7 @@ class PostTableViewCell: UITableViewCell {
         } else {
             //see https://stackoverflow.com/questions/39949169/swift-open-url-in-a-specific-browser-tab for other browsers deeplinks
             let actionOk = UIAlertAction(title: "OK", style: .default) { (action) in
-                UIApplication.shared.open(tappedUrl)
+                UIApplication.shared.open(URL(string: "firefox://open-url?url=\(tappedUrl)")!)
             }
             let actionCancel = UIAlertAction(title: "Cancel", style: .default)
             tapDelegate?.presentAlertExitingApp([actionOk,actionCancel])
