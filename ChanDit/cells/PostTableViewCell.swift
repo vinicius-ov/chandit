@@ -102,7 +102,7 @@ class PostTableViewCell: UITableViewCell {
         let quote = tappedUrl.absoluteString.split(separator: "/")
         if quote.first == "chandit:" {
             let postNumber = Int(quote.last!)
-            tapDelegate?.linkTapped(postNumber: postNumber!, opNumber: postViewModel.resto!)
+            tapDelegate?.linkTapped(postNumber: postNumber!, opNumber: postViewModel.resto!, originLink: postViewModel.number!)
         } else {
             //see https://stackoverflow.com/questions/39949169/swift-open-url-in-a-specific-browser-tab for other browsers deeplinks
             let actionOk = UIAlertAction(title: "OK", style: .default) { (action) in

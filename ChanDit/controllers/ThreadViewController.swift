@@ -31,7 +31,7 @@ class ThreadViewController: BaseViewController {
     }
 
     fileprivate func fetchData() {
-        service.loadData(from: URL(string: "https://a.4cdn.org/\(threadViewModel.boardIdToNavigate!)/thread/\(threadViewModel.threadNumberToNavigate!).json")!) { (result) in
+        service.loadData(from: URL(string: "https://a.4cdn.org/\(threadViewModel.boardIdToNavigate ?? "")/thread/\(threadViewModel.threadNumberToNavigate ?? 0).json")!) { (result) in
             switch result {
             case .success(let data):
                 do {
@@ -98,7 +98,6 @@ extension ThreadViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as! PostTableViewCell
-        //let thread = pageViewModel.threads[indexPath.section]
         let postViewModel = threadViewModel.postViewModel(at: indexPath.row)
         cell.selectedBoardId = threadViewModel.boardIdToNavigate
         cell.postViewModel = postViewModel
@@ -124,10 +123,6 @@ extension ThreadViewController: UITableViewDelegate {
         
         return footerView
     }
-    
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        print("drag")
-    }
 }
 
 extension UIViewController {
@@ -148,8 +143,8 @@ extension UIViewController {
 }
 
 extension ThreadViewController: CellTapInteractionDelegate {
-    func linkTapped(postNumber: Int, opNumber: Int) {
-        self.postNumberToReturn.append(postNumber)
+    func linkTapped(postNumber: Int, opNumber: Int, originLink: Int) {
+        self.postNumberToReturn.append(originLink)
         self.threadViewModel.postNumberToNavigate = postNumber
         self.navigateToPost()
     }

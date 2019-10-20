@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 protocol CellTapInteractionDelegate: class {
-    func linkTapped(postNumber: Int, opNumber: Int)
+    func linkTapped(postNumber: Int, opNumber: Int, originLink:Int)
     func imageTapped(_ viewController: UIViewController)
     func presentAlertExitingApp(_ actions: [UIAlertAction])
 }
@@ -72,19 +72,9 @@ class BoardPagesViewController: BaseViewController {
         toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
         toolBar.isUserInteractionEnabled = true
         
-        let swipeToTop = UISwipeGestureRecognizer(target: self, action: #selector(scrollToTop))
-        swipeToTop.direction = .down
-        swipeToTop.numberOfTouchesRequired = 2
-        postsTable.addGestureRecognizer(swipeToTop)
-        
         boardSelector.inputAccessoryView = toolBar
         
         fetchBoards()
-    }
-    
-    @objc
-    func scrollToTop() {
-        print("poqw")
     }
     
     func fetchData(append: Bool) {
@@ -164,24 +154,15 @@ class BoardPagesViewController: BaseViewController {
         boardSelector.text = boardsViewModel.currentBoard?.title
     }
     
-    @objc func navigateToThreadView(_ sender: UIButton) {
-        boardsViewModel.threadToLaunch = sender.tag
-        navigateToThread()
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        boardsViewModel.resetNavigation()
-    }
-    
     func navigateToThread() {
         performSegue(withIdentifier: "gotoThreadView", sender: self)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let vc = segue.destination as! ThreadViewController
-        let threadViewModel = ThreadViewModel(threadNumberToNavigate: boardsViewModel.threadToLaunch!, postNumberToNavigate: boardsViewModel.postNumberToNavigate, originBoard: boardsViewModel.selectedBoardId)
-        vc.threadViewModel = threadViewModel
+        if let vc = segue.destination as? ThreadViewController {
+            let threadViewModel = ThreadViewModel(threadNumberToNavigate: boardsViewModel.threadToLaunch!, postNumberToNavigate: boardsViewModel.postNumberToNavigate, originBoard: boardsViewModel.selectedBoardId)
+            vc.threadViewModel = threadViewModel
+        }
     }
     
     @IBAction func reloadData(_ sender: Any) {
@@ -264,7 +245,7 @@ extension BoardPagesViewController: UIPickerViewDataSource, UIPickerViewDelegate
 }
 
 extension BoardPagesViewController: CellTapInteractionDelegate {
-    func linkTapped(postNumber: Int, opNumber: Int) {
+    func linkTapped(postNumber: Int, opNumber: Int, originLink: Int) {
         self.boardsViewModel.postNumberToNavigate = postNumber
         self.boardsViewModel.threadToLaunch = opNumber
         self.navigateToThread()

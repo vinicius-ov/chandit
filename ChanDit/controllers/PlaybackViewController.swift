@@ -9,7 +9,6 @@
 import UIKit
 
 class PlaybackViewController: UIViewController {
-    //let mediaURL:String? = nil
     var mediaURL:URL? = nil
     var filename = "filename_my_file"
     
@@ -56,8 +55,8 @@ class PlaybackViewController: UIViewController {
     
     @IBAction func closeView(_ sender: Any) {
         mediaPlayer.stop()
-        navigationController?.popViewController(animated: true)
         navigationController?.isNavigationBarHidden = false
+        navigationController?.popViewController(animated: true)
     }
     
     fileprivate func setupMedia() {
