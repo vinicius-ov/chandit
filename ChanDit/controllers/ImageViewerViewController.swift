@@ -8,7 +8,7 @@
 
 import UIKit
 import Photos
-import Kingfisher
+import SDWebImage
 
 class ImageViewerViewController: UIViewController {
 
@@ -31,6 +31,8 @@ class ImageViewerViewController: UIViewController {
     var boardId: String!
     var tapGesture: UITapGestureRecognizer!
     
+    let imageCache = SDImageCache.shared
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         scrollView.delegate = self
@@ -51,41 +53,90 @@ class ImageViewerViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        imageView.kf.setImage(with: postViewModel.imageUrl(boardId: boardId))
-        { result in
-            switch result {
-            case .success(_):
-                self.updateConstraintsForSize(self.view.bounds.size)
-                self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(self.saveImage))
-            case .failure(_):
-                break
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(self.saveImage))
+        navigationItem.rightBarButtonItem?.isEnabled = false
+        
+        guard let url = postViewModel.imageUrl(boardId: boardId) else { return }
+        download(url)
+    }
+    
+    fileprivate func storeDownloadedCacheToData(_ image: UIImage?, _ data: Data?, _ url: URL) {
+        imageCache.store(image, imageData: data, forKey: url.absoluteString, toDisk: true, completion: nil)
+    }
+    
+    func download(_ url: URL) {
+        imageCache.queryCacheOperation(forKey: url.absoluteString) { (image, data, cacheType) in
+            if let image = image {
+                self.setImageToImageView(image)
+                self.updateInterfaceImageLoaded()
+                print("SDWEB: buscando da cache")
+                self.loadingIndicator.stopAnimating()
+            } else {
+                let downloader = SDWebImageDownloader.shared
+                downloader.downloadImage(with: url) { [weak self] (image, data, error, finished) in
+                    if let image = image, finished {
+                        print("SDWEB: buscando da net")
+                        self?.setImageToImageView(image)
+                        self?.storeDownloadedCacheToData(image, data, url)
+                        self?.updateInterfaceImageLoaded()
+                    } else {
+                        print("SDWEB: ERRO buscando da net")
+                    }
+                    self?.loadingIndicator.stopAnimating()
+                }
             }
-            self.loadingIndicator.stopAnimating()
+        }
+    }
+    
+    func setImageToImageView(_ image: UIImage) {
+        self.imageView.image = image
+    }
+    
+    func updateInterfaceImageLoaded() {
+        DispatchQueue.main.async {
+            self.updateConstraintsForSize(self.view.bounds.size)
+            self.navigationItem.rightBarButtonItem?.isEnabled = true
         }
     }
     
     @objc func saveImage() {
         self.navigationItem.rightBarButtonItem?.isEnabled = false
-        guard let img = self.imageView.image else { return }
-        PHPhotoLibrary.requestAuthorization( { (PHAuthorizationStatus) in
-            //empty
+        PHPhotoLibrary.requestAuthorization( { [weak self] (status) in
+            if status == .authorized {
+                guard let url = self?.postViewModel.imageUrl(boardId: (self?.boardId)!) else { return }
+                if let data = self?.imageCache.diskImageData(forKey: url.absoluteString) {
+                        self?.saveToCameraRoll(data)
+                    } else {
+                        print("sem coiso no cache")
+                        DispatchQueue.main.async {
+                            self?.navigationItem.rightBarButtonItem?.isEnabled = true
+                        }
+                    }
+            } else {
+                DispatchQueue.main.async {
+                    self?.navigationItem.rightBarButtonItem?.isEnabled = true
+                    self?.showToast(message: "Not authorized to save images in Camera Roll. Go to Settings to fix this.", textColor: nil, backgroundColor: nil)
+                }
+            }
         })
+    }
+
+    fileprivate func saveToCameraRoll(_ data: Data) {
         if PHPhotoLibrary.authorizationStatus() == .authorized {
-            let data = img.jpegData(compressionQuality: 5)
             PHPhotoLibrary.shared().performChanges({
-                PHAssetCreationRequest.forAsset().addResource(with: .photo, data: data!, options: nil)
+                PHAssetCreationRequest.forAsset().addResource(with: .photo, data: data, options: nil)
             }) { (success, error) in
                 if success {
                     DispatchQueue.main.async { self.navigationItem.rightBarButtonItem?.isEnabled = true
                         self.showSuccessToast()
                     }
+                } else {
+                    print(error?.localizedDescription)
                 }
             }
-        } else {
-            self.navigationItem.rightBarButtonItem?.isEnabled = true
-            self.showToast(message: "Not authorized to save images in Camera Roll. Go to Settings to fix this.", textColor: nil, backgroundColor: nil)
         }
     }
+
     
     func showSuccessToast() {
             self.showToast(message: "Photo was saved to the camera roll.", textColor: UIColor.black, backgroundColor: UIColor(named: "lightGreenSuccess"))
@@ -105,8 +156,9 @@ class ImageViewerViewController: UIViewController {
         updateMinZoomScaleForSize(view.bounds.size)
     }
 
-    fileprivate func updateConstraintsForSize(_ size: CGSize) {
-        
+    fileprivate func updateConstraintsForSize(_ size: CGSize?) {
+        guard let size = size else { return }
+
         let yOffset = max(0, (size.height - imageView.frame.height) / 2)
         imageViewTopConstraint.constant = yOffset
         imageViewBottomConstraint.constant = yOffset
@@ -145,5 +197,11 @@ extension UIViewController {
         }) { finished in
             label.removeFromSuperview()
         }
+    }
+}
+
+extension UserDefaults {
+    static var dataCache: UserDefaults {
+        return UserDefaults(suiteName: "chanditDataCache")!
     }
 }

@@ -9,12 +9,11 @@
 /* Begin PBXBuildFile section */
 		2D2784022357ADD400DD0C9F /* ThreadFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D2784012357ADD300DD0C9F /* ThreadFooterView.xib */; };
 		2D2784042357B16A00DD0C9F /* ThreadFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2784032357B16A00DD0C9F /* ThreadFooterView.swift */; };
+		2D57A6F5235F7006001DEBE8 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D57A6F4235F7006001DEBE8 /* SDWebImage.framework */; };
 		2DD9C31923576EBA00A14EE4 /* ImageViewerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2DD9C31823576EBA00A14EE4 /* ImageViewerViewController.xib */; };
 		2DDB9D7B234BAE0F002C249F /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DDB9D7A234BAE0F002C249F /* BaseNavigationController.swift */; };
 		810B4A052327CCF100E7ECC9 /* PlaybackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810B4A032327CCF100E7ECC9 /* PlaybackViewController.swift */; };
 		810B4A062327CCF100E7ECC9 /* PlaybackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 810B4A042327CCF100E7ECC9 /* PlaybackViewController.xib */; };
-		810F4D8D2316F9FD0003C58A /* Kingfisher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 810F4D8C2316F9FD0003C58A /* Kingfisher.framework */; };
-		810F4D902316FBBD0003C58A /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 810F4D8F2316FBBD0003C58A /* SnapKit.framework */; };
 		814C458B22F4BFF8007007C5 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814C458A22F4BFF8007007C5 /* Service.swift */; };
 		814C458D22F4C67F007007C5 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814C458C22F4C67F007007C5 /* Post.swift */; };
 		814C458F22F86194007007C5 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814C458E22F86194007007C5 /* PostTableViewCell.swift */; };
@@ -55,6 +54,8 @@
 /* Begin PBXFileReference section */
 		2D2784012357ADD300DD0C9F /* ThreadFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ThreadFooterView.xib; sourceTree = "<group>"; };
 		2D2784032357B16A00DD0C9F /* ThreadFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadFooterView.swift; sourceTree = "<group>"; };
+		2D57A6F4235F7006001DEBE8 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Carthage/Build/iOS/SDWebImage.framework; sourceTree = "<group>"; };
+		2DC383E4235F6F2700B16290 /* SDWebImageMapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImageMapKit.framework; path = Carthage/Build/iOS/SDWebImageMapKit.framework; sourceTree = "<group>"; };
 		2DD9C31823576EBA00A14EE4 /* ImageViewerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageViewerViewController.xib; sourceTree = "<group>"; };
 		2DDB9D7A234BAE0F002C249F /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
 		810B4A032327CCF100E7ECC9 /* PlaybackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackViewController.swift; sourceTree = "<group>"; };
@@ -122,10 +123,9 @@
 				F2C400E5232734ED00BFCC89 /* CoreText.framework in Frameworks */,
 				F2C400DC232734ED00BFCC89 /* QuartzCore.framework in Frameworks */,
 				F2C400DE232734ED00BFCC89 /* UIKit.framework in Frameworks */,
+				2D57A6F5235F7006001DEBE8 /* SDWebImage.framework in Frameworks */,
 				F2C400DF232734ED00BFCC89 /* Security.framework in Frameworks */,
 				F2C400E2232734ED00BFCC89 /* Foundation.framework in Frameworks */,
-				810F4D902316FBBD0003C58A /* SnapKit.framework in Frameworks */,
-				810F4D8D2316F9FD0003C58A /* Kingfisher.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,6 +135,8 @@
 		814C459622F8691C007007C5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2D57A6F4235F7006001DEBE8 /* SDWebImage.framework */,
+				2DC383E4235F6F2700B16290 /* SDWebImageMapKit.framework */,
 				F2DEFD02232AC97F0031FD98 /* libc++.tbd */,
 				F2DEFCF923273CA90031FD98 /* MobileVLCKit.framework */,
 				F2C400F02327370F00BFCC89 /* VideoToolbox.framework */,
@@ -338,15 +340,13 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/Kingfisher.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/SnapKit.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/SDWebImage.framework",
 			);
 			name = Carthage;
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Kingfisher.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SnapKit.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SDWebImage.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

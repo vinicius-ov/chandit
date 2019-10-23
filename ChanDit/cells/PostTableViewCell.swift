@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Kingfisher
+import SDWebImage
 
 class PostTableViewCell: UITableViewCell {
     var postViewModel: PostViewModel!
@@ -16,11 +16,7 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var postAuthorName: UILabel!
     @IBOutlet weak var postTimePublishing: UILabel!
     
-    @IBOutlet weak var postImage: UIImageView! {
-        didSet {
-            postImage.kf.indicatorType = .activity
-        }
-    }
+    @IBOutlet weak var postImage: UIImageView!
     
     @IBOutlet weak var postText: UITextView!
     @IBOutlet weak var postTitle: UILabel!
@@ -56,7 +52,7 @@ class PostTableViewCell: UITableViewCell {
         }
         
         if let thumbUrl = postViewModel.thumbnailUrl(boardId: selectedBoardId) {
-            postImage.kf.setImage(with: thumbUrl)
+            postImage.sd_setImage(with: thumbUrl)
             thumbSizeConstraint?.constant = 160
             postImage.isHidden = false
         } else {

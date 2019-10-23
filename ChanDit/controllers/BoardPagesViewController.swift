@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SnapKit
 
 protocol CellTapInteractionDelegate: class {
     func linkTapped(postNumber: Int, opNumber: Int)

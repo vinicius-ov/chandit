@@ -1,2 +1,2 @@
-github "onevcat/Kingfisher" ~> 5.0
+github "SDWebImage/SDWebImage"
 binary "https://code.videolan.org/videolan/VLCKit/raw/master/Packaging/MobileVLCKit.json" ~> 3.3.0
