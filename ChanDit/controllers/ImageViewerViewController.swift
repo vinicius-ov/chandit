@@ -31,6 +31,8 @@ class ImageViewerViewController: UIViewController {
     var boardId: String!
     var tapGesture: UITapGestureRecognizer!
     
+    let imageCache = SDImageCache.shared
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         scrollView.delegate = self
@@ -59,11 +61,11 @@ class ImageViewerViewController: UIViewController {
     }
     
     fileprivate func storeDownloadedCacheToData(_ image: UIImage?, _ data: Data?, _ url: URL) {
-        SDImageCache.shared.store(image, imageData: data, forKey: url.absoluteString, toDisk: true, completion: nil)
+        imageCache.store(image, imageData: data, forKey: url.absoluteString, toDisk: true, completion: nil)
     }
     
     func download(_ url: URL) {
-        SDImageCache.shared.queryCacheOperation(forKey: url.absoluteString) { (image, data, cacheType) in
+        imageCache.queryCacheOperation(forKey: url.absoluteString) { (image, data, cacheType) in
             if let image = image {
                 self.setImageToImageView(image)
                 self.updateInterfaceImageLoaded()
@@ -97,29 +99,42 @@ class ImageViewerViewController: UIViewController {
     
     @objc func saveImage() {
         self.navigationItem.rightBarButtonItem?.isEnabled = false
-        guard let url = postViewModel.imageUrl(boardId: boardId) else { return }
-        PHPhotoLibrary.requestAuthorization( { (PHAuthorizationStatus) in
-            //empty
-        })
-        if PHPhotoLibrary.authorizationStatus() == .authorized {
-            SDImageCache.shared.queryCacheOperation(forKey: url.absoluteString) { (image, data, cacheType) in
-                if let data = data {
-                    PHPhotoLibrary.shared().performChanges({
-                        PHAssetCreationRequest.forAsset().addResource(with: .photo, data: data, options: nil)
-                    }) { (success, error) in
-                        if success {
-                            DispatchQueue.main.async { self.navigationItem.rightBarButtonItem?.isEnabled = true
-                                self.showSuccessToast()
-                            }
+        PHPhotoLibrary.requestAuthorization( { [weak self] (status) in
+            if status == .authorized {
+                guard let url = self?.postViewModel.imageUrl(boardId: (self?.boardId)!) else { return }
+                if let data = self?.imageCache.diskImageData(forKey: url.absoluteString) {
+                        self?.saveToCameraRoll(data)
+                    } else {
+                        print("sem coiso no cache")
+                        DispatchQueue.main.async {
+                            self?.navigationItem.rightBarButtonItem?.isEnabled = true
                         }
                     }
+            } else {
+                DispatchQueue.main.async {
+                    self?.navigationItem.rightBarButtonItem?.isEnabled = true
+                    self?.showToast(message: "Not authorized to save images in Camera Roll. Go to Settings to fix this.", textColor: nil, backgroundColor: nil)
                 }
             }
-        } else {
-            self.navigationItem.rightBarButtonItem?.isEnabled = true
-            self.showToast(message: "Not authorized to save images in Camera Roll. Go to Settings to fix this.", textColor: nil, backgroundColor: nil)
+        })
+    }
+
+    fileprivate func saveToCameraRoll(_ data: Data) {
+        if PHPhotoLibrary.authorizationStatus() == .authorized {
+            PHPhotoLibrary.shared().performChanges({
+                PHAssetCreationRequest.forAsset().addResource(with: .photo, data: data, options: nil)
+            }) { (success, error) in
+                if success {
+                    DispatchQueue.main.async { self.navigationItem.rightBarButtonItem?.isEnabled = true
+                        self.showSuccessToast()
+                    }
+                } else {
+                    print(error?.localizedDescription)
+                }
+            }
         }
     }
+
     
     func showSuccessToast() {
             self.showToast(message: "Photo was saved to the camera roll.", textColor: UIColor.black, backgroundColor: UIColor(named: "lightGreenSuccess"))
