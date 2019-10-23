@@ -91,6 +91,7 @@ class ThreadViewController: BaseViewController {
     
     @IBAction func replyWebView(_ sender: Any) {
         let viewController = WebViewViewController(nibName: "WebViewViewController", bundle: Bundle.main)
+        viewController.modalPresentationStyle = .overCurrentContext
         viewController.thread = threadViewModel.opNumber
         viewController.board = threadViewModel.boardIdToNavigate
         show(viewController, sender: nil)

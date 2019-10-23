@@ -20,21 +20,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="20"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nFn-3a-MY2">
-                                <rect key="frame" x="0.0" y="0.0" width="138" height="20"/>
+                                <rect key="frame" x="0.0" y="0.0" width="136" height="20"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zp6-Hk-MGE">
-                                <rect key="frame" x="138" y="0.0" width="138" height="20"/>
+                                <rect key="frame" x="136" y="0.0" width="136" height="20"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TimeofPost" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ryz-nT-74V">
-                                <rect key="frame" x="276" y="0.0" width="138" height="20"/>
+                                <rect key="frame" x="272" y="0.0" width="136" height="20"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -43,6 +43,7 @@
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="Ryz-nT-74V" secondAttribute="bottom" id="0ob-vh-xNv"/>
+                            <constraint firstAttribute="trailing" secondItem="Ryz-nT-74V" secondAttribute="trailing" constant="6" id="L49-St-LQd"/>
                             <constraint firstAttribute="height" constant="20" id="wdd-mu-TGj"/>
                         </constraints>
                     </stackView>

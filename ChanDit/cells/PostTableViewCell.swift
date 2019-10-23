@@ -18,8 +18,8 @@ class PostTableViewCell: UITableViewCell {
     
     @IBOutlet weak var postImage: UIImageView! {
         didSet {
-            postImage.layer.borderWidth = 1.0
-            postImage.layer.borderColor = UIColor.blue.cgColor
+            postImage.sd_imageIndicator = SDWebImageActivityIndicator.whiteLarge
+            postImage.sd_imageIndicator?.startAnimatingIndicator()
         }
     }
     
@@ -49,34 +49,35 @@ class PostTableViewCell: UITableViewCell {
         postNumber.text = "No.\(postViewModel.number!)"
         postTimePublishing.text = postViewModel.timeFromPost
         
-        //not good, needs to calculate size
-        if let comment = postViewModel.comment, !comment.isEmpty {
-            postText.set(html: postViewModel.comment)
+        if let comment = postViewModel.comment {
+            postText.set(html: comment)
         } else {
             postText.text = ""
         }
         
-        if let thumbUrl = postViewModel.thumbnailUrl(boardId: selectedBoardId) {
-            postImage.sd_setImage(with: thumbUrl)
-            //thumbSizeConstraint?.constant = 160
-            postImage.isHidden = false
+        if postViewModel.isSpoiler {
+            postImage.sd_setImage(with: postViewModel.spoilerUrl)
         } else {
-            //thumbSizeConstraint?.constant = 0
-            postImage.isHidden = true
-            postImage.image = nil
+            if let thumbUrl = postViewModel.thumbnailUrl(boardId: selectedBoardId) {
+                postImage.sd_setImage(with: thumbUrl)
+                //thumbSizeConstraint?.constant = 160
+                postImage.isHidden = false
+                postImage.addGestureRecognizer(
+                UITapGestureRecognizer(target: self,
+                                       action: #selector(viewImage(_:))))
+            } else {
+                postImage.gestureRecognizers?.removeAll()
+                postImage.isHidden = true
+                postImage.image = nil
+            }
         }
         
-        postImage.addGestureRecognizer(
-            UITapGestureRecognizer(target: self,
-                                   action: #selector(viewImage(_:))))
         postText.addGestureRecognizer(
             UITapGestureRecognizer(target: self,
                                    action: #selector(tappedLink(_:))))
         
-        
         mediaSize.text = postViewModel.fileSize
         mediaExtension.text = postViewModel.mediaFullName
-        
     }
     
     var thumbSizeConstraint: NSLayoutConstraint? {
@@ -111,7 +112,6 @@ class PostTableViewCell: UITableViewCell {
             }
             let actionCancel = UIAlertAction(title: "Cancel", style: .default)
             tapDelegate?.presentAlertExitingApp([actionOk, actionCancel])
-            
         }
     }
 }

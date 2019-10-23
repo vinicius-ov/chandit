@@ -79,6 +79,9 @@ struct PostViewModel {
 }
 
 extension PostViewModel {
+    var spoilerUrl: URL? {
+        return URL(string: "https://s.4cdn.org/image/spoiler.png")
+    }
     
     var comment: String? {
         let formatString = post.com?.replacingOccurrences(of: "#p", with: "chandit://")
@@ -131,9 +134,13 @@ extension PostViewModel {
         formatter.locale = Locale(identifier: "pt_BR")
         formatter.dateFormat = "H"
         let hours = formatter.string(from: date)
-        formatter.dateFormat = "mm"
+        formatter.dateFormat = "m"
         let minutes = formatter.string(from: date)
-        return "\(hours)h\(minutes)m ago"
+        if hours == "0" {
+            return "\(minutes)m ago"
+        } else {
+            return "\(hours)h\(minutes)m ago"
+        }
     }
     
     var postAuthorName: String? {
