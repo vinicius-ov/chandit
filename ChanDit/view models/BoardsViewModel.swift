@@ -12,8 +12,8 @@ class BoardsViewModel {
     let usIdentifier = "last_board_selected"
     var page = 0
     
-    var postNumberToNavigate:Int? = 0
-    var threadToLaunch:Int? = 0
+    var postNumberToNavigate: Int? = 0
+    var threadToLaunch: Int? = 0
     
     var boards: [Board]
     
@@ -29,7 +29,7 @@ class BoardsViewModel {
     }
     
     func nextPage() -> Int {
-        page = page + 1
+        page += 1
         return page
     }
     

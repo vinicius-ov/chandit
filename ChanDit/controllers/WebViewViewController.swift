@@ -12,7 +12,8 @@ import WebKit
 class WebViewViewController: UIViewController {
 
     @IBOutlet weak var webView: WKWebView!
-    let url: String! = nil
+    var board: String?
+    var thread: Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,7 +22,8 @@ class WebViewViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        webView.load(URLRequest(url: URL(string: url)!, cachePolicy: .reloadRevalidatingCacheData, timeoutInterval: 10))
+        let url = URL(string: "https://boards.4channel.org/\(board!)/thread/\(thread!)")
+        webView.load(URLRequest(url: url!, cachePolicy: .reloadRevalidatingCacheData, timeoutInterval: 10))
     }
 
 }

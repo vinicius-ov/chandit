@@ -183,8 +183,13 @@ extension ImageViewerViewController: UIScrollViewDelegate {
 }
 
 extension UIViewController {
-    func showToast(message:String, textColor: UIColor?, backgroundColor: UIColor?) {
-        let label = UILabel(frame: CGRect(x: view.frame.origin.x, y: view.frame.height*0.9, width: view.frame.width, height: 30))
+    func showToast(message:String,
+                   textColor: UIColor?,
+                   backgroundColor: UIColor?) {
+        let label = UILabel(frame:
+            CGRect(x: view.frame.origin.x,
+                   y: view.frame.height*0.9,
+                   width: view.frame.width, height: 30))
         label.backgroundColor = backgroundColor ?? .red
         label.clipsToBounds = true
         label.textAlignment = .center

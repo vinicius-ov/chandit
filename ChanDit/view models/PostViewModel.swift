@@ -15,8 +15,8 @@ struct PageViewModel {
         self.threads = NSMutableOrderedSet()
     }
     
-    func threadViewModel(at index: Int) -> ThreadViewModel {
-        return self.threads![index] as! ThreadViewModel
+    func threadViewModel(at index: Int) -> ThreadViewModel? {
+        return self.threads![index] as? ThreadViewModel
     }
     
     func setNavigation(forThreadInSection section:Int, forPostInIndex index:Int) {
@@ -68,6 +68,10 @@ struct ThreadViewModel: Equatable {
         return op.title ?? op.subject ?? ""
     }
     
+    var opNumber: Int? {
+        return postViewModel(at: 0)?.number
+    }
+    
 }
 
 struct PostViewModel {
@@ -94,7 +98,7 @@ extension PostViewModel {
     }
     
     var number: Int? {
-        return post.no
+        return post.number
     }
 
     func thumbnailUrl(boardId: String) -> URL? {
@@ -105,11 +109,11 @@ extension PostViewModel {
     }
     
     var thumbWidth: CGFloat? {
-        return CGFloat.init(exactly: NSNumber(value: post.tn_w ?? 0))
+        return CGFloat.init(exactly: NSNumber(value: post.thumbWidth ?? 0))
     }
     
     var thumbHeight: CGFloat? {
-        return CGFloat.init(exactly: NSNumber(value: post.tn_h ?? 0))
+        return CGFloat.init(exactly: NSNumber(value: post.thumbHeight ?? 0))
     }
 
     func imageUrl(boardId: String) -> URL? {
@@ -141,7 +145,7 @@ extension PostViewModel {
         var fsize = Double(filesize)/1024.0
         var unit = "KiB"
         if fsize > 1024 {
-            fsize = fsize / 1024
+            fsize /= 1024
             unit = "MiB"
         }
         return String(format: "%.2f %@",fsize,unit)
@@ -165,11 +169,11 @@ extension PostViewModel {
     }
     
     var imageWidth: CGFloat? {
-        return CGFloat.init(exactly: NSNumber(value: post.w ?? 0))
+        return CGFloat.init(exactly: NSNumber(value: post.imageWidth ?? 0))
     }
     
     var imageHeight: CGFloat? {
-        return CGFloat.init(exactly: NSNumber(value: post.h ?? 0))
+        return CGFloat.init(exactly: NSNumber(value: post.imageHeight ?? 0))
     }
     
     var replies: Int? {

@@ -60,8 +60,6 @@
 		2DDB9D7A234BAE0F002C249F /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
 		810B4A032327CCF100E7ECC9 /* PlaybackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackViewController.swift; sourceTree = "<group>"; };
 		810B4A042327CCF100E7ECC9 /* PlaybackViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlaybackViewController.xib; sourceTree = "<group>"; };
-		810F4D8C2316F9FD0003C58A /* Kingfisher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kingfisher.framework; path = Carthage/Build/iOS/Kingfisher.framework; sourceTree = "<group>"; };
-		810F4D8F2316FBBD0003C58A /* SnapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnapKit.framework; path = Carthage/Build/iOS/SnapKit.framework; sourceTree = "<group>"; };
 		814C458A22F4BFF8007007C5 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		814C458C22F4C67F007007C5 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		814C458E22F86194007007C5 /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
@@ -155,8 +153,6 @@
 				F2C400D2232734EB00BFCC89 /* QuartzCore.framework */,
 				F2C400D5232734EC00BFCC89 /* Security.framework */,
 				F2C400D4232734EC00BFCC89 /* UIKit.framework */,
-				810F4D8F2316FBBD0003C58A /* SnapKit.framework */,
-				810F4D8C2316F9FD0003C58A /* Kingfisher.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -269,6 +265,7 @@
 				81921BDA22F468DD007F4EFC /* Frameworks */,
 				81921BDB22F468DD007F4EFC /* Resources */,
 				814C459422F868C1007007C5 /* Carthage */,
+				2D57A6F92360C4EE001DEBE8 /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -332,6 +329,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		2D57A6F92360C4EE001DEBE8 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
 		814C459422F868C1007007C5 /* Carthage */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

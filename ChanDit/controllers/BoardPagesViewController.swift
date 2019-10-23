@@ -135,7 +135,6 @@ class BoardPagesViewController: BaseViewController {
                     }
                     self.fetchData(append: false)
                 }
-                break
             case .failure(_):
                 break
             }
@@ -178,9 +177,12 @@ class BoardPagesViewController: BaseViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let vc = segue.destination as! ThreadViewController
-        let threadViewModel = ThreadViewModel(threadNumberToNavigate: boardsViewModel.threadToLaunch!, postNumberToNavigate: boardsViewModel.postNumberToNavigate, originBoard: boardsViewModel.selectedBoardId)
-        vc.threadViewModel = threadViewModel
+        let viewController = segue.destination as? ThreadViewController
+        let threadViewModel = ThreadViewModel(
+            threadNumberToNavigate: boardsViewModel.threadToLaunch!,
+            postNumberToNavigate: boardsViewModel.postNumberToNavigate,
+            originBoard: boardsViewModel.selectedBoardId)
+        viewController?.threadViewModel = threadViewModel
     }
     
     @IBAction func reloadData(_ sender: Any) {
@@ -195,7 +197,8 @@ class BoardPagesViewController: BaseViewController {
 
 extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (pageViewModel.threads[section] as! ThreadViewModel).posts.count
+        guard let threadViewModel = pageViewModel.threads[section] as? ThreadViewModel else { return 0 }
+        return threadViewModel.posts.count
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -203,45 +206,45 @@ extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as! PostTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
         let threadViewModel = pageViewModel.threads[indexPath.section]
-        let post = (threadViewModel as! ThreadViewModel).postViewModel(at: indexPath.row)
-        cell.selectedBoardId = boardsViewModel.selectedBoardId
-        cell.postViewModel = post
         
-        cell.loadCell()
-        cell.tapDelegate = self
+        let post = (threadViewModel as? ThreadViewModel)?.postViewModel(at: indexPath.row)
+        cell?.selectedBoardId = boardsViewModel.selectedBoardId
+        cell?.postViewModel = post
+        
+        cell?.loadCell()
+        cell?.tapDelegate = self
                 
-        return cell
+        return cell ?? UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        
-        let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "ThreadFooterView") as! ThreadFooterView
-        
-        guard let threadToLaunch = pageViewModel.threadViewModel(at: section).postViewModel(at: 0) else {
+        let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "ThreadFooterView") as? ThreadFooterView
+
+        guard let threadToLaunch = pageViewModel.threadViewModel(at: section)?.postViewModel(at: 0) else {
             return footerView
         }
-        
-        footerView.threadToNavigate = threadToLaunch.number
-        footerView.imagesCount.text = "\(threadToLaunch.images ?? 0) (\(threadToLaunch.omittedImages ?? 0))"
-        footerView.postsCount.text = "\(threadToLaunch.replies ?? 0) (\(threadToLaunch.omittedPosts ?? 0))"
-        footerView.delegate = self
-        
+
+        footerView?.threadToNavigate = threadToLaunch.number
+        footerView?.imagesCount.text = "\(threadToLaunch.images ?? 0) (\(threadToLaunch.omittedImages ?? 0))"
+        footerView?.postsCount.text = "\(threadToLaunch.replies ?? 0) (\(threadToLaunch.omittedPosts ?? 0))"
+        footerView?.delegate = self
+
         return footerView
     }
-    
+
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as! PostTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
         let threadViewModel = pageViewModel.threads[indexPath.section]
-        let post = (threadViewModel as! ThreadViewModel).postViewModel(at: indexPath.row)
-        cell.postText.set(html: post?.comment)
+        let post = (threadViewModel as? ThreadViewModel)?.postViewModel(at: indexPath.row)
+        cell?.postText.set(html: post?.comment)
     }
 }
 
-extension BoardPagesViewController : UITableViewDataSourcePrefetching {
+extension BoardPagesViewController: UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-        if indexPaths.contains([pageViewModel.threads.count-3,0]) {
+        if indexPaths.contains([pageViewModel.threads.count-3, 0]) {
             print("RELOAD!!!!")
             fetchData(append: true)
         }
@@ -270,7 +273,10 @@ extension BoardPagesViewController: CellTapInteractionDelegate {
     }
     
     func presentAlertExitingApp(_ actions: [UIAlertAction]) {
-        callAlertView(title: "Exit ChanDit", message: "This link will take you outside ChanDit. You are in your own. Proceed?", actions: actions)
+        callAlertView(
+            title: "Exit ChanDit",
+            message: "This link will take you outside ChanDit. You are in your own. Proceed?",
+            actions: actions)
     }
     
     func imageTapped(_ viewController: UIViewController) {

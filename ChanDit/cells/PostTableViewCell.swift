@@ -16,7 +16,12 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var postAuthorName: UILabel!
     @IBOutlet weak var postTimePublishing: UILabel!
     
-    @IBOutlet weak var postImage: UIImageView!
+    @IBOutlet weak var postImage: UIImageView! {
+        didSet {
+            postImage.layer.borderWidth = 1.0
+            postImage.layer.borderColor = UIColor.blue.cgColor
+        }
+    }
     
     @IBOutlet weak var postText: UITextView!
     @IBOutlet weak var postTitle: UILabel!
@@ -35,7 +40,7 @@ class PostTableViewCell: UITableViewCell {
     func loadCell() {
         postAuthorName.text = postViewModel.postAuthorName
         
-        if let title = postViewModel.title, !title.isEmpty {
+        if let title = postViewModel.title {
             postTitle.set(html: title)
         } else {
             postTitle.text = ""
@@ -53,7 +58,7 @@ class PostTableViewCell: UITableViewCell {
         
         if let thumbUrl = postViewModel.thumbnailUrl(boardId: selectedBoardId) {
             postImage.sd_setImage(with: thumbUrl)
-            thumbSizeConstraint?.constant = 160
+            //thumbSizeConstraint?.constant = 160
             postImage.isHidden = false
         } else {
             //thumbSizeConstraint?.constant = 0
@@ -101,11 +106,11 @@ class PostTableViewCell: UITableViewCell {
             tapDelegate?.linkTapped(postNumber: postNumber!, opNumber: postViewModel.resto!)
         } else {
             //see https://stackoverflow.com/questions/39949169/swift-open-url-in-a-specific-browser-tab for other browsers deeplinks
-            let actionOk = UIAlertAction(title: "OK", style: .default) { (action) in
+            let actionOk = UIAlertAction(title: "OK", style: .default) { (_) in
                 UIApplication.shared.open(URL(string: "firefox://open-url?url=\(tappedUrl)")!)
             }
             let actionCancel = UIAlertAction(title: "Cancel", style: .default)
-            tapDelegate?.presentAlertExitingApp([actionOk,actionCancel])
+            tapDelegate?.presentAlertExitingApp([actionOk, actionCancel])
             
         }
     }
@@ -121,10 +126,10 @@ extension UILabel {
                                            documentAttributes: nil)
                 self.font = UIFont.systemFont(ofSize: 14.0)
                 self.textColor = UIColor.white
-            } catch let e as NSError {
-                print("Couldn't parse \(html): \(e.localizedDescription)")
+            } catch let error as NSError {
+                print("Couldn't parse \(html): \(error.localizedDescription)")
             }
-        }else{
+        } else {
             self.text = ""
         }
     }
@@ -140,8 +145,8 @@ extension UITextView {
                                            documentAttributes: nil)
                 self.font = UIFont.systemFont(ofSize: 17.0)
                 self.textColor = UIColor.white
-            } catch let e as NSError {
-                print("Couldn't parse \(html): \(e.localizedDescription)")
+            } catch let error as NSError {
+                print("Couldn't parse \(html): \(error.localizedDescription)")
             }
         }else{
             self.text = ""

@@ -15,16 +15,16 @@ class ThreadViewController: BaseViewController {
     @IBOutlet weak var postsTable: UITableView!
     var selectedBoardId: String!
     let service = Service()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         postsTable.isHidden = true
         postsTable.dataSource = self
         postsTable.delegate = self
-        
+
         postsTable.register(UINib(nibName: "PostCell", bundle: nil), forCellReuseIdentifier: "postCellIdentifier")
         postsTable.register(UINib(nibName: "ThreadFooterView", bundle: nil), forHeaderFooterViewReuseIdentifier: ThreadFooterView.reuseIdentifier)
-        
+    
         postsTable.rowHeight = UITableView.automaticDimension
         postsTable.estimatedRowHeight = 260
         fetchData()
@@ -39,9 +39,9 @@ class ThreadViewController: BaseViewController {
                         print("error trying to convert data to JSON \(data)")
                         return
                     }
-                    
+                   
                     self.threadViewModel.posts = thread.posts.map(PostViewModel.init)
-                    
+                   
                     DispatchQueue.main.async {
                         self.title = self.threadViewModel.threadTitle
                         self.postsTable.reloadData()
@@ -55,7 +55,7 @@ class ThreadViewController: BaseViewController {
             }
         }
     }
-    
+   
     func navigateToPost() {
         guard let postNumberToNavigate = threadViewModel.postNumberToNavigate,
              let index = self.threadViewModel.findPostIndexByNumber(postNumberToNavigate) else { return }
@@ -89,6 +89,12 @@ class ThreadViewController: BaseViewController {
         }
     }
     
+    @IBAction func replyWebView(_ sender: Any) {
+        let viewController = WebViewViewController(nibName: "WebViewViewController", bundle: Bundle.main)
+        viewController.thread = threadViewModel.opNumber
+        viewController.board = threadViewModel.boardIdToNavigate
+        show(viewController, sender: nil)
+    }
 }
 
 extension ThreadViewController: UITableViewDataSource {
@@ -97,34 +103,35 @@ extension ThreadViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as! PostTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
         //let thread = pageViewModel.threads[indexPath.section]
         let postViewModel = threadViewModel.postViewModel(at: indexPath.row)
-        cell.selectedBoardId = threadViewModel.boardIdToNavigate
-        cell.postViewModel = postViewModel
-        cell.loadCell()
-        cell.tapDelegate = self
-        return cell
+        cell?.selectedBoardId = threadViewModel.boardIdToNavigate
+        cell?.postViewModel = postViewModel
+        cell?.loadCell()
+        cell?.tapDelegate = self
+        return cell ?? UITableViewCell()
     }
 }
 
 extension ThreadViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        
-        let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "ThreadFooterView") as! ThreadFooterView
+
+        let footerView = tableView.dequeueReusableHeaderFooterView(
+            withIdentifier: "ThreadFooterView") as? ThreadFooterView
         
         guard let threadToLaunch = threadViewModel.postViewModel(at: 0) else {
             return footerView
         }
-        
-        footerView.threadToNavigate = threadToLaunch.number
-        footerView.imagesCount.text = "\(threadToLaunch.images ?? 0) (\(threadToLaunch.omittedImages ?? 0))"
-        footerView.postsCount.text = "\(threadToLaunch.replies ?? 0) (\(threadToLaunch.omittedPosts ?? 0))"
-        footerView.navigateButton.isHidden = true
-        
+
+        footerView?.threadToNavigate = threadToLaunch.number
+        footerView?.imagesCount.text = "\(threadToLaunch.images ?? 0) (\(threadToLaunch.omittedImages ?? 0))"
+        footerView?.postsCount.text = "\(threadToLaunch.replies ?? 0) (\(threadToLaunch.omittedPosts ?? 0))"
+        footerView?.navigateButton.isHidden = true
+
         return footerView
     }
-    
+
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         print("drag")
     }
@@ -153,11 +160,11 @@ extension ThreadViewController: CellTapInteractionDelegate {
         self.threadViewModel.postNumberToNavigate = postNumber
         self.navigateToPost()
     }
-    
+
     func imageTapped(_ viewController: UIViewController) {
         show(viewController, sender: self)
     }
-    
+
     func presentAlertExitingApp(_ actions: [UIAlertAction]) {
         callAlertView(title: "Exit ChanDit", message: "This link will take you outside ChanDit. You are in your own. Proceed?", actions: actions)
     }

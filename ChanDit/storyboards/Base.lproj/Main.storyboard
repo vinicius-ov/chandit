@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="iE8-IW-Miu">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="iE8-IW-Miu">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -120,6 +120,11 @@
                             <barButtonItem systemItem="rewind" id="7tU-3T-ndS">
                                 <connections>
                                     <action selector="returnToQuoteOriginalPost:" destination="dxm-dt-aDR" id="3DC-mZ-K0Q"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="reply" id="JMJ-gt-Ksx">
+                                <connections>
+                                    <action selector="replyWebView:" destination="dxm-dt-aDR" id="DCm-M7-2uQ"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
