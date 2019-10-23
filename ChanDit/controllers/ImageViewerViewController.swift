@@ -70,6 +70,7 @@ class ImageViewerViewController: UIViewController {
                 self.setImageToImageView(image)
                 self.updateInterfaceImageLoaded()
                 print("SDWEB: buscando da cache")
+                self.loadingIndicator.stopAnimating()
             } else {
                 let downloader = SDWebImageDownloader.shared
                 downloader.downloadImage(with: url) { [weak self] (image, data, error, finished) in
@@ -81,6 +82,7 @@ class ImageViewerViewController: UIViewController {
                     } else {
                         print("SDWEB: ERRO buscando da net")
                     }
+                    self?.loadingIndicator.stopAnimating()
                 }
             }
         }
