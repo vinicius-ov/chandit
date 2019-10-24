@@ -238,7 +238,7 @@ extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource 
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
         let threadViewModel = pageViewModel.threads[indexPath.section]
         let post = (threadViewModel as? ThreadViewModel)?.postViewModel(at: indexPath.row)
-        cell?.postText.set(html: post?.comment)
+        cell?.postText.attributedText = post?.comment?.toPlainText
     }
 }
 

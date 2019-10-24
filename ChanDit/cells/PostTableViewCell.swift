@@ -41,7 +41,7 @@ class PostTableViewCell: UITableViewCell {
         postAuthorName.text = postViewModel.postAuthorName
         
         if let title = postViewModel.title {
-            postTitle.set(html: title)
+            postTitle.attributedText = title.toPlainText
         } else {
             postTitle.text = ""
         }
@@ -50,7 +50,7 @@ class PostTableViewCell: UITableViewCell {
         postTimePublishing.text = postViewModel.timeFromPost
         
         if let comment = postViewModel.comment {
-            postText.set(html: comment)
+            postText.attributedText = comment.toPlainText
         } else {
             postText.text = ""
         }
@@ -116,46 +116,31 @@ class PostTableViewCell: UITableViewCell {
     }
 }
 
-extension UILabel {
-    func set(html: String?) {
-        if let html = html, let htmlData = html.data(using: .unicode) {
+extension String {
+    var toPlainText: NSAttributedString {
+        var attribText = NSMutableAttributedString(string: "")
+        if let htmlData = self.data(using: .unicode) {
             do {
-                self.attributedText =
-                    try NSAttributedString(data: htmlData,
+                attribText =
+                    try NSMutableAttributedString(data: htmlData,
                                            options: [.documentType: NSAttributedString.DocumentType.html],
                                            documentAttributes: nil)
-                self.font = UIFont.systemFont(ofSize: 14.0)
-                self.textColor = UIColor.white
+                attribText.addAttributes([.foregroundColor: UIColor.white,
+                                          .font: UIFont.systemFont(ofSize: 17)],
+                                         range: NSRange(location: 0, length: attribText.mutableString.length))
             } catch let error as NSError {
-                print("Couldn't parse \(html): \(error.localizedDescription)")
+                print("Couldn't parse \(self): \(error.localizedDescription)")
             }
-        } else {
-            self.text = ""
         }
-    }
-}
-
-extension UITextView {
-    func set(html: String?) {
-        if let html = html, let htmlData = html.data(using: .unicode) {
-            do {
-                self.attributedText =
-                    try NSAttributedString(data: htmlData,
-                                           options: [.documentType: NSAttributedString.DocumentType.html],
-                                           documentAttributes: nil)
-                self.font = UIFont.systemFont(ofSize: 17.0)
-                self.textColor = UIColor.white
-            } catch let error as NSError {
-                print("Couldn't parse \(html): \(error.localizedDescription)")
-            }
-        }else{
-            self.text = ""
-        }
+        return attribText
     }
 }
 
 extension PostTableViewCell: UITextViewDelegate {
-    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+    func textView(_ textView: UITextView,
+                  shouldInteractWith URL: URL,
+                  in characterRange: NSRange,
+                  interaction: UITextItemInteraction) -> Bool {
         tappedUrl = URL
         return false
     }
