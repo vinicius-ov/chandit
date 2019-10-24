@@ -234,12 +234,12 @@ extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource 
         return footerView
     }
 
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
-        let threadViewModel = pageViewModel.threads[indexPath.section]
-        let post = (threadViewModel as? ThreadViewModel)?.postViewModel(at: indexPath.row)
-        cell?.postText.attributedText = post?.comment?.toPlainText
-    }
+//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
+//        let threadViewModel = pageViewModel.threads[indexPath.section]
+//        let post = (threadViewModel as? ThreadViewModel)?.postViewModel(at: indexPath.row)
+//        cell?.postText.attributedText = post?.comment?.toPlainText()
+//    }
 }
 
 extension BoardPagesViewController: UITableViewDataSourcePrefetching {

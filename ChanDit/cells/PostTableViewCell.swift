@@ -41,7 +41,7 @@ class PostTableViewCell: UITableViewCell {
         postAuthorName.text = postViewModel.postAuthorName
         
         if let title = postViewModel.title {
-            postTitle.attributedText = title.toPlainText
+            postTitle.attributedText = title.toPlainText()
         } else {
             postTitle.text = ""
         }
@@ -50,7 +50,7 @@ class PostTableViewCell: UITableViewCell {
         postTimePublishing.text = postViewModel.timeFromPost
         
         if let comment = postViewModel.comment {
-            postText.attributedText = comment.toPlainText
+            postText.attributedText = comment.toPlainText()
         } else {
             postText.text = ""
         }
@@ -117,7 +117,7 @@ class PostTableViewCell: UITableViewCell {
 }
 
 extension String {
-    var toPlainText: NSAttributedString {
+    func toPlainText(fontSize: CGFloat? = 17) -> NSAttributedString {
         var attribText = NSMutableAttributedString(string: "")
         if let htmlData = self.data(using: .unicode) {
             do {
@@ -126,7 +126,7 @@ extension String {
                                            options: [.documentType: NSAttributedString.DocumentType.html],
                                            documentAttributes: nil)
                 attribText.addAttributes([.foregroundColor: UIColor.white,
-                                          .font: UIFont.systemFont(ofSize: 17)],
+                                          .font: UIFont.systemFont(ofSize: fontSize!)],
                                          range: NSRange(location: 0, length: attribText.mutableString.length))
             } catch let error as NSError {
                 print("Couldn't parse \(self): \(error.localizedDescription)")
