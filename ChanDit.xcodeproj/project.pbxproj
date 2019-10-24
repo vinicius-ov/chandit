@@ -188,6 +188,7 @@
 				81AC6B8D2319865300502931 /* controllers */,
 				81AC6B8C2319864800502931 /* cells */,
 				81AC6B8F2319866B00502931 /* storyboards */,
+				2D2784012357ADD300DD0C9F /* ThreadFooterView.xib */,
 			);
 			path = ChanDit;
 			sourceTree = "<group>";
@@ -232,7 +233,6 @@
 				81921BE922F468DE007F4EFC /* LaunchScreen.storyboard */,
 				F2BAFFE123495AAB006D2CEE /* PostCell.xib */,
 				2DD9C31823576EBA00A14EE4 /* ImageViewerViewController.xib */,
-				2D2784012357ADD300DD0C9F /* ThreadFooterView.xib */,
 			);
 			path = storyboards;
 			sourceTree = "<group>";

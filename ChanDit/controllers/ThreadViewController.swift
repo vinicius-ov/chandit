@@ -89,12 +89,26 @@ class ThreadViewController: BaseViewController {
         }
     }
     
-    @IBAction func replyWebView(_ sender: Any) {
-        let viewController = WebViewViewController(nibName: "WebViewViewController", bundle: Bundle.main)
-        viewController.modalPresentationStyle = .overCurrentContext
-        viewController.thread = threadViewModel.opNumber
-        viewController.board = threadViewModel.boardIdToNavigate
-        show(viewController, sender: nil)
+    @IBAction func gotoTop(_ sender: Any) {
+        self.postsTable.scrollToRow(at:
+            IndexPath(item: 0, section: 0), at: .top, animated: true)
+    }
+    
+    @IBAction func gotoBottom(_ sender: Any) {
+//        var time = 0.5
+        let posts = self.threadViewModel.posts.count
+//        switch posts {
+//        case 50..<100:
+//            time = 1.0
+//        case (100...):
+//            time = 2.0
+//        default:
+//            time = 0.5
+//        }
+        //UIView.animate(withDuration: time, animations: { [weak self] in
+            self.postsTable.scrollToRow(at:
+                IndexPath(item: posts - 1, section: 0), at: .top, animated: true)
+        //})
     }
 }
 
@@ -128,7 +142,8 @@ extension ThreadViewController: UITableViewDelegate {
         footerView?.threadToNavigate = threadToLaunch.number
         footerView?.imagesCount.text = "\(threadToLaunch.images ?? 0) (\(threadToLaunch.omittedImages ?? 0))"
         footerView?.postsCount.text = "\(threadToLaunch.replies ?? 0) (\(threadToLaunch.omittedPosts ?? 0))"
-        footerView?.navigateButton.isHidden = true
+        footerView?.navigateButton.setTitle("Reply", for: .normal)
+        footerView?.delegate = self
 
         return footerView
     }
@@ -167,6 +182,17 @@ extension ThreadViewController: CellTapInteractionDelegate {
     }
 
     func presentAlertExitingApp(_ actions: [UIAlertAction]) {
-        callAlertView(title: "Exit ChanDit", message: "This link will take you outside ChanDit. You are in your own. Proceed?", actions: actions)
+        callAlertView(title: "Exit ChanDit",
+                      message: "This link will take you outside ChanDit. You are in your own. Proceed?",
+                      actions: actions)
+    }
+}
+
+extension ThreadViewController: ThreadFooterViewDelegate {
+    func threadFooterView(_ footer: ThreadFooterView, threadToNavigate section: Int) {
+        let viewController = WebViewViewController(nibName: "WebViewViewController", bundle: Bundle.main)
+        viewController.thread = threadViewModel.opNumber
+        viewController.board = threadViewModel.boardIdToNavigate
+        show(viewController, sender: nil)
     }
 }

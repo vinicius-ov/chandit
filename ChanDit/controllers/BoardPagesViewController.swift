@@ -193,6 +193,10 @@ class BoardPagesViewController: BaseViewController {
         fetchData(append: false)
     }
     
+    @IBAction func gotoTop(_ sender: Any) {
+        self.postsTable.scrollToRow(at:
+            IndexPath(item: 0, section: 0), at: .top, animated: true)
+    }
 }
 
 extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource {
@@ -233,13 +237,6 @@ extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource 
 
         return footerView
     }
-
-//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
-//        let threadViewModel = pageViewModel.threads[indexPath.section]
-//        let post = (threadViewModel as? ThreadViewModel)?.postViewModel(at: indexPath.row)
-//        cell?.postText.attributedText = post?.comment?.toPlainText()
-//    }
 }
 
 extension BoardPagesViewController: UITableViewDataSourcePrefetching {
@@ -291,3 +288,4 @@ extension BoardPagesViewController: ThreadFooterViewDelegate {
         self.navigateToThread()
     }
 }
+

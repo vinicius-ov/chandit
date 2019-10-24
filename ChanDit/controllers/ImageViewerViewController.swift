@@ -53,7 +53,11 @@ class ImageViewerViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(self.saveImage))
+        if #available(iOS 13.0, *) {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "tray.and.arrow.down.fill"), style: .plain, target: self, action: #selector(self.saveImage))
+        } else {
+            UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(self.saveImage))
+        }
         navigationItem.rightBarButtonItem?.isEnabled = false
         
         guard let url = postViewModel.imageUrl(boardId: boardId) else { return }
