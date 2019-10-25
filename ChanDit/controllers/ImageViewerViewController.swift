@@ -54,9 +54,14 @@ class ImageViewerViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         if #available(iOS 13.0, *) {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "tray.and.arrow.down.fill"), style: .plain, target: self, action: #selector(self.saveImage))
+            navigationItem.rightBarButtonItem = UIBarButtonItem(
+                image: UIImage(systemName: "tray.and.arrow.down.fill"),
+                style: .plain,
+                target: self,
+                action: #selector(self.saveImage))
         } else {
-            UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(self.saveImage))
+            UIBarButtonItem(barButtonSystemItem: .save,
+                            target: self, action: #selector(self.saveImage))
         }
         navigationItem.rightBarButtonItem?.isEnabled = false
         
@@ -105,10 +110,11 @@ class ImageViewerViewController: UIViewController {
     
     @objc func saveImage() {
         self.navigationItem.rightBarButtonItem?.isEnabled = false
-        PHPhotoLibrary.requestAuthorization( { [weak self] (status) in
+        PHPhotoLibrary.requestAuthorization({ [weak self] (status) in
             if status == .authorized {
                 guard let url = self?.postViewModel.imageUrl(boardId: (self?.boardId)!) else { return }
                 if let data = self?.imageCache.diskImageData(forKey: url.absoluteString) {
+//                    self?.createAlbum()
                         self?.saveToCameraRoll(data)
                     } else {
                         print("sem coiso no cache")
@@ -119,19 +125,69 @@ class ImageViewerViewController: UIViewController {
             } else {
                 DispatchQueue.main.async {
                     self?.navigationItem.rightBarButtonItem?.isEnabled = true
-                    self?.showToast(message: "Not authorized to save images in Camera Roll. Go to Settings to fix this.", textColor: nil, backgroundColor: nil)
+                    self?.showToast(
+                        message: "Not authorized to save images in Camera Roll. Go to Settings to fix this.",
+                        textColor: nil,
+                        backgroundColor: nil)
                 }
             }
         })
     }
+    
+    private func fetchAlbum() -> PHAssetCollection? {
+        let fetchOptions = PHFetchOptions()
+        fetchOptions.predicate = NSPredicate(format: "title = %@", "boardName")
+        let collection = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: fetchOptions)
 
-    fileprivate func saveToCameraRoll(_ data: Data) {
+        if let _: AnyObject = collection.firstObject {
+            return collection.firstObject
+        }
+        return nil
+    }
+    
+    func createAlbum() {
+        PHPhotoLibrary.shared().performChanges({
+            PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: "boardName")   // create an asset collection with the album name
+        }) { success, error in
+            if success {
+                print(success)
+            } else {
+                print("error \(String(describing: error))")
+            }
+        }
+    }
+
+    private func saveToCameraRoll(_ data: Data) {
         if PHPhotoLibrary.authorizationStatus() == .authorized {
+            
+            let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+            let documentsDirectory = paths[0]
+            let path = documentsDirectory.appendingPathComponent(postViewModel.mediaFullName!, isDirectory: false)
+            let yes = FileManager.default.createFile(atPath: path.path, contents: data, attributes: nil)
+            
+            //check if album existes
+            let album = fetchAlbum()
+            
+            var image:UIImage!
+            DispatchQueue.main.async {
+                image = self.imageView.image!
+            }
+            
             PHPhotoLibrary.shared().performChanges({
-                PHAssetCreationRequest.forAsset().addResource(with: .photo, data: data, options: nil)
+                var albumInsertRequest: PHAssetCollectionChangeRequest? = nil
+                if album == nil {
+                    PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: "boardName")
+                } else {
+                    albumInsertRequest = PHAssetCollectionChangeRequest(for: album!)
+                }
+                let assetChangeRequest = PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: path)!
+                
+                albumInsertRequest?.addAssets([assetChangeRequest.placeholderForCreatedAsset!] as NSArray)
+
             }) { (success, error) in
                 if success {
-                    DispatchQueue.main.async { self.navigationItem.rightBarButtonItem?.isEnabled = true
+                    DispatchQueue.main.async {
+                        self.navigationItem.rightBarButtonItem?.isEnabled = true
                         self.showSuccessToast()
                     }
                 } else {
@@ -213,4 +269,8 @@ extension UserDefaults {
     static var dataCache: UserDefaults {
         return UserDefaults(suiteName: "chanditDataCache")!
     }
+}
+
+extension Data {
+    
 }
