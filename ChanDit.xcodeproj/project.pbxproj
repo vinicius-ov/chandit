@@ -7,33 +7,97 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2D2784022357ADD400DD0C9F /* ThreadFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D2784012357ADD300DD0C9F /* ThreadFooterView.xib */; };
+		2D2784042357B16A00DD0C9F /* ThreadFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2784032357B16A00DD0C9F /* ThreadFooterView.swift */; };
+		2D57A6F5235F7006001DEBE8 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D57A6F4235F7006001DEBE8 /* SDWebImage.framework */; };
+		2DD9C31923576EBA00A14EE4 /* ImageViewerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2DD9C31823576EBA00A14EE4 /* ImageViewerViewController.xib */; };
+		2DDB9D7B234BAE0F002C249F /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DDB9D7A234BAE0F002C249F /* BaseNavigationController.swift */; };
+		810B4A052327CCF100E7ECC9 /* PlaybackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810B4A032327CCF100E7ECC9 /* PlaybackViewController.swift */; };
+		810B4A062327CCF100E7ECC9 /* PlaybackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 810B4A042327CCF100E7ECC9 /* PlaybackViewController.xib */; };
 		814C458B22F4BFF8007007C5 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814C458A22F4BFF8007007C5 /* Service.swift */; };
 		814C458D22F4C67F007007C5 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814C458C22F4C67F007007C5 /* Post.swift */; };
 		814C458F22F86194007007C5 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814C458E22F86194007007C5 /* PostTableViewCell.swift */; };
 		814C459322F868A9007007C5 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 814C459222F868A9007007C5 /* Cartfile */; };
-		814C459822F8691C007007C5 /* Kingfisher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 814C459722F8691C007007C5 /* Kingfisher.framework */; };
+		814CD0792315ABAF0097A23E /* ImageViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814CD0782315ABAF0097A23E /* ImageViewerViewController.swift */; };
 		816ED39922FDB1AC00E13C9E /* PostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816ED39822FDB1AC00E13C9E /* PostViewModel.swift */; };
 		81921BE122F468DD007F4EFC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81921BE022F468DD007F4EFC /* AppDelegate.swift */; };
-		81921BE322F468DD007F4EFC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81921BE222F468DD007F4EFC /* ViewController.swift */; };
+		81921BE322F468DD007F4EFC /* BoardPagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81921BE222F468DD007F4EFC /* BoardPagesViewController.swift */; };
 		81921BE622F468DD007F4EFC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81921BE422F468DD007F4EFC /* Main.storyboard */; };
 		81921BE822F468DE007F4EFC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 81921BE722F468DE007F4EFC /* Assets.xcassets */; };
 		81921BEB22F468DE007F4EFC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81921BE922F468DE007F4EFC /* LaunchScreen.storyboard */; };
+		81AC6B92231D53A400502931 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AC6B91231D53A400502931 /* Board.swift */; };
+		81B7896E231060AB0093376D /* ThreadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B7896D231060AB0093376D /* ThreadViewController.swift */; };
+		81C26732231804D80060D8A1 /* BoardsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C26731231804D80060D8A1 /* BoardsViewModel.swift */; };
+		F2BAFFE223495AAB006D2CEE /* PostCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2BAFFE123495AAB006D2CEE /* PostCell.xib */; };
+		F2C400DC232734ED00BFCC89 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2C400D2232734EB00BFCC89 /* QuartzCore.framework */; };
+		F2C400DD232734ED00BFCC89 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2C400D3232734EC00BFCC89 /* CoreVideo.framework */; };
+		F2C400DE232734ED00BFCC89 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2C400D4232734EC00BFCC89 /* UIKit.framework */; };
+		F2C400DF232734ED00BFCC89 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2C400D5232734EC00BFCC89 /* Security.framework */; };
+		F2C400E0232734ED00BFCC89 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2C400D6232734EC00BFCC89 /* AudioToolbox.framework */; };
+		F2C400E1232734ED00BFCC89 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2C400D7232734EC00BFCC89 /* CoreGraphics.framework */; };
+		F2C400E2232734ED00BFCC89 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2C400D8232734EC00BFCC89 /* Foundation.framework */; };
+		F2C400E3232734ED00BFCC89 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2C400D9232734ED00BFCC89 /* CoreFoundation.framework */; };
+		F2C400E4232734ED00BFCC89 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2C400DA232734ED00BFCC89 /* CoreMedia.framework */; };
+		F2C400E5232734ED00BFCC89 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2C400DB232734ED00BFCC89 /* CoreText.framework */; };
+		F2C400E7232736A800BFCC89 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2C400E6232736A700BFCC89 /* AVFoundation.framework */; };
+		F2C400E9232736B500BFCC89 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2C400E8232736B500BFCC89 /* CFNetwork.framework */; };
+		F2C400EB232736E800BFCC89 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F2C400EA232736E800BFCC89 /* libbz2.tbd */; };
+		F2C400ED232736F200BFCC89 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F2C400EC232736F200BFCC89 /* libiconv.tbd */; };
+		F2C400EF232736FC00BFCC89 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2C400EE232736FB00BFCC89 /* OpenGLES.framework */; };
+		F2C400F12327371000BFCC89 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2C400F02327370F00BFCC89 /* VideoToolbox.framework */; };
+		F2DEFCFA23273CA90031FD98 /* MobileVLCKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2DEFCF923273CA90031FD98 /* MobileVLCKit.framework */; };
+		F2DEFD03232AC97F0031FD98 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F2DEFD02232AC97F0031FD98 /* libc++.tbd */; };
+		F2DEFD06232DD4690031FD98 /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2DEFD04232DD4690031FD98 /* WebViewViewController.swift */; };
+		F2DEFD07232DD4690031FD98 /* WebViewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2DEFD05232DD4690031FD98 /* WebViewViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2D2784012357ADD300DD0C9F /* ThreadFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ThreadFooterView.xib; sourceTree = "<group>"; };
+		2D2784032357B16A00DD0C9F /* ThreadFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadFooterView.swift; sourceTree = "<group>"; };
+		2D57A6F4235F7006001DEBE8 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Carthage/Build/iOS/SDWebImage.framework; sourceTree = "<group>"; };
+		2DC383E4235F6F2700B16290 /* SDWebImageMapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImageMapKit.framework; path = Carthage/Build/iOS/SDWebImageMapKit.framework; sourceTree = "<group>"; };
+		2DD9C31823576EBA00A14EE4 /* ImageViewerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageViewerViewController.xib; sourceTree = "<group>"; };
+		2DDB9D7A234BAE0F002C249F /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
+		810B4A032327CCF100E7ECC9 /* PlaybackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackViewController.swift; sourceTree = "<group>"; };
+		810B4A042327CCF100E7ECC9 /* PlaybackViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlaybackViewController.xib; sourceTree = "<group>"; };
 		814C458A22F4BFF8007007C5 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		814C458C22F4C67F007007C5 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		814C458E22F86194007007C5 /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
 		814C459222F868A9007007C5 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = SOURCE_ROOT; };
-		814C459722F8691C007007C5 /* Kingfisher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kingfisher.framework; path = Carthage/Build/iOS/Kingfisher.framework; sourceTree = "<group>"; };
+		814CD0782315ABAF0097A23E /* ImageViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewerViewController.swift; sourceTree = "<group>"; };
 		816ED39822FDB1AC00E13C9E /* PostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewModel.swift; sourceTree = "<group>"; };
 		81921BDD22F468DD007F4EFC /* ChanDit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChanDit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		81921BE022F468DD007F4EFC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		81921BE222F468DD007F4EFC /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		81921BE222F468DD007F4EFC /* BoardPagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardPagesViewController.swift; sourceTree = "<group>"; };
 		81921BE522F468DD007F4EFC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		81921BE722F468DE007F4EFC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		81921BEA22F468DE007F4EFC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		81921BEC22F468DE007F4EFC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		81AC6B91231D53A400502931 /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
+		81B7896D231060AB0093376D /* ThreadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadViewController.swift; sourceTree = "<group>"; };
+		81C26731231804D80060D8A1 /* BoardsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardsViewModel.swift; sourceTree = "<group>"; };
+		F2BAFFE123495AAB006D2CEE /* PostCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostCell.xib; sourceTree = "<group>"; };
+		F2C400D2232734EB00BFCC89 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		F2C400D3232734EC00BFCC89 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		F2C400D4232734EC00BFCC89 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		F2C400D5232734EC00BFCC89 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		F2C400D6232734EC00BFCC89 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		F2C400D7232734EC00BFCC89 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		F2C400D8232734EC00BFCC89 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		F2C400D9232734ED00BFCC89 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		F2C400DA232734ED00BFCC89 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		F2C400DB232734ED00BFCC89 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		F2C400E6232736A700BFCC89 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		F2C400E8232736B500BFCC89 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		F2C400EA232736E800BFCC89 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
+		F2C400EC232736F200BFCC89 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		F2C400EE232736FB00BFCC89 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		F2C400F02327370F00BFCC89 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
+		F2DEFCF923273CA90031FD98 /* MobileVLCKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileVLCKit.framework; path = Carthage/Build/iOS/MobileVLCKit.framework; sourceTree = "<group>"; };
+		F2DEFCFB23273D840031FD98 /* SwiftSimplePlayback-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SwiftSimplePlayback-Bridging-Header.h"; sourceTree = "<group>"; };
+		F2DEFD02232AC97F0031FD98 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		F2DEFD04232DD4690031FD98 /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
+		F2DEFD05232DD4690031FD98 /* WebViewViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WebViewViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,7 +105,25 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				814C459822F8691C007007C5 /* Kingfisher.framework in Frameworks */,
+				F2DEFD03232AC97F0031FD98 /* libc++.tbd in Frameworks */,
+				F2DEFCFA23273CA90031FD98 /* MobileVLCKit.framework in Frameworks */,
+				F2C400F12327371000BFCC89 /* VideoToolbox.framework in Frameworks */,
+				F2C400EF232736FC00BFCC89 /* OpenGLES.framework in Frameworks */,
+				F2C400ED232736F200BFCC89 /* libiconv.tbd in Frameworks */,
+				F2C400EB232736E800BFCC89 /* libbz2.tbd in Frameworks */,
+				F2C400E0232734ED00BFCC89 /* AudioToolbox.framework in Frameworks */,
+				F2C400E7232736A800BFCC89 /* AVFoundation.framework in Frameworks */,
+				F2C400E9232736B500BFCC89 /* CFNetwork.framework in Frameworks */,
+				F2C400E3232734ED00BFCC89 /* CoreFoundation.framework in Frameworks */,
+				F2C400DD232734ED00BFCC89 /* CoreVideo.framework in Frameworks */,
+				F2C400E4232734ED00BFCC89 /* CoreMedia.framework in Frameworks */,
+				F2C400E1232734ED00BFCC89 /* CoreGraphics.framework in Frameworks */,
+				F2C400E5232734ED00BFCC89 /* CoreText.framework in Frameworks */,
+				F2C400DC232734ED00BFCC89 /* QuartzCore.framework in Frameworks */,
+				F2C400DE232734ED00BFCC89 /* UIKit.framework in Frameworks */,
+				2D57A6F5235F7006001DEBE8 /* SDWebImage.framework in Frameworks */,
+				F2C400DF232734ED00BFCC89 /* Security.framework in Frameworks */,
+				F2C400E2232734ED00BFCC89 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -51,7 +133,26 @@
 		814C459622F8691C007007C5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				814C459722F8691C007007C5 /* Kingfisher.framework */,
+				2D57A6F4235F7006001DEBE8 /* SDWebImage.framework */,
+				2DC383E4235F6F2700B16290 /* SDWebImageMapKit.framework */,
+				F2DEFD02232AC97F0031FD98 /* libc++.tbd */,
+				F2DEFCF923273CA90031FD98 /* MobileVLCKit.framework */,
+				F2C400F02327370F00BFCC89 /* VideoToolbox.framework */,
+				F2C400EE232736FB00BFCC89 /* OpenGLES.framework */,
+				F2C400EC232736F200BFCC89 /* libiconv.tbd */,
+				F2C400EA232736E800BFCC89 /* libbz2.tbd */,
+				F2C400E8232736B500BFCC89 /* CFNetwork.framework */,
+				F2C400E6232736A700BFCC89 /* AVFoundation.framework */,
+				F2C400D6232734EC00BFCC89 /* AudioToolbox.framework */,
+				F2C400D9232734ED00BFCC89 /* CoreFoundation.framework */,
+				F2C400D7232734EC00BFCC89 /* CoreGraphics.framework */,
+				F2C400DA232734ED00BFCC89 /* CoreMedia.framework */,
+				F2C400DB232734ED00BFCC89 /* CoreText.framework */,
+				F2C400D3232734EC00BFCC89 /* CoreVideo.framework */,
+				F2C400D8232734EC00BFCC89 /* Foundation.framework */,
+				F2C400D2232734EB00BFCC89 /* QuartzCore.framework */,
+				F2C400D5232734EC00BFCC89 /* Security.framework */,
+				F2C400D4232734EC00BFCC89 /* UIKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -77,18 +178,80 @@
 		81921BDF22F468DD007F4EFC /* ChanDit */ = {
 			isa = PBXGroup;
 			children = (
-				81921BE022F468DD007F4EFC /* AppDelegate.swift */,
-				814C458A22F4BFF8007007C5 /* Service.swift */,
-				814C458C22F4C67F007007C5 /* Post.swift */,
-				816ED39822FDB1AC00E13C9E /* PostViewModel.swift */,
-				81921BE222F468DD007F4EFC /* ViewController.swift */,
-				814C458E22F86194007007C5 /* PostTableViewCell.swift */,
-				81921BE422F468DD007F4EFC /* Main.storyboard */,
-				81921BE722F468DE007F4EFC /* Assets.xcassets */,
-				81921BE922F468DE007F4EFC /* LaunchScreen.storyboard */,
+				F2DEFCFB23273D840031FD98 /* SwiftSimplePlayback-Bridging-Header.h */,
 				81921BEC22F468DE007F4EFC /* Info.plist */,
+				81921BE022F468DD007F4EFC /* AppDelegate.swift */,
+				81921BE722F468DE007F4EFC /* Assets.xcassets */,
+				F2C400D123233D5600BFCC89 /* service */,
+				81AC6B902319867900502931 /* models */,
+				81AC6B8E2319865D00502931 /* view models */,
+				81AC6B8D2319865300502931 /* controllers */,
+				81AC6B8C2319864800502931 /* cells */,
+				81AC6B8F2319866B00502931 /* storyboards */,
+				2D2784012357ADD300DD0C9F /* ThreadFooterView.xib */,
 			);
 			path = ChanDit;
+			sourceTree = "<group>";
+		};
+		81AC6B8C2319864800502931 /* cells */ = {
+			isa = PBXGroup;
+			children = (
+				814C458E22F86194007007C5 /* PostTableViewCell.swift */,
+				2D2784032357B16A00DD0C9F /* ThreadFooterView.swift */,
+			);
+			path = cells;
+			sourceTree = "<group>";
+		};
+		81AC6B8D2319865300502931 /* controllers */ = {
+			isa = PBXGroup;
+			children = (
+				81921BE222F468DD007F4EFC /* BoardPagesViewController.swift */,
+				81B7896D231060AB0093376D /* ThreadViewController.swift */,
+				814CD0782315ABAF0097A23E /* ImageViewerViewController.swift */,
+				810B4A032327CCF100E7ECC9 /* PlaybackViewController.swift */,
+				F2DEFD04232DD4690031FD98 /* WebViewViewController.swift */,
+				2DDB9D7A234BAE0F002C249F /* BaseNavigationController.swift */,
+			);
+			path = controllers;
+			sourceTree = "<group>";
+		};
+		81AC6B8E2319865D00502931 /* view models */ = {
+			isa = PBXGroup;
+			children = (
+				816ED39822FDB1AC00E13C9E /* PostViewModel.swift */,
+				81C26731231804D80060D8A1 /* BoardsViewModel.swift */,
+			);
+			path = "view models";
+			sourceTree = "<group>";
+		};
+		81AC6B8F2319866B00502931 /* storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				F2DEFD05232DD4690031FD98 /* WebViewViewController.xib */,
+				810B4A042327CCF100E7ECC9 /* PlaybackViewController.xib */,
+				81921BE422F468DD007F4EFC /* Main.storyboard */,
+				81921BE922F468DE007F4EFC /* LaunchScreen.storyboard */,
+				F2BAFFE123495AAB006D2CEE /* PostCell.xib */,
+				2DD9C31823576EBA00A14EE4 /* ImageViewerViewController.xib */,
+			);
+			path = storyboards;
+			sourceTree = "<group>";
+		};
+		81AC6B902319867900502931 /* models */ = {
+			isa = PBXGroup;
+			children = (
+				814C458C22F4C67F007007C5 /* Post.swift */,
+				81AC6B91231D53A400502931 /* Board.swift */,
+			);
+			path = models;
+			sourceTree = "<group>";
+		};
+		F2C400D123233D5600BFCC89 /* service */ = {
+			isa = PBXGroup;
+			children = (
+				814C458A22F4BFF8007007C5 /* Service.swift */,
+			);
+			path = service;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -101,7 +264,8 @@
 				81921BD922F468DD007F4EFC /* Sources */,
 				81921BDA22F468DD007F4EFC /* Frameworks */,
 				81921BDB22F468DD007F4EFC /* Resources */,
-				814C459422F868C1007007C5 /* ShellScript */,
+				814C459422F868C1007007C5 /* Carthage */,
+				2D57A6F92360C4EE001DEBE8 /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -150,8 +314,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F2DEFD07232DD4690031FD98 /* WebViewViewController.xib in Resources */,
+				810B4A062327CCF100E7ECC9 /* PlaybackViewController.xib in Resources */,
 				81921BEB22F468DE007F4EFC /* LaunchScreen.storyboard in Resources */,
+				F2BAFFE223495AAB006D2CEE /* PostCell.xib in Resources */,
+				2D2784022357ADD400DD0C9F /* ThreadFooterView.xib in Resources */,
 				81921BE822F468DE007F4EFC /* Assets.xcassets in Resources */,
+				2DD9C31923576EBA00A14EE4 /* ImageViewerViewController.xib in Resources */,
 				814C459322F868A9007007C5 /* Cartfile in Resources */,
 				81921BE622F468DD007F4EFC /* Main.storyboard in Resources */,
 			);
@@ -160,7 +329,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		814C459422F868C1007007C5 /* ShellScript */ = {
+		2D57A6F92360C4EE001DEBE8 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -168,12 +337,31 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/Kingfisher.framework",
 			);
+			name = SwiftLint;
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Kingfisher.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+		814C459422F868C1007007C5 /* Carthage */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/SDWebImage.framework",
+			);
+			name = Carthage;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SDWebImage.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -186,12 +374,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2DDB9D7B234BAE0F002C249F /* BaseNavigationController.swift in Sources */,
+				814CD0792315ABAF0097A23E /* ImageViewerViewController.swift in Sources */,
 				816ED39922FDB1AC00E13C9E /* PostViewModel.swift in Sources */,
-				81921BE322F468DD007F4EFC /* ViewController.swift in Sources */,
+				2D2784042357B16A00DD0C9F /* ThreadFooterView.swift in Sources */,
+				81AC6B92231D53A400502931 /* Board.swift in Sources */,
+				810B4A052327CCF100E7ECC9 /* PlaybackViewController.swift in Sources */,
+				81921BE322F468DD007F4EFC /* BoardPagesViewController.swift in Sources */,
 				81921BE122F468DD007F4EFC /* AppDelegate.swift in Sources */,
 				814C458F22F86194007007C5 /* PostTableViewCell.swift in Sources */,
+				81B7896E231060AB0093376D /* ThreadViewController.swift in Sources */,
 				814C458B22F4BFF8007007C5 /* Service.swift in Sources */,
 				814C458D22F4C67F007007C5 /* Post.swift in Sources */,
+				F2DEFD06232DD4690031FD98 /* WebViewViewController.swift in Sources */,
+				81C26732231804D80060D8A1 /* BoardsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,8 +533,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = TG2GQ698YY;
+				DEVELOPMENT_TEAM = 5FK8753786;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -348,8 +546,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ChanDit;
+				PRODUCT_BUNDLE_IDENTIFIER = com.digitreko.chanDit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/ChanDit/SwiftSimplePlayback-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -359,8 +559,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = TG2GQ698YY;
+				DEVELOPMENT_TEAM = 5FK8753786;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -370,8 +572,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ChanDit;
+				PRODUCT_BUNDLE_IDENTIFIER = com.digitreko.chanDit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/ChanDit/SwiftSimplePlayback-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

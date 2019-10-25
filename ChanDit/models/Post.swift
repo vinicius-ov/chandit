@@ -9,18 +9,18 @@
 import UIKit
 
 struct Post: Decodable {
-
-    var no: Int?
+    var number: Int?
     var now: String?
     var name: String?
     var com: String?
+    var sub: String?
     var filename: String?
     var ext: String?
     var md5: String?
-    var w: Int?
-    var h: Int?
-    var tn_w: Int?
-    var tn_h: Int?
+    var imageWidth: Int? 
+    var imageHeight: Int?
+    var thumbWidth: Int?
+    var thumbHeight: Int?
     var tim: Int? //??
     var time: Int?
     var fsize: Int?
@@ -35,19 +35,21 @@ struct Post: Decodable {
     var omittedImages: Int? //ommited_images
     var tailSize: Int? //tail_size
     var tripCode: String?
+    var spoiler: Int?
     
     enum CodingKeys: String, CodingKey {
-        case no
+        case number = "no"
         case now
         case name
         case com
+        case sub
         case filename
         case ext
         case md5
-        case w
-        case h
-        case tn_w
-        case tn_h
+        case imageWidth = "w"
+        case imageHeight = "h"
+        case thumbWidth = "tn_w"
+        case thumbHeight = "tn_h"
         case tim
         case time
         case fsize
@@ -62,14 +64,24 @@ struct Post: Decodable {
         case omittedImages = "omitted_images"
         case tailSize = "tail_size"
         case tripCode = "trip"
+        case spoiler
     }
 
 }
-struct Thread: Decodable {
+struct Thread: Decodable, Comparable {
+    static func < (lhs: Thread, rhs: Thread) -> Bool {
+        guard let postLhs = lhs.posts.first, let numberLhs = postLhs.number,
+        let postRhs = rhs.posts.first, let numberRhs = postRhs.number
+            else { return false }
+        return numberLhs < numberRhs
+    }
+    
+    static func == (lhs: Thread, rhs: Thread) -> Bool {
+        return lhs.posts.first!.number == rhs.posts.first!.number
+    }
+    
     let posts: [Post]
 }
 struct Page: Decodable {
     let threads: [Thread]
 }
-
-
