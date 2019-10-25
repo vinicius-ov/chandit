@@ -16,7 +16,12 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var postAuthorName: UILabel!
     @IBOutlet weak var postTimePublishing: UILabel!
     
-    @IBOutlet weak var postImage: UIImageView!
+    @IBOutlet weak var postImage: UIImageView! {
+        didSet {
+            postImage.sd_imageIndicator = SDWebImageActivityIndicator.whiteLarge
+            postImage.sd_imageIndicator?.startAnimatingIndicator()
+        }
+    }
     
     @IBOutlet weak var postText: UITextView!
     @IBOutlet weak var postTitle: UILabel!
@@ -35,8 +40,8 @@ class PostTableViewCell: UITableViewCell {
     func loadCell() {
         postAuthorName.text = postViewModel.postAuthorName
         
-        if let title = postViewModel.title, !title.isEmpty {
-            postTitle.set(html: title)
+        if let title = postViewModel.title {
+            postTitle.attributedText = title.toPlainText()
         } else {
             postTitle.text = ""
         }
@@ -44,34 +49,34 @@ class PostTableViewCell: UITableViewCell {
         postNumber.text = "No.\(postViewModel.number!)"
         postTimePublishing.text = postViewModel.timeFromPost
         
-        //not good, needs to calculate size
-        if let comment = postViewModel.comment, !comment.isEmpty {
-            postText.set(html: postViewModel.comment)
+        if let comment = postViewModel.comment {
+            postText.attributedText = comment.toPlainText()
         } else {
             postText.text = ""
         }
         
-        if let thumbUrl = postViewModel.thumbnailUrl(boardId: selectedBoardId) {
-            postImage.sd_setImage(with: thumbUrl)
-            thumbSizeConstraint?.constant = 160
-            postImage.isHidden = false
+        if postViewModel.isSpoiler {
+            postImage.sd_setImage(with: postViewModel.spoilerUrl)
         } else {
-            //thumbSizeConstraint?.constant = 0
-            postImage.isHidden = true
-            postImage.image = nil
+            if let thumbUrl = postViewModel.thumbnailUrl(boardId: selectedBoardId) {
+                postImage.sd_setImage(with: thumbUrl)
+                postImage.isHidden = false
+            } else {
+                postImage.gestureRecognizers?.removeAll()
+                postImage.isHidden = true
+                postImage.image = nil
+            }
         }
         
         postImage.addGestureRecognizer(
-            UITapGestureRecognizer(target: self,
-                                   action: #selector(viewImage(_:))))
+        UITapGestureRecognizer(target: self,
+                               action: #selector(viewImage(_:))))
         postText.addGestureRecognizer(
             UITapGestureRecognizer(target: self,
                                    action: #selector(tappedLink(_:))))
         
-        
         mediaSize.text = postViewModel.fileSize
         mediaExtension.text = postViewModel.mediaFullName
-        
     }
     
     var thumbSizeConstraint: NSLayoutConstraint? {
@@ -101,56 +106,40 @@ class PostTableViewCell: UITableViewCell {
             tapDelegate?.linkTapped(postNumber: postNumber!, opNumber: postViewModel.resto!)
         } else {
             //see https://stackoverflow.com/questions/39949169/swift-open-url-in-a-specific-browser-tab for other browsers deeplinks
-            let actionOk = UIAlertAction(title: "OK", style: .default) { (action) in
+            let actionOk = UIAlertAction(title: "OK", style: .default) { (_) in
                 UIApplication.shared.open(URL(string: "firefox://open-url?url=\(tappedUrl)")!)
             }
             let actionCancel = UIAlertAction(title: "Cancel", style: .default)
-            tapDelegate?.presentAlertExitingApp([actionOk,actionCancel])
-            
+            tapDelegate?.presentAlertExitingApp([actionOk, actionCancel])
         }
     }
 }
 
-extension UILabel {
-    func set(html: String?) {
-        if let html = html, let htmlData = html.data(using: .unicode) {
+extension String {
+    func toPlainText(fontSize: CGFloat? = 17) -> NSAttributedString {
+        var attribText = NSMutableAttributedString(string: "")
+        if let htmlData = self.data(using: .unicode) {
             do {
-                self.attributedText =
-                    try NSAttributedString(data: htmlData,
+                attribText =
+                    try NSMutableAttributedString(data: htmlData,
                                            options: [.documentType: NSAttributedString.DocumentType.html],
                                            documentAttributes: nil)
-                self.font = UIFont.systemFont(ofSize: 14.0)
-                self.textColor = UIColor.white
-            } catch let e as NSError {
-                print("Couldn't parse \(html): \(e.localizedDescription)")
+                attribText.addAttributes([.foregroundColor: UIColor.white,
+                                          .font: UIFont.systemFont(ofSize: fontSize!)],
+                                         range: NSRange(location: 0, length: attribText.mutableString.length))
+            } catch let error as NSError {
+                print("Couldn't parse \(self): \(error.localizedDescription)")
             }
-        }else{
-            self.text = ""
         }
-    }
-}
-
-extension UITextView {
-    func set(html: String?) {
-        if let html = html, let htmlData = html.data(using: .unicode) {
-            do {
-                self.attributedText =
-                    try NSAttributedString(data: htmlData,
-                                           options: [.documentType: NSAttributedString.DocumentType.html],
-                                           documentAttributes: nil)
-                self.font = UIFont.systemFont(ofSize: 17.0)
-                self.textColor = UIColor.white
-            } catch let e as NSError {
-                print("Couldn't parse \(html): \(e.localizedDescription)")
-            }
-        }else{
-            self.text = ""
-        }
+        return attribText
     }
 }
 
 extension PostTableViewCell: UITextViewDelegate {
-    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+    func textView(_ textView: UITextView,
+                  shouldInteractWith URL: URL,
+                  in characterRange: NSRange,
+                  interaction: UITextItemInteraction) -> Bool {
         tappedUrl = URL
         return false
     }

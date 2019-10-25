@@ -15,12 +15,8 @@ struct PageViewModel {
         self.threads = NSMutableOrderedSet()
     }
     
-    func threadViewModel(at index: Int) -> ThreadViewModel {
-        return self.threads![index] as! ThreadViewModel
-    }
-    
-    func setNavigation(forThreadInSection section:Int, forPostInIndex index:Int) {
-        
+    func threadViewModel(at index: Int) -> ThreadViewModel? {
+        return self.threads![index] as? ThreadViewModel
     }
 }
 
@@ -46,7 +42,7 @@ struct ThreadViewModel: Equatable {
         return index
     }
     
-    init(threadNumberToNavigate: Int, postNumberToNavigate: Int?, originBoard: String?){
+    init(threadNumberToNavigate: Int, postNumberToNavigate: Int?, originBoard: String?) {
         self.threadNumberToNavigate = threadNumberToNavigate
         self.postNumberToNavigate = postNumberToNavigate
         self.boardIdToNavigate = originBoard
@@ -63,9 +59,13 @@ struct ThreadViewModel: Equatable {
         return self.posts[index]
     }
     
-    var threadTitle:String {
-        let op = posts.first!
-        return op.title ?? op.subject ?? ""
+    var threadTitle: String {
+        let opThread = posts.first!
+        return opThread.title ?? opThread.subject ?? ""
+    }
+    
+    var opNumber: Int? {
+        return postViewModel(at: 0)?.number
     }
     
 }
@@ -75,6 +75,9 @@ struct PostViewModel {
 }
 
 extension PostViewModel {
+    var spoilerUrl: URL? {
+        return URL(string: "https://s.4cdn.org/image/spoiler.png")
+    }
     
     var comment: String? {
         let formatString = post.com?.replacingOccurrences(of: "#p", with: "chandit://")
@@ -94,7 +97,7 @@ extension PostViewModel {
     }
     
     var number: Int? {
-        return post.no
+        return post.number
     }
 
     func thumbnailUrl(boardId: String) -> URL? {
@@ -105,11 +108,11 @@ extension PostViewModel {
     }
     
     var thumbWidth: CGFloat? {
-        return CGFloat.init(exactly: NSNumber(value: post.tn_w ?? 0))
+        return CGFloat.init(exactly: NSNumber(value: post.thumbWidth ?? 0))
     }
     
     var thumbHeight: CGFloat? {
-        return CGFloat.init(exactly: NSNumber(value: post.tn_h ?? 0))
+        return CGFloat.init(exactly: NSNumber(value: post.thumbHeight ?? 0))
     }
 
     func imageUrl(boardId: String) -> URL? {
@@ -127,9 +130,13 @@ extension PostViewModel {
         formatter.locale = Locale(identifier: "pt_BR")
         formatter.dateFormat = "H"
         let hours = formatter.string(from: date)
-        formatter.dateFormat = "mm"
+        formatter.dateFormat = "m"
         let minutes = formatter.string(from: date)
-        return "\(hours)h\(minutes)m ago"
+        if hours == "0" {
+            return "\(minutes)m ago"
+        } else {
+            return "\(hours)h\(minutes)m ago"
+        }
     }
     
     var postAuthorName: String? {
@@ -141,7 +148,7 @@ extension PostViewModel {
         var fsize = Double(filesize)/1024.0
         var unit = "KiB"
         if fsize > 1024 {
-            fsize = fsize / 1024
+            fsize /= 1024
             unit = "MiB"
         }
         return String(format: "%.2f %@",fsize,unit)
@@ -165,11 +172,11 @@ extension PostViewModel {
     }
     
     var imageWidth: CGFloat? {
-        return CGFloat.init(exactly: NSNumber(value: post.w ?? 0))
+        return CGFloat.init(exactly: NSNumber(value: post.imageWidth ?? 0))
     }
     
     var imageHeight: CGFloat? {
-        return CGFloat.init(exactly: NSNumber(value: post.h ?? 0))
+        return CGFloat.init(exactly: NSNumber(value: post.imageHeight ?? 0))
     }
     
     var replies: Int? {
