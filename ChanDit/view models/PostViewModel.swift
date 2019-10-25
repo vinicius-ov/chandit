@@ -20,9 +20,14 @@ struct PageViewModel {
     }
 }
 
-struct ThreadViewModel: Equatable {
-    static func == (lhs: ThreadViewModel, rhs: ThreadViewModel) -> Bool {
-        return false
+class ThreadViewModel: NSObject {
+    override func isEqual(_ object: Any?) -> Bool {
+        guard let postLhs = posts.first, let numberLhs = postLhs.number,
+        let viewModel = object as? ThreadViewModel,
+            let postRhs = viewModel.posts.first, let numberRhs = postRhs.number
+            else { return false }
+        print("COMPARE \(numberLhs) == \(numberRhs) \(numberLhs == numberRhs)")
+        return numberLhs == numberRhs
     }
     
     var posts = [PostViewModel]()
@@ -48,7 +53,7 @@ struct ThreadViewModel: Equatable {
         self.boardIdToNavigate = originBoard
     }
     
-    mutating func reset() {
+    func reset() {
         postNumberToNavigate = nil
     }
     
