@@ -96,7 +96,7 @@ class BoardPagesViewController: BaseViewController {
                         print("error trying to convert data to JSON \(data)")
                         return
                     }
-                    let threads:[ThreadViewModel] = page.threads.map ({ (thread: Thread) in
+                    let threads: [ThreadViewModel] = page.threads.map ({ (thread: Thread) in
                         let tvm = ThreadViewModel.init(thread: thread)
                         return tvm
                     })
@@ -241,7 +241,7 @@ extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource 
 
 extension BoardPagesViewController: UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-        if indexPaths.contains([pageViewModel.threads.count-3, 0]) {
+        if indexPaths.contains([pageViewModel.threads.count-1, 0]) {
             print("RELOAD!!!!")
             fetchData(append: true)
         }

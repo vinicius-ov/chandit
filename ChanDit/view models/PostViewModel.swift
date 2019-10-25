@@ -18,10 +18,6 @@ struct PageViewModel {
     func threadViewModel(at index: Int) -> ThreadViewModel? {
         return self.threads![index] as? ThreadViewModel
     }
-    
-    func setNavigation(forThreadInSection section:Int, forPostInIndex index:Int) {
-        
-    }
 }
 
 struct ThreadViewModel: Equatable {
@@ -46,7 +42,7 @@ struct ThreadViewModel: Equatable {
         return index
     }
     
-    init(threadNumberToNavigate: Int, postNumberToNavigate: Int?, originBoard: String?){
+    init(threadNumberToNavigate: Int, postNumberToNavigate: Int?, originBoard: String?) {
         self.threadNumberToNavigate = threadNumberToNavigate
         self.postNumberToNavigate = postNumberToNavigate
         self.boardIdToNavigate = originBoard
@@ -63,9 +59,9 @@ struct ThreadViewModel: Equatable {
         return self.posts[index]
     }
     
-    var threadTitle:String {
-        let op = posts.first!
-        return op.title ?? op.subject ?? ""
+    var threadTitle: String {
+        let opThread = posts.first!
+        return opThread.title ?? opThread.subject ?? ""
     }
     
     var opNumber: Int? {

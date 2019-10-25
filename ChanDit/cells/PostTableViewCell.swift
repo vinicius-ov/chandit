@@ -60,11 +60,7 @@ class PostTableViewCell: UITableViewCell {
         } else {
             if let thumbUrl = postViewModel.thumbnailUrl(boardId: selectedBoardId) {
                 postImage.sd_setImage(with: thumbUrl)
-                //thumbSizeConstraint?.constant = 160
                 postImage.isHidden = false
-                postImage.addGestureRecognizer(
-                UITapGestureRecognizer(target: self,
-                                       action: #selector(viewImage(_:))))
             } else {
                 postImage.gestureRecognizers?.removeAll()
                 postImage.isHidden = true
@@ -72,6 +68,9 @@ class PostTableViewCell: UITableViewCell {
             }
         }
         
+        postImage.addGestureRecognizer(
+        UITapGestureRecognizer(target: self,
+                               action: #selector(viewImage(_:))))
         postText.addGestureRecognizer(
             UITapGestureRecognizer(target: self,
                                    action: #selector(tappedLink(_:))))
