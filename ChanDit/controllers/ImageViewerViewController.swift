@@ -10,7 +10,8 @@ import UIKit
 import Photos
 import SDWebImage
 
-class ImageViewerViewController: UIViewController {
+class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
+        var completeBoardName: String = "Im Error"
 
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView! {
         didSet {
@@ -54,9 +55,14 @@ class ImageViewerViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         if #available(iOS 13.0, *) {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "tray.and.arrow.down.fill"), style: .plain, target: self, action: #selector(self.saveImage))
+            navigationItem.rightBarButtonItem = UIBarButtonItem(
+                image: UIImage(systemName: "tray.and.arrow.down.fill"),
+                style: .plain,
+                target: self,
+                action: #selector(self.saveImage))
         } else {
-            UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(self.saveImage))
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save,
+                            target: self, action: #selector(self.saveImage))
         }
         navigationItem.rightBarButtonItem?.isEnabled = false
         
@@ -69,7 +75,7 @@ class ImageViewerViewController: UIViewController {
     }
     
     func download(_ url: URL) {
-        imageCache.queryCacheOperation(forKey: url.absoluteString) { (image, data, cacheType) in
+        imageCache.queryCacheOperation(forKey: url.absoluteString) { (image, data, _) in
             if let image = image {
                 self.setImageToImageView(image)
                 self.updateInterfaceImageLoaded()
@@ -83,7 +89,7 @@ class ImageViewerViewController: UIViewController {
                         self?.setImageToImageView(image)
                         self?.storeDownloadedCacheToData(image, data, url)
                         self?.updateInterfaceImageLoaded()
-                    } else {
+                    } else if error != nil {
                         print("SDWEB: ERRO buscando da net")
                     }
                     self?.loadingIndicator.stopAnimating()
@@ -103,47 +109,95 @@ class ImageViewerViewController: UIViewController {
         }
     }
     
+    private func showFailToast() {
+        showToast(
+            message: "Not authorized to save images in Camera Roll. Go to Settings to fix this.",
+            textColor: nil,
+            backgroundColor: nil)
+    }
+    
     @objc func saveImage() {
         self.navigationItem.rightBarButtonItem?.isEnabled = false
-        PHPhotoLibrary.requestAuthorization( { [weak self] (status) in
+        PHPhotoLibrary.requestAuthorization({ [weak self] (status) in
             if status == .authorized {
                 guard let url = self?.postViewModel.imageUrl(boardId: (self?.boardId)!) else { return }
                 if let data = self?.imageCache.diskImageData(forKey: url.absoluteString) {
                         self?.saveToCameraRoll(data)
                     } else {
-                        print("sem coiso no cache")
                         DispatchQueue.main.async {
                             self?.navigationItem.rightBarButtonItem?.isEnabled = true
+                            self?.showToast(
+                                message: "Failed to fetch data from cache. Try again later.",
+                                            textColor: .red, backgroundColor: .white)
                         }
                     }
             } else {
                 DispatchQueue.main.async {
                     self?.navigationItem.rightBarButtonItem?.isEnabled = true
-                    self?.showToast(message: "Not authorized to save images in Camera Roll. Go to Settings to fix this.", textColor: nil, backgroundColor: nil)
+                    self?.showFailToast()
                 }
             }
         })
     }
+    
+    private func fetchAlbum(_ boardName: String) -> PHAssetCollection? {
+        let fetchOptions = PHFetchOptions()
+        fetchOptions.predicate = NSPredicate(format: "title = %@", boardName)
+        let collection = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: fetchOptions)
+        if let _: AnyObject = collection.firstObject {
+            return collection.firstObject
+        }
+        return nil
+    }
+    
+    private func createTempPicFile(_ data: Data) -> URL? {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentsDirectory = paths[0]
+        let path = documentsDirectory.appendingPathComponent(postViewModel.mediaFullName!, isDirectory: false)
+        if FileManager.default.createFile(atPath: path.path, contents: data, attributes: nil) {
+            return path
+        } else {
+            return nil
+        }
+    }
 
-    fileprivate func saveToCameraRoll(_ data: Data) {
+    private func saveToCameraRoll(_ data: Data) {
         if PHPhotoLibrary.authorizationStatus() == .authorized {
+            
+            guard let path = createTempPicFile(data) else { return }
+            let albumName = self.completeBoardName.trimmingCharacters(in: .whitespacesAndNewlines)
+            let album = fetchAlbum(albumName)
+            var albumInsertRequest: PHAssetCollectionChangeRequest!
+            
             PHPhotoLibrary.shared().performChanges({
-                PHAssetCreationRequest.forAsset().addResource(with: .photo, data: data, options: nil)
+                if album == nil {
+                    albumInsertRequest = PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: albumName)
+                    //album = self.fetchAlbum(albumName)
+                } else {
+                    albumInsertRequest = PHAssetCollectionChangeRequest(for: album!)
+                }
+                let assetChangeRequest = PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: path)!
+                albumInsertRequest?.addAssets(
+                    [assetChangeRequest.placeholderForCreatedAsset!] as NSArray)
+
             }) { (success, error) in
                 if success {
-                    DispatchQueue.main.async { self.navigationItem.rightBarButtonItem?.isEnabled = true
+                    DispatchQueue.main.async {
+                        self.navigationItem.rightBarButtonItem?.isEnabled = true
                         self.showSuccessToast()
                     }
                 } else {
                     print(error?.localizedDescription)
+                    self.showFailToast()
                 }
             }
         }
     }
 
-    
     func showSuccessToast() {
-            self.showToast(message: "Photo was saved to the camera roll.", textColor: UIColor.black, backgroundColor: UIColor(named: "lightGreenSuccess"))
+            self.showToast(message: "Photo was saved to the camera roll.",
+                           textColor: UIColor.black,
+                           backgroundColor: UIColor(named: "lightGreenSuccess"))
     }
     
     fileprivate func updateMinZoomScaleForSize(_ size: CGSize) {

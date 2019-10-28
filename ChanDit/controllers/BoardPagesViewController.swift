@@ -102,15 +102,15 @@ class BoardPagesViewController: BaseViewController {
                     })
                         self.pageViewModel.threads.addObjects(from: threads)
                     DispatchQueue.main.async {
-                        self.postsTable.reloadData()
                         if !append {
-                            self.postsTable.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                            //self.postsTable.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
                         }
                         self.postsTable.isHidden = false
                         self.pickerView.selectRow(self.boardsViewModel.getCurrentBoardIndex() ?? 0,
                                                   inComponent: 0,
                                                   animated: true)
                         self.boardSelector.isEnabled = true
+                        self.postsTable.reloadData()
                     }
                 }
                 break
@@ -181,7 +181,7 @@ class BoardPagesViewController: BaseViewController {
         let threadViewModel = ThreadViewModel(
             threadNumberToNavigate: boardsViewModel.threadToLaunch!,
             postNumberToNavigate: boardsViewModel.postNumberToNavigate,
-            originBoard: boardsViewModel.selectedBoardId)
+            originBoard: boardsViewModel.selectedBoardId, completeBoardName: boardsViewModel.completeBoardName(atRow: pickerView.selectedRow(inComponent: 0)))
         viewController?.threadViewModel = threadViewModel
     }
     
@@ -213,9 +213,10 @@ extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource 
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
         let threadViewModel = pageViewModel.threads[indexPath.section]
         
-        let post = (threadViewModel as? ThreadViewModel)?.postViewModel(at: indexPath.row)
+        let postViewModel = (threadViewModel as? ThreadViewModel)?.postViewModel(at: indexPath.row)
+        cell?.boardName = boardsViewModel.completeBoardName(atRow: pickerView.selectedRow(inComponent: 0))
         cell?.selectedBoardId = boardsViewModel.selectedBoardId
-        cell?.postViewModel = post
+        cell?.postViewModel = postViewModel
         
         cell?.loadCell()
         cell?.tapDelegate = self

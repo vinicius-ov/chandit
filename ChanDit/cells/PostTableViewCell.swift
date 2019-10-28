@@ -12,6 +12,7 @@ import SDWebImage
 class PostTableViewCell: UITableViewCell {
     var postViewModel: PostViewModel!
     var selectedBoardId: String!
+    var boardName = "Im Error"
     
     @IBOutlet weak var postAuthorName: UILabel!
     @IBOutlet weak var postTimePublishing: UILabel!
@@ -88,11 +89,13 @@ class PostTableViewCell: UITableViewCell {
         if ext == ".webm" {
             let viewController = PlaybackViewController(nibName: "PlaybackViewController", bundle: Bundle.main)
             viewController.mediaURL = postViewModel.imageUrl(boardId: selectedBoardId)
+            //viewController.completeBoardName = ""
             tapDelegate?.imageTapped(viewController)
         } else {
             let viewController = ImageViewerViewController(nibName: "ImageViewerViewController", bundle: Bundle.main)
             viewController.boardId = selectedBoardId
             viewController.postViewModel = postViewModel
+            viewController.completeBoardName = boardName
             tapDelegate?.imageTapped(viewController)
         }
     }
@@ -149,4 +152,8 @@ extension UIView {
     func constraint(withIdentifier: String) -> NSLayoutConstraint? {
         return self.constraints.filter { $0.identifier == withIdentifier }.first
     }
+}
+
+protocol CompleteBoardNameProtocol {
+    var completeBoardName: String { get set }
 }
