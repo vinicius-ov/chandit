@@ -123,6 +123,7 @@ extension ThreadViewController: UITableViewDataSource {
         let postViewModel = threadViewModel.postViewModel(at: indexPath.row)
         cell?.selectedBoardId = threadViewModel.boardIdToNavigate
         cell?.postViewModel = postViewModel
+        cell?.boardName = threadViewModel.completeBoardName!
         cell?.loadCell()
         cell?.tapDelegate = self
         return cell ?? UITableViewCell()

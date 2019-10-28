@@ -11,8 +11,7 @@ import Photos
 import SDWebImage
 
 class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
-    
-    var completeBoardName: String = "I am Error"
+        var completeBoardName: String = "Im Error"
 
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView! {
         didSet {
@@ -168,16 +167,18 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
             guard let path = createTempPicFile(data) else { return }
             let albumName = self.completeBoardName.trimmingCharacters(in: .whitespacesAndNewlines)
             let album = fetchAlbum(albumName)
+            var albumInsertRequest: PHAssetCollectionChangeRequest!
             
             PHPhotoLibrary.shared().performChanges({
-                var albumInsertRequest: PHAssetCollectionChangeRequest? = nil
                 if album == nil {
-                    PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: albumName)
+                    albumInsertRequest = PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: albumName)
+                    //album = self.fetchAlbum(albumName)
                 } else {
                     albumInsertRequest = PHAssetCollectionChangeRequest(for: album!)
                 }
                 let assetChangeRequest = PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: path)!
-                albumInsertRequest?.addAssets([assetChangeRequest.placeholderForCreatedAsset!] as NSArray)
+                albumInsertRequest?.addAssets(
+                    [assetChangeRequest.placeholderForCreatedAsset!] as NSArray)
 
             }) { (success, error) in
                 if success {

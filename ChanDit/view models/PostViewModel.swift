@@ -29,6 +29,7 @@ struct ThreadViewModel: Equatable {
     var threadNumberToNavigate: Int!
     var postNumberToNavigate: Int?
     var boardIdToNavigate: String!
+    var completeBoardName: String?
     
     init(thread: Thread) {
         //self.posts = [PostViewModel]()
@@ -42,10 +43,11 @@ struct ThreadViewModel: Equatable {
         return index
     }
     
-    init(threadNumberToNavigate: Int, postNumberToNavigate: Int?, originBoard: String?) {
+    init(threadNumberToNavigate: Int, postNumberToNavigate: Int?, originBoard: String?, completeBoardName: String?) {
         self.threadNumberToNavigate = threadNumberToNavigate
         self.postNumberToNavigate = postNumberToNavigate
         self.boardIdToNavigate = originBoard
+        self.completeBoardName = completeBoardName
     }
     
     mutating func reset() {
@@ -74,7 +76,7 @@ struct PostViewModel {
     var post: Post
 }
 
-extension PostViewModel {
+extension PostViewModel {    
     var spoilerUrl: URL? {
         return URL(string: "https://s.4cdn.org/image/spoiler.png")
     }
