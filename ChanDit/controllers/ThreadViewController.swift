@@ -173,7 +173,7 @@ extension UIViewController {
 
 extension ThreadViewController: CellTapInteractionDelegate {
     func linkTapped(postNumber: Int, opNumber: Int) {
-        self.postNumberToReturn.append(postNumber)
+        self.postNumberToReturn.append(opNumber)
         self.threadViewModel.postNumberToNavigate = postNumber
         self.navigateToPost()
     }
