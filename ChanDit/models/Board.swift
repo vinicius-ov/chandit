@@ -53,7 +53,7 @@ struct Board: Decodable, Comparable {
     }
 }
 
-struct Cooldowns: Decodable{
+struct Cooldowns: Decodable {
     var threads: Int?
     var replies: Int?
     var images: Int?
@@ -61,7 +61,7 @@ struct Cooldowns: Decodable{
 
 struct Boards: Decodable {
     let boards: [Board]?
-    let trollFlags: [String:String]?
+    let trollFlags: [String: String]?
     
     enum CodingKeys: String, CodingKey {
         case boards

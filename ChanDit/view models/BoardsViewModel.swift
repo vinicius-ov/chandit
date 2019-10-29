@@ -63,7 +63,7 @@ class BoardsViewModel {
         return filtered.first!
     }
     
-    func getCurrentBoardIndex() -> Int?{
+    func getCurrentBoardIndex() -> Int? {
         let board = currentBoard
         return boards.firstIndex(of: board!)
     }

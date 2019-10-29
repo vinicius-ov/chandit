@@ -31,12 +31,13 @@ class ThreadViewController: BaseViewController {
     }
 
     fileprivate func fetchData() {
-        service.loadData(from: URL(string: "https://a.4cdn.org/\(threadViewModel.boardIdToNavigate!)/thread/\(threadViewModel.threadNumberToNavigate!).json")!) { (result) in
+        service.loadData(from: URL(string: "https://a.4cdn.oorg/\(threadViewModel.boardIdToNavigate!)/thread/\(threadViewModel.threadNumberToNavigate!).json")!) { (result) in
             switch result {
             case .success(let data):
                 do {
                     guard let thread = try? JSONDecoder().decode(Thread.self, from: data) else {
                         print("error trying to convert data to JSON \(data)")
+                        self.showThreadNotFoundAlert()
                         return
                     }
                    
@@ -49,13 +50,23 @@ class ThreadViewController: BaseViewController {
                         self.navigateToPost()
                     }
                 }
-                break
-            case .failure(_):
-                break
+            case .failure(let error):
+                self.showThreadNotFoundAlert() //error alert instead
             }
         }
     }
    
+    private func showThreadNotFoundAlert() {
+        let action = UIAlertAction(title: "Ok",
+                                   style: .default,
+                                   handler: { _ in
+                                    self.navigationController?.popViewController(animated: true)
+        })
+        callAlertView(title: "Thread removed",
+                           message: "Thread was prunned or deleted. Returning to board list...",
+                           actions: [action])
+    }
+    
     func navigateToPost() {
         guard let postNumberToNavigate = threadViewModel.postNumberToNavigate,
              let index = self.threadViewModel.findPostIndexByNumber(postNumberToNavigate) else { return }
