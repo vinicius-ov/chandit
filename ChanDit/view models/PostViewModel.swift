@@ -196,4 +196,12 @@ extension PostViewModel {
     var omittedImages: Int? {
         return post.omittedImages
     }
+    
+    var isPinned: Bool {
+        return post.sticky == 1
+    }
+    
+    var isClosed: Bool {
+        return post.closed == 1
+    }
 }

@@ -36,6 +36,8 @@ struct Post: Decodable {
     var tailSize: Int? //tail_size
     var tripCode: String?
     var spoiler: Int?
+    var sticky: Int?
+    var closed: Int?
     
     enum CodingKeys: String, CodingKey {
         case number = "no"
@@ -65,6 +67,8 @@ struct Post: Decodable {
         case tailSize = "tail_size"
         case tripCode = "trip"
         case spoiler
+        case sticky
+        case closed
     }
 
 }
@@ -82,6 +86,7 @@ struct Thread: Decodable, Comparable {
     
     let posts: [Post]
 }
+    
 struct Page: Decodable {
     let threads: [Thread]
 }
