@@ -50,7 +50,7 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
     
     @objc
     func willDismiss() {
-        dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {

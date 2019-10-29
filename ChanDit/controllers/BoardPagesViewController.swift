@@ -15,12 +15,6 @@ protocol CellTapInteractionDelegate: class {
 }
 
 class BaseViewController: UIViewController {
-    override var shouldAutorotate: Bool {
-        get {
-            return false
-        }
-    }
-    
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         get {
             return .portrait
@@ -44,7 +38,7 @@ class BoardPagesViewController: BaseViewController {
         postsTable.delegate = self
         postsTable.prefetchDataSource = self
         postsTable.rowHeight = UITableView.automaticDimension
-        postsTable.estimatedRowHeight = 260
+        postsTable.estimatedRowHeight = 460
         postsTable.isHidden = true
         
         pickerView = UIPickerView()
@@ -199,7 +193,7 @@ class BoardPagesViewController: BaseViewController {
     }
 }
 
-extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource {
+extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let threadViewModel = pageViewModel.threads[section] as? ThreadViewModel else { return 0 }
         return threadViewModel.posts.count
