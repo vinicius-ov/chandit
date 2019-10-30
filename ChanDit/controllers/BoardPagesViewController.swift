@@ -107,9 +107,9 @@ class BoardPagesViewController: BaseViewController {
                         self.postsTable.reloadData()
                     }
                 }
-                break
-            case .failure(_):
-                break
+            case .failure(let error):
+                self.callAlertView(title: "Fetch failed",
+                                   message: "Failed to load board threads. Try again. \(error?.localizedDescription)", actions: [])
             }
         }
     }
@@ -129,9 +129,9 @@ class BoardPagesViewController: BaseViewController {
                     }
                     self.fetchData(append: false)
                 }
-            case .failure(_):
+            case .failure(let error):
                 self.callAlertView(title: "Fetch failed",
-                              message: "Failed to load board threads. Try again.", actions: [])
+                                   message: "Failed to load board lista. Try reloading the app. \(error?.localizedDescription)", actions: [])
             }
         }
     }

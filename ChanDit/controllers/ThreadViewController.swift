@@ -52,7 +52,7 @@ class ThreadViewController: BaseViewController {
                 }
             case .failure(let error):
                 self.callAlertView(title: "Fetch failed",
-                message: "Failed to load thread posts. Try again.", actions: [])
+                                   message: "Failed to load thread posts. Try again. \(error?.localizedDescription)", actions: [])
             }
         }
     }
