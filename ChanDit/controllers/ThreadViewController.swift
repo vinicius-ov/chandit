@@ -15,6 +15,8 @@ class ThreadViewController: BaseViewController {
     @IBOutlet weak var postsTable: UITableView!
     var selectedBoardId: String!
     let service = Service()
+    
+    var indexPathNav:IndexPath!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +28,7 @@ class ThreadViewController: BaseViewController {
         postsTable.register(UINib(nibName: "ThreadFooterView", bundle: nil), forHeaderFooterViewReuseIdentifier: ThreadFooterView.reuseIdentifier)
     
         postsTable.rowHeight = UITableView.automaticDimension
-        postsTable.estimatedRowHeight = 260
+        postsTable.estimatedRowHeight = 400
         fetchData()
     }
 
@@ -71,15 +73,8 @@ class ThreadViewController: BaseViewController {
     func navigateToPost() {
         guard let postNumberToNavigate = threadViewModel.postNumberToNavigate,
              let index = self.threadViewModel.findPostIndexByNumber(postNumberToNavigate) else { return }
-            let indexPathNav = IndexPath(item: index, section: 0)
-            UIView.animate(withDuration: 0.2, animations: {
-                self.postsTable.scrollToRow(at: indexPathNav, at: .top, animated: false)
-            }, completion: { _ in
-                UIView.animate(withDuration: 1.0, animations: {
-                    self.postsTable.cellForRow(at: indexPathNav)?.backgroundColor = .red
-                    self.postsTable.cellForRow(at: indexPathNav)?.backgroundColor = .black
-                })
-            })
+            indexPathNav = IndexPath(item: index, section: 0)
+            self.postsTable.scrollToRow(at: indexPathNav, at: .top, animated: true)
     }
     
     @IBAction func reloadData(_ sender: Any) {
@@ -164,20 +159,34 @@ extension ThreadViewController: UITableViewDelegate {
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         print("drag")
     }
+    
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        guard let index = self.indexPathNav,
+        let cell = self.postsTable.cellForRow(at: index)
+            else { return }
+        print("JUMP: \(index)")
+        print("JUMP: \(cell)")
+        print("JUMP: \(postsTable.visibleCells.contains(cell))")
+        UIView.animate(withDuration: 1.0, animations: {
+            cell.contentView.backgroundColor = .red
+            cell.contentView.backgroundColor = .black
+        })
+        print("JUMP: \("ended")")
+    }
 }
-
+    
 extension UIViewController {
-    func callAlertView(title: String, message: String, actions: [UIAlertAction]) {
+    func callAlertView(title: String, message: String, actions: [UIAlertAction]? = []) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        actions.forEach {
+        actions!.forEach {
             alert.addAction($0)
         }
-        if actions.isEmpty {
+        if actions!.isEmpty {
             let actionOk = UIAlertAction(title: "Ok", style: .default, handler: nil)
             alert.addAction(actionOk)
             
         } else {
-            alert.preferredAction = actions.first!
+            alert.preferredAction = actions!.first!
         }
         present(alert, animated: true, completion: nil)
     }

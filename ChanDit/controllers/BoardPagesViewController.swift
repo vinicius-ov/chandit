@@ -38,7 +38,7 @@ class BoardPagesViewController: BaseViewController {
         postsTable.delegate = self
         postsTable.prefetchDataSource = self
         postsTable.rowHeight = UITableView.automaticDimension
-        postsTable.estimatedRowHeight = 460
+        postsTable.estimatedRowHeight = 400
         postsTable.isHidden = true
         
         pickerView = UIPickerView()
