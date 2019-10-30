@@ -31,7 +31,7 @@ class ThreadViewController: BaseViewController {
     }
 
     fileprivate func fetchData() {
-        service.loadData(from: URL(string: "https://a.4cdn.oorg/\(threadViewModel.boardIdToNavigate!)/thread/\(threadViewModel.threadNumberToNavigate!).json")!) { (result) in
+        service.loadData(from: URL(string: "https://a.4cdn.org/\(threadViewModel.boardIdToNavigate!)/thread/\(threadViewModel.threadNumberToNavigate!).json")!) { (result) in
             switch result {
             case .success(let data):
                 do {
@@ -51,7 +51,8 @@ class ThreadViewController: BaseViewController {
                     }
                 }
             case .failure(let error):
-                self.showThreadNotFoundAlert() //error alert instead
+                self.callAlertView(title: "Fetch failed",
+                message: "Failed to load thread posts. Try again.", actions: [])
             }
         }
     }

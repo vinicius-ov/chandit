@@ -130,7 +130,8 @@ class BoardPagesViewController: BaseViewController {
                     self.fetchData(append: false)
                 }
             case .failure(_):
-                break
+                self.callAlertView(title: "Fetch failed",
+                              message: "Failed to load board threads. Try again.", actions: [])
             }
         }
     }
