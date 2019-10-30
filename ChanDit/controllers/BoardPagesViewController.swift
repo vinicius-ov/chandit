@@ -9,7 +9,7 @@
 import UIKit
 
 protocol CellTapInteractionDelegate: class {
-    func linkTapped(postNumber: Int, opNumber: Int)
+    func linkTapped(postNumber: Int, opNumber: Int, originNumber: Int)
     func imageTapped(_ viewController: UIViewController)
     func presentAlertExitingApp(_ actions: [UIAlertAction])
 }
@@ -259,7 +259,7 @@ extension BoardPagesViewController: UIPickerViewDataSource, UIPickerViewDelegate
 }
 
 extension BoardPagesViewController: CellTapInteractionDelegate {
-    func linkTapped(postNumber: Int, opNumber: Int) {
+    func linkTapped(postNumber: Int, opNumber: Int, originNumber: Int) {
         self.boardsViewModel.postNumberToNavigate = postNumber
         self.boardsViewModel.threadToLaunch = opNumber
         self.navigateToThread()

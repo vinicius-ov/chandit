@@ -74,7 +74,7 @@ class ThreadViewController: BaseViewController {
             let indexPathNav = IndexPath(item: index, section: 0)
             UIView.animate(withDuration: 0.2, animations: {
                 self.postsTable.scrollToRow(at: indexPathNav, at: .top, animated: false)
-            }, completion: { (done) in
+            }, completion: { _ in
                 UIView.animate(withDuration: 1.0, animations: {
                     self.postsTable.cellForRow(at: indexPathNav)?.backgroundColor = .red
                     self.postsTable.cellForRow(at: indexPathNav)?.backgroundColor = .black
@@ -184,8 +184,8 @@ extension UIViewController {
 }
 
 extension ThreadViewController: CellTapInteractionDelegate {
-    func linkTapped(postNumber: Int, opNumber: Int) {
-        self.postNumberToReturn.append(opNumber)
+    func linkTapped(postNumber: Int, opNumber: Int, originNumber: Int) {
+        self.postNumberToReturn.append(originNumber)
         self.threadViewModel.postNumberToNavigate = postNumber
         self.navigateToPost()
     }
