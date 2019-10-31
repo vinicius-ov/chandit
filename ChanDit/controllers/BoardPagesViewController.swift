@@ -90,21 +90,21 @@ class BoardPagesViewController: BaseViewController {
                         print("error trying to convert data to JSON \(data)")
                         return
                     }
-                    let threads: [ThreadViewModel] = page.threads.map ({ (thread: Thread) in
+                    let threads: [ThreadViewModel] = page.threads.map({ (thread: Thread) in
                         let tvm = ThreadViewModel.init(thread: thread)
                         return tvm
                     })
                         self.pageViewModel.threads.addObjects(from: threads)
                     DispatchQueue.main.async {
-                        if !append {
-                            //self.postsTable.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-                        }
-                        self.postsTable.isHidden = false
                         self.pickerView.selectRow(self.boardsViewModel.getCurrentBoardIndex() ?? 0,
                                                   inComponent: 0,
                                                   animated: true)
+                        self.postsTable.isHidden = false
                         self.boardSelector.isEnabled = true
                         self.postsTable.reloadData()
+                        if !append {
+                            self.postsTable.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                        }
                     }
                 }
             case .failure(let error):
