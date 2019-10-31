@@ -16,7 +16,7 @@ class ThreadViewController: BaseViewController {
     var selectedBoardId: String!
     let service = Service()
     
-    var indexPathNav:IndexPath!
+    var indexPathNav: IndexPath!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +33,14 @@ class ThreadViewController: BaseViewController {
     }
 
     fileprivate func fetchData() {
-        service.loadData(from: URL(string: "https://a.4cdn.org/\(threadViewModel.boardIdToNavigate!)/thread/\(threadViewModel.threadNumberToNavigate!).json")!) { (result) in
+        guard let board = threadViewModel.boardIdToNavigate,
+            let opNumber = threadViewModel.threadNumberToNavigate
+            else {
+                self.callAlertView(title: "Fetch failed",
+                message: "Failed to load thread posts. Try again.", actions: [])
+                return
+        }
+        service.loadData(from: URL(string: "https://a.4cdn.org/\(board)/thread/\(opNumber).json")!) { (result) in
             switch result {
             case .success(let data):
                 do {
@@ -74,7 +81,15 @@ class ThreadViewController: BaseViewController {
         guard let postNumberToNavigate = threadViewModel.postNumberToNavigate,
              let index = self.threadViewModel.findPostIndexByNumber(postNumberToNavigate) else { return }
             indexPathNav = IndexPath(item: index, section: 0)
-            self.postsTable.scrollToRow(at: indexPathNav, at: .top, animated: true)
+        
+        let indexPaths = self.postsTable.indexPathsForVisibleRows!
+        for index in indexPaths {
+            let post = threadViewModel.postViewModel(at: index.row)
+            if post!.number! == postNumberToNavigate {
+                flashThreadLinked()
+            }
+        }
+        self.postsTable.scrollToRow(at: indexPathNav, at: .top, animated: true)
     }
     
     @IBAction func reloadData(_ sender: Any) {
@@ -102,20 +117,19 @@ class ThreadViewController: BaseViewController {
     }
     
     @IBAction func gotoBottom(_ sender: Any) {
-//        var time = 0.5
         let posts = self.threadViewModel.posts.count
-//        switch posts {
-//        case 50..<100:
-//            time = 1.0
-//        case (100...):
-//            time = 2.0
-//        default:
-//            time = 0.5
-//        }
-        //UIView.animate(withDuration: time, animations: { [weak self] in
-            self.postsTable.scrollToRow(at:
-                IndexPath(item: posts - 1, section: 0), at: .top, animated: true)
-        //})
+        self.postsTable.scrollToRow(at:
+            IndexPath(item: posts - 1, section: 0), at: .top, animated: true)
+    }
+    
+    func flashThreadLinked() {
+       guard let index = self.indexPathNav,
+        let cell = self.postsTable.cellForRow(at: index)
+            else { return }
+        UIView.animate(withDuration: 1.0, animations: {
+            cell.contentView.backgroundColor = .red
+            cell.contentView.backgroundColor = .black
+        })
     }
 }
 
@@ -161,17 +175,7 @@ extension ThreadViewController: UITableViewDelegate {
     }
     
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        guard let index = self.indexPathNav,
-        let cell = self.postsTable.cellForRow(at: index)
-            else { return }
-        print("JUMP: \(index)")
-        print("JUMP: \(cell)")
-        print("JUMP: \(postsTable.visibleCells.contains(cell))")
-        UIView.animate(withDuration: 1.0, animations: {
-            cell.contentView.backgroundColor = .red
-            cell.contentView.backgroundColor = .black
-        })
-        print("JUMP: \("ended")")
+        flashThreadLinked()
     }
 }
     
