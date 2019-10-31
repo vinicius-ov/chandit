@@ -13,6 +13,11 @@ class ThreadFooterView: UITableViewHeaderFooterView {
     @IBOutlet weak var postsCount: UILabel!
     @IBOutlet weak var imagesCount: UILabel!
     @IBOutlet weak var navigateButton: UIButton!
+    @IBOutlet weak var closedIcon: UIImageView! {
+        didSet {
+            closedIcon.sd_setImage(with: URL(string: "https://s.4cdn.org/image/closed.gif")!)
+        }
+    }
     
     var threadToNavigate: Int!
         

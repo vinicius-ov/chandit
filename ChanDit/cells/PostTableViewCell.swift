@@ -30,6 +30,12 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var mediaExtension: UILabel!
     @IBOutlet weak var mediaSize: UILabel!
     
+    @IBOutlet weak var stickyIcon: UIImageView! {
+        didSet {
+            stickyIcon.sd_setImage(with: URL(string: "https://s.4cdn.org/image/sticky.gif")!)
+        }
+    }
+    
     weak var tapDelegate: CellTapInteractionDelegate?
     var tappedUrl: URL?
     
@@ -84,6 +90,8 @@ class PostTableViewCell: UITableViewCell {
         
         mediaSize.text = postViewModel.fileSize
         mediaExtension.text = postViewModel.mediaFullName
+        
+        stickyIcon.isHidden = !postViewModel.isPinned
     }
     
     var thumbSizeConstraint: NSLayoutConstraint? {
@@ -164,4 +172,11 @@ extension UIView {
 
 protocol CompleteBoardNameProtocol {
     var completeBoardName: String { get set }
+}
+
+extension PostTableViewCell {
+    @IBAction func savePasta() {
+        guard let com = postViewModel.comment, let url = URL(string: "mobilenotes://\(com)") else { return }
+        UIApplication.shared.open(url)
+    }
 }

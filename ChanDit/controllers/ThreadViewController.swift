@@ -165,7 +165,9 @@ extension ThreadViewController: UITableViewDelegate {
         footerView?.imagesCount.text = "\(threadToLaunch.images ?? 0) (\(threadToLaunch.omittedImages ?? 0))"
         footerView?.postsCount.text = "\(threadToLaunch.replies ?? 0) (\(threadToLaunch.omittedPosts ?? 0))"
         footerView?.navigateButton.setTitle("Reply", for: .normal)
-        footerView?.delegate = self
+        footerView?.navigateButton.isEnabled = !threadToLaunch.isClosed
+        footerView?.delegate = !threadToLaunch.isClosed ? self : nil
+        footerView?.closedIcon.isHidden = !threadToLaunch.isClosed
 
         return footerView
     }
