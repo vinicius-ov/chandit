@@ -9,18 +9,12 @@
 import UIKit
 
 protocol CellTapInteractionDelegate: class {
-    func linkTapped(postNumber: Int, opNumber: Int)
+    func linkTapped(postNumber: Int, opNumber: Int, originNumber: Int)
     func imageTapped(_ viewController: UIViewController)
     func presentAlertExitingApp(_ actions: [UIAlertAction])
 }
 
 class BaseViewController: UIViewController {
-    override var shouldAutorotate: Bool {
-        get {
-            return false
-        }
-    }
-    
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         get {
             return .portrait
@@ -44,7 +38,7 @@ class BoardPagesViewController: BaseViewController {
         postsTable.delegate = self
         postsTable.prefetchDataSource = self
         postsTable.rowHeight = UITableView.automaticDimension
-        postsTable.estimatedRowHeight = 260
+        postsTable.estimatedRowHeight = 400
         postsTable.isHidden = true
         
         pickerView = UIPickerView()
@@ -96,26 +90,26 @@ class BoardPagesViewController: BaseViewController {
                         print("error trying to convert data to JSON \(data)")
                         return
                     }
-                    let threads: [ThreadViewModel] = page.threads.map ({ (thread: Thread) in
+                    let threads: [ThreadViewModel] = page.threads.map({ (thread: Thread) in
                         let tvm = ThreadViewModel.init(thread: thread)
                         return tvm
                     })
                         self.pageViewModel.threads.addObjects(from: threads)
                     DispatchQueue.main.async {
-                        if !append {
-                            //self.postsTable.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-                        }
-                        self.postsTable.isHidden = false
                         self.pickerView.selectRow(self.boardsViewModel.getCurrentBoardIndex() ?? 0,
                                                   inComponent: 0,
                                                   animated: true)
+                        self.postsTable.isHidden = false
                         self.boardSelector.isEnabled = true
                         self.postsTable.reloadData()
+                        if !append {
+                            self.postsTable.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                        }
                     }
                 }
-                break
-            case .failure(_):
-                break
+            case .failure(let error):
+                self.callAlertView(title: "Fetch failed",
+                                   message: "Failed to load board threads. Try again. \(error?.localizedDescription)", actions: [])
             }
         }
     }
@@ -135,8 +129,9 @@ class BoardPagesViewController: BaseViewController {
                     }
                     self.fetchData(append: false)
                 }
-            case .failure(_):
-                break
+            case .failure(let error):
+                self.callAlertView(title: "Fetch failed",
+                                   message: "Failed to load board lista. Try reloading the app. \(error?.localizedDescription)", actions: [])
             }
         }
     }
@@ -199,7 +194,7 @@ class BoardPagesViewController: BaseViewController {
     }
 }
 
-extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource {
+extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let threadViewModel = pageViewModel.threads[section] as? ThreadViewModel else { return 0 }
         return threadViewModel.posts.count
@@ -265,7 +260,7 @@ extension BoardPagesViewController: UIPickerViewDataSource, UIPickerViewDelegate
 }
 
 extension BoardPagesViewController: CellTapInteractionDelegate {
-    func linkTapped(postNumber: Int, opNumber: Int) {
+    func linkTapped(postNumber: Int, opNumber: Int, originNumber: Int) {
         self.boardsViewModel.postNumberToNavigate = postNumber
         self.boardsViewModel.threadToLaunch = opNumber
         self.navigateToThread()

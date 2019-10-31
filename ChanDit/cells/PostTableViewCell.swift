@@ -48,7 +48,7 @@ class PostTableViewCell: UITableViewCell {
         postAuthorName.text = postViewModel.postAuthorName
         
         if let title = postViewModel.title {
-            postTitle.attributedText = title.toPlainText()
+            postTitle.attributedText = title.toPlainText(fontSize: 14)
         } else {
             postTitle.text = ""
         }
@@ -66,7 +66,13 @@ class PostTableViewCell: UITableViewCell {
             postImage.sd_setImage(with: postViewModel.spoilerUrl)
         } else {
             if let thumbUrl = postViewModel.thumbnailUrl(boardId: selectedBoardId) {
-                postImage.sd_setImage(with: thumbUrl)
+                postImage.sd_setImage(with: thumbUrl,
+                                      completed: { (_, error, _, _) in
+                                        if error != nil {
+                                            self.postImage.sd_setImage(with:
+                                                URL(string: "https://s.4cdn.org/image/filedeleted-res.gif")!)
+                                        }
+                    })
                 postImage.isHidden = false
             } else {
                 postImage.gestureRecognizers?.removeAll()
@@ -114,7 +120,9 @@ class PostTableViewCell: UITableViewCell {
         let quote = tappedUrl.absoluteString.split(separator: "/")
         if quote.first == "chandit:" {
             let postNumber = Int(quote.last!)
-            tapDelegate?.linkTapped(postNumber: postNumber!, opNumber: postViewModel.resto!)
+            tapDelegate?.linkTapped(postNumber: postNumber!,
+                                    opNumber: postViewModel.resto!,
+                                    originNumber: postViewModel.number!)
         } else {
             //see https://stackoverflow.com/questions/39949169/swift-open-url-in-a-specific-browser-tab for other browsers deeplinks
             let actionOk = UIAlertAction(title: "OK", style: .default) { (_) in

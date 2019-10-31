@@ -153,14 +153,14 @@ extension PostViewModel {
             fsize /= 1024
             unit = "MiB"
         }
-        return String(format: "%.2f %@",fsize,unit)
+        return String(format: "%.2f %@", fsize,unit)
     }
     
     var mediaFullName: String? {
         return "\(post.filename ?? "")\(post.ext ?? "")"
     }
     
-    fileprivate func getTimeAgo() -> TimeInterval{
+    fileprivate func getTimeAgo() -> TimeInterval {
         let time = post.time
         
         let now = NSDate().timeIntervalSince1970

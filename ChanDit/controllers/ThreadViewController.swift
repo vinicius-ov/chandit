@@ -15,6 +15,8 @@ class ThreadViewController: BaseViewController {
     @IBOutlet weak var postsTable: UITableView!
     var selectedBoardId: String!
     let service = Service()
+    
+    var indexPathNav: IndexPath!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,17 +28,25 @@ class ThreadViewController: BaseViewController {
         postsTable.register(UINib(nibName: "ThreadFooterView", bundle: nil), forHeaderFooterViewReuseIdentifier: ThreadFooterView.reuseIdentifier)
     
         postsTable.rowHeight = UITableView.automaticDimension
-        postsTable.estimatedRowHeight = 260
+        postsTable.estimatedRowHeight = 400
         fetchData()
     }
 
     fileprivate func fetchData() {
-        service.loadData(from: URL(string: "https://a.4cdn.org/\(threadViewModel.boardIdToNavigate!)/thread/\(threadViewModel.threadNumberToNavigate!).json")!) { (result) in
+        guard let board = threadViewModel.boardIdToNavigate,
+            let opNumber = threadViewModel.threadNumberToNavigate
+            else {
+                self.callAlertView(title: "Fetch failed",
+                message: "Failed to load thread posts. Try again.", actions: [])
+                return
+        }
+        service.loadData(from: URL(string: "https://a.4cdn.org/\(board)/thread/\(opNumber).json")!) { (result) in
             switch result {
             case .success(let data):
                 do {
                     guard let thread = try? JSONDecoder().decode(Thread.self, from: data) else {
                         print("error trying to convert data to JSON \(data)")
+                        self.showThreadNotFoundAlert()
                         return
                     }
                    
@@ -49,25 +59,37 @@ class ThreadViewController: BaseViewController {
                         self.navigateToPost()
                     }
                 }
-                break
-            case .failure(_):
-                break
+            case .failure(let error):
+                self.callAlertView(title: "Fetch failed",
+                                   message: "Failed to load thread posts. Try again. \(error?.localizedDescription)", actions: [])
             }
         }
     }
    
+    private func showThreadNotFoundAlert() {
+        let action = UIAlertAction(title: "Ok",
+                                   style: .default,
+                                   handler: { _ in
+                                    self.navigationController?.popViewController(animated: true)
+        })
+        callAlertView(title: "Thread removed",
+                           message: "Thread was prunned or deleted. Returning to board list...",
+                           actions: [action])
+    }
+    
     func navigateToPost() {
         guard let postNumberToNavigate = threadViewModel.postNumberToNavigate,
              let index = self.threadViewModel.findPostIndexByNumber(postNumberToNavigate) else { return }
-            let indexPathNav = IndexPath(item: index, section: 0)
-            UIView.animate(withDuration: 0.2, animations: {
-                self.postsTable.scrollToRow(at: indexPathNav, at: .top, animated: false)
-            }, completion: { (done) in
-                UIView.animate(withDuration: 1.0, animations: {
-                    self.postsTable.cellForRow(at: indexPathNav)?.backgroundColor = .red
-                    self.postsTable.cellForRow(at: indexPathNav)?.backgroundColor = .black
-                })
-            })
+            indexPathNav = IndexPath(item: index, section: 0)
+        
+        let indexPaths = self.postsTable.indexPathsForVisibleRows!
+        for index in indexPaths {
+            let post = threadViewModel.postViewModel(at: index.row)
+            if post!.number! == postNumberToNavigate {
+                flashThreadLinked()
+            }
+        }
+        self.postsTable.scrollToRow(at: indexPathNav, at: .top, animated: true)
     }
     
     @IBAction func reloadData(_ sender: Any) {
@@ -95,20 +117,19 @@ class ThreadViewController: BaseViewController {
     }
     
     @IBAction func gotoBottom(_ sender: Any) {
-//        var time = 0.5
         let posts = self.threadViewModel.posts.count
-//        switch posts {
-//        case 50..<100:
-//            time = 1.0
-//        case (100...):
-//            time = 2.0
-//        default:
-//            time = 0.5
-//        }
-        //UIView.animate(withDuration: time, animations: { [weak self] in
-            self.postsTable.scrollToRow(at:
-                IndexPath(item: posts - 1, section: 0), at: .top, animated: true)
-        //})
+        self.postsTable.scrollToRow(at:
+            IndexPath(item: posts - 1, section: 0), at: .top, animated: true)
+    }
+    
+    func flashThreadLinked() {
+       guard let index = self.indexPathNav,
+        let cell = self.postsTable.cellForRow(at: index)
+            else { return }
+        UIView.animate(withDuration: 1.0, animations: {
+            cell.contentView.backgroundColor = .red
+            cell.contentView.backgroundColor = .black
+        })
     }
 }
 
@@ -154,28 +175,32 @@ extension ThreadViewController: UITableViewDelegate {
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         print("drag")
     }
+    
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        flashThreadLinked()
+    }
 }
-
+    
 extension UIViewController {
-    func callAlertView(title: String, message: String, actions: [UIAlertAction]) {
+    func callAlertView(title: String, message: String, actions: [UIAlertAction]? = []) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        actions.forEach {
+        actions!.forEach {
             alert.addAction($0)
         }
-        if actions.isEmpty {
+        if actions!.isEmpty {
             let actionOk = UIAlertAction(title: "Ok", style: .default, handler: nil)
             alert.addAction(actionOk)
             
         } else {
-            alert.preferredAction = actions.first!
+            alert.preferredAction = actions!.first!
         }
         present(alert, animated: true, completion: nil)
     }
 }
 
 extension ThreadViewController: CellTapInteractionDelegate {
-    func linkTapped(postNumber: Int, opNumber: Int) {
-        self.postNumberToReturn.append(postNumber)
+    func linkTapped(postNumber: Int, opNumber: Int, originNumber: Int) {
+        self.postNumberToReturn.append(originNumber)
         self.threadViewModel.postNumberToNavigate = postNumber
         self.navigateToPost()
     }

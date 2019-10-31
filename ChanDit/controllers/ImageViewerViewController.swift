@@ -38,19 +38,51 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
         super.viewDidLoad()
         scrollView.delegate = self
         
-        let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(willDismiss))
-        swipeUp.direction = .up
-        view.addGestureRecognizer(swipeUp)
+        let doubleTapZoom = UITapGestureRecognizer(target: self, action: #selector(willZoom))
+        doubleTapZoom.numberOfTapsRequired = 2
+        view.addGestureRecognizer(doubleTapZoom)
+        
+        let tapShowBar = UITapGestureRecognizer(target: self, action: #selector(toggleShowNavBar))
+        tapShowBar.numberOfTapsRequired = 1
+        view.addGestureRecognizer(tapShowBar)
         
         imageViewWidth.constant =  postViewModel.imageWidth ?? 0.0
         imageViewHeight.constant = postViewModel.imageHeight ?? 0.0
         imageView.bounds.size.width = postViewModel.imageWidth ?? 0.0
         imageView.bounds.size.height = postViewModel.imageHeight ?? 0.0
+        navigationController?.navigationBar.setTransparent()
     }
     
     @objc
     func willDismiss() {
-        dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
+    }
+    
+    @objc
+    func willZoom() {
+        print("will zoom")
+//        imageViewBottomConstraint = imageView.
+//        imageViewTopConstraint
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.navigationBar.alpha = 1.0
+    }
+    
+    @objc
+    func toggleShowNavBar() {
+        fadeNavBar()
+    }
+    
+    private func fadeNavBar() {
+        guard let navCtrl = navigationController else { return }
+        UIView.animate(withDuration: 0.25, animations: {
+            var alpha: CGFloat = 0.0
+            if navCtrl.navigationBar.alpha == 0.0 {
+                alpha = 1.0
+            }
+            navCtrl.navigationBar.alpha = alpha
+        })
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -80,7 +112,6 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
                 self.setImageToImageView(image)
                 self.updateInterfaceImageLoaded()
                 print("SDWEB: buscando da cache")
-                self.loadingIndicator.stopAnimating()
             } else {
                 let downloader = SDWebImageDownloader.shared
                 downloader.downloadImage(with: url) { [weak self] (image, data, error, finished) in
@@ -92,7 +123,6 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
                     } else if error != nil {
                         print("SDWEB: ERRO buscando da net")
                     }
-                    self?.loadingIndicator.stopAnimating()
                 }
             }
         }
@@ -106,6 +136,7 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
         DispatchQueue.main.async {
             self.updateConstraintsForSize(self.view.bounds.size)
             self.navigationItem.rightBarButtonItem?.isEnabled = true
+            self.loadingIndicator.stopAnimating()
         }
     }
     
@@ -165,18 +196,20 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
         if PHPhotoLibrary.authorizationStatus() == .authorized {
             
             guard let path = createTempPicFile(data) else { return }
-            let albumName = self.completeBoardName.trimmingCharacters(in: .whitespacesAndNewlines)
+            let albumName = self.completeBoardName
+                .trimmingCharacters(in: .whitespacesAndNewlines)
             let album = fetchAlbum(albumName)
             var albumInsertRequest: PHAssetCollectionChangeRequest!
             
             PHPhotoLibrary.shared().performChanges({
                 if album == nil {
-                    albumInsertRequest = PHAssetCollectionChangeRequest.creationRequestForAssetCollection(withTitle: albumName)
-                    //album = self.fetchAlbum(albumName)
+                    albumInsertRequest = PHAssetCollectionChangeRequest
+                        .creationRequestForAssetCollection(withTitle: albumName)
                 } else {
                     albumInsertRequest = PHAssetCollectionChangeRequest(for: album!)
                 }
-                let assetChangeRequest = PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: path)!
+                let assetChangeRequest = PHAssetChangeRequest
+                    .creationRequestForAssetFromImage(atFileURL: path)!
                 albumInsertRequest?.addAssets(
                     [assetChangeRequest.placeholderForCreatedAsset!] as NSArray)
 
@@ -204,7 +237,9 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
         let widthScale = size.width / imageView.bounds.width
         let heightScale = size.height / imageView.bounds.height
         let minScale = min(widthScale, heightScale)
-        
+
+        //print("\(widthScale) - \(heightScale) - \(minScale)")
+
         scrollView.minimumZoomScale = minScale
         scrollView.zoomScale = minScale
     }
@@ -224,7 +259,7 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
         let xOffset = max(0, (size.width - imageView.frame.width) / 2)
         imageViewLeadingConstraint.constant = xOffset
         imageViewTrailingConstraint.constant = xOffset
-        
+        print("\(size) - \(yOffset) - \(xOffset)")
         view.layoutIfNeeded()
     }
     
@@ -241,7 +276,7 @@ extension ImageViewerViewController: UIScrollViewDelegate {
 }
 
 extension UIViewController {
-    func showToast(message:String,
+    func showToast(message: String,
                    textColor: UIColor?,
                    backgroundColor: UIColor?) {
         let label = UILabel(frame:
@@ -257,14 +292,19 @@ extension UIViewController {
         view.addSubview(label)
         UIView.animate(withDuration: 2.0, delay: 1.0, animations: {
             label.alpha = 0
-        }) { finished in
+        }, completion: { _ in
             label.removeFromSuperview()
-        }
+        })
     }
 }
 
-extension UserDefaults {
-    static var dataCache: UserDefaults {
-        return UserDefaults(suiteName: "chanditDataCache")!
+extension UINavigationBar {
+    func setTransparent() {
+        self.isTranslucent = true
+        //self.setBackgroundImage(UIImage(named: "grayscale"), for: .default)
+        //self.shadowImage = UIImage(named: "grayscale")
+        self.setBackgroundImage(UIImage(), for: .default)
+        self.shadowImage = UIImage()
+        self.backgroundColor = .clear
     }
 }
