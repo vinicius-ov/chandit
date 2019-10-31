@@ -235,6 +235,7 @@ extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource 
         footerView?.imagesCount.text = "\(threadToLaunch.images ?? 0) (\(threadToLaunch.omittedImages ?? 0))"
         footerView?.postsCount.text = "\(threadToLaunch.replies ?? 0) (\(threadToLaunch.omittedPosts ?? 0))"
         footerView?.delegate = self
+        footerView?.closedIcon.isHidden = !threadToLaunch.isClosed
 
         return footerView
     }
