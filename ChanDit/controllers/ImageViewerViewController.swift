@@ -59,10 +59,18 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
     }
     
     @objc
-    func willZoom() {
-        print("will zoom")
-//        imageViewBottomConstraint = imageView.
-//        imageViewTopConstraint
+    func willZoom(tap: UITapGestureRecognizer) {
+        UIView.animate(withDuration: 0.25) {
+            if self.scrollView.zoomScale < 1.0 {
+                self.scrollView.zoomScale = 1.0
+                let tap = tap.location(in: self.view)
+                print(tap)
+                let point = self.view.convert(tap, to: self.scrollView)
+                self.scrollView.setContentOffset(point, animated: false)//CGPoint(x: tap.x, y: tap.y)
+            } else {
+                self.updateMinZoomScaleForSize(self.view.bounds.size)
+            }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -237,9 +245,7 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
         let widthScale = size.width / imageView.bounds.width
         let heightScale = size.height / imageView.bounds.height
         let minScale = min(widthScale, heightScale)
-
-        //print("\(widthScale) - \(heightScale) - \(minScale)")
-
+        
         scrollView.minimumZoomScale = minScale
         scrollView.zoomScale = minScale
     }
@@ -252,14 +258,14 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
     fileprivate func updateConstraintsForSize(_ size: CGSize?) {
         guard let size = size else { return }
 
-        let yOffset = max(0, (size.height - imageView.frame.height) / 2)
+        let yOffset = max(0, (size.height - imageView.frame.height) / 2)   // half 2 center in screen
         imageViewTopConstraint.constant = yOffset
         imageViewBottomConstraint.constant = yOffset
         
         let xOffset = max(0, (size.width - imageView.frame.width) / 2)
         imageViewLeadingConstraint.constant = xOffset
         imageViewTrailingConstraint.constant = xOffset
-        print("\(size) - \(yOffset) - \(xOffset)")
+            
         view.layoutIfNeeded()
     }
     
