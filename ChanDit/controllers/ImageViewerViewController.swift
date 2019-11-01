@@ -321,11 +321,93 @@ extension UIViewController {
 
 extension UINavigationBar {
     func setTransparent() {
-        self.isTranslucent = true
-        //self.setBackgroundImage(UIImage(named: "grayscale"), for: .default)
-        //self.shadowImage = UIImage(named: "grayscale")
-        self.setBackgroundImage(UIImage(), for: .default)
-        self.shadowImage = UIImage()
+//        guard let flareGradientImage = CAGradientLayer.primaryGradient(on: self)
+//        else {
+//            print("Error creating gradient color!")
+//            return
+//        }
+//        self.barTintColor = UIColor(patternImage: flareGradientImage)
         self.backgroundColor = .clear
+        self.isTranslucent = true
+        
+        let black = UIColor.green
+//        black.withAlphaComponent(0.3)
+        let colors = [UIColor.red.withAlphaComponent(0.0001), black.withAlphaComponent(0.0001)]
+        self.applyNavigationGradient(colors: colors)
+        
+//        self.backgroundColor = black.withAlphaComponent(0.1)
+        
+    }
+
+    func image(fromLayer layer: CALayer) -> UIImage {
+        UIGraphicsBeginImageContext(layer.frame.size)
+        layer.render(in: UIGraphicsGetCurrentContext()!)
+        let outputImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return outputImage!
+    }
+}
+
+extension CAGradientLayer {
+    
+    class func primaryGradient(on view: UIView) -> UIImage? {
+        let gradient = CAGradientLayer()
+        let flareRed = UIColor(displayP3Red: 241.0/255.0, green: 39.0/255.0, blue: 17.0/255.0, alpha: 1.0)
+        let flareOrange = UIColor(displayP3Red: 245.0/255.0, green: 175.0/255.0, blue: 25.0/255.0, alpha: 1.0)
+        var bounds = view.bounds
+        bounds.size.height += UIApplication.shared.statusBarFrame.size.height
+        gradient.frame = bounds
+        gradient.colors = [flareRed.cgColor, flareOrange.cgColor]
+        gradient.startPoint = CGPoint(x: 0, y: 0)
+        gradient.endPoint = CGPoint(x: 0, y: 10)
+        return gradient.createGradientImage(on: view)
+    }
+    
+    private func createGradientImage(on view: UIView) -> UIImage? {
+        var gradientImage: UIImage?
+        UIGraphicsBeginImageContext(view.frame.size)
+        if let context = UIGraphicsGetCurrentContext() {
+            render(in: context)
+            gradientImage = UIGraphicsGetImageFromCurrentImageContext()?.resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .stretch)
+        }
+        UIGraphicsEndImageContext()
+        return gradientImage
+    }
+}
+
+extension UINavigationBar
+{
+    /// Applies a background gradient with the given colors
+    func applyNavigationGradient( colors : [UIColor]) {
+        var frameAndStatusBar: CGRect = self.bounds
+        frameAndStatusBar.size.height += 20 // add 20 to account for the status bar
+        
+        setBackgroundImage(UINavigationBar.gradient(size: frameAndStatusBar.size, colors: colors), for: .default)
+    }
+    
+    /// Creates a gradient image with the given settings
+    static func gradient(size : CGSize, colors : [UIColor]) -> UIImage?
+    {
+        // Turn the colors into CGColors
+        let cgcolors = colors.map { $0.cgColor }
+        
+        // Begin the graphics context
+        UIGraphicsBeginImageContextWithOptions(size, true, 0.0)
+        
+        // If no context was retrieved, then it failed
+        guard let context = UIGraphicsGetCurrentContext() else { return nil }
+        
+        // From now on, the context gets ended if any return happens
+        defer { UIGraphicsEndImageContext() }
+        
+        // Create the Coregraphics gradient
+        var locations : [CGFloat] = [0.0, 1.0]
+        guard let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: cgcolors as NSArray as CFArray, locations: &locations) else { return nil }
+        
+        // Draw the gradient
+        context.drawLinearGradient(gradient, start: CGPoint(x: 0.0, y: 0.0), end: CGPoint(x: 0.0, y: size.height), options: [])
+        
+        // Generate the image (the defer takes care of closing the context)
+        return UIGraphicsGetImageFromCurrentImageContext()
     }
 }
