@@ -40,7 +40,7 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
         
         let doubleTapZoom = UITapGestureRecognizer(target: self, action: #selector(willZoom))
         doubleTapZoom.numberOfTapsRequired = 2
-        view.addGestureRecognizer(doubleTapZoom)
+        scrollView.addGestureRecognizer(doubleTapZoom)
         
         let tapShowBar = UITapGestureRecognizer(target: self, action: #selector(toggleShowNavBar))
         tapShowBar.numberOfTapsRequired = 1
@@ -56,21 +56,6 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
     @objc
     func willDismiss() {
         navigationController?.popViewController(animated: true)
-    }
-    
-    @objc
-    func willZoom(tap: UITapGestureRecognizer) {
-        UIView.animate(withDuration: 0.25) {
-            if self.scrollView.zoomScale < 1.0 {
-                self.scrollView.zoomScale = 1.0
-                let tap = tap.location(in: self.view)
-                print(tap)
-                let point = self.view.convert(tap, to: self.scrollView)
-                self.scrollView.setContentOffset(point, animated: false)//CGPoint(x: tap.x, y: tap.y)
-            } else {
-                self.updateMinZoomScaleForSize(self.view.bounds.size)
-            }
-        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -110,6 +95,9 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
         download(url)
     }
     
+    
+    // MARK: save image functions
+    
     fileprivate func storeDownloadedCacheToData(_ image: UIImage?, _ data: Data?, _ url: URL) {
         imageCache.store(image, imageData: data, forKey: url.absoluteString, toDisk: true, completion: nil)
     }
@@ -146,13 +134,6 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
             self.navigationItem.rightBarButtonItem?.isEnabled = true
             self.loadingIndicator.stopAnimating()
         }
-    }
-    
-    private func showFailToast() {
-        showToast(
-            message: "Not authorized to save images in Camera Roll. Go to Settings to fix this.",
-            textColor: nil,
-            backgroundColor: nil)
     }
     
     @objc func saveImage() {
@@ -234,13 +215,24 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
             }
         }
     }
-
+    
+    // MARK: alert builders
+    
+    private func showFailToast() {
+        showToast(
+            message: "Not authorized to save images in Camera Roll. Go to Settings to fix this.",
+            textColor: nil,
+            backgroundColor: nil)
+    }
+    
     func showSuccessToast() {
             self.showToast(message: "Photo was saved to the camera roll.",
                            textColor: UIColor.black,
                            backgroundColor: UIColor(named: "lightGreenSuccess"))
     }
     
+    // MARK: zoom/pinch image functions
+
     fileprivate func updateMinZoomScaleForSize(_ size: CGSize) {
         let widthScale = size.width / imageView.bounds.width
         let heightScale = size.height / imageView.bounds.height
@@ -269,6 +261,29 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
         view.layoutIfNeeded()
     }
     
+    @objc
+    func willZoom(gestureRecog: UITapGestureRecognizer) {
+        if self.scrollView.zoomScale < 1.0 {
+            self.scrollView.zoom(to:
+                zoomRectForScale(scale: 2.0,
+                                 center: gestureRecog.location(in: gestureRecog.view)),
+                                 animated: true)
+        } else {
+            UIView.animate(withDuration: 0.25) {
+                self.updateMinZoomScaleForSize(self.view.bounds.size)
+            }
+        }
+    }
+    
+    func zoomRectForScale(scale: CGFloat, center: CGPoint) -> CGRect {
+        var zoomRect = CGRect.zero
+        zoomRect.size.height = imageView.frame.size.height / scale
+        zoomRect.size.width  = imageView.frame.size.width  / scale
+        let newCenter = imageView.convert(center, from: scrollView)
+        zoomRect.origin.x = newCenter.x - (zoomRect.size.width / 2.0)
+        zoomRect.origin.y = newCenter.y - (zoomRect.size.height / 2.0)
+        return zoomRect
+    }
 }
 
 extension ImageViewerViewController: UIScrollViewDelegate {
