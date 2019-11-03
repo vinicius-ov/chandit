@@ -60,6 +60,7 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
     
     override func viewWillDisappear(_ animated: Bool) {
         navigationController?.navigationBar.alpha = 1.0
+        navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
     }
     
     @objc
@@ -321,73 +322,26 @@ extension UIViewController {
 
 extension UINavigationBar {
     func setTransparent() {
-//        guard let flareGradientImage = CAGradientLayer.primaryGradient(on: self)
-//        else {
-//            print("Error creating gradient color!")
-//            return
-//        }
-//        self.barTintColor = UIColor(patternImage: flareGradientImage)
-        self.backgroundColor = .clear
         self.isTranslucent = true
-        
-        let black = UIColor.green
-//        black.withAlphaComponent(0.3)
-        let colors = [UIColor.red.withAlphaComponent(0.0001), black.withAlphaComponent(0.0001)]
+        self.shadowImage = UIImage()
+        self.backgroundColor = .clear
+        let colors = [UIColor.black, UIColor(displayP3Red: 1, green: 1, blue: 1, alpha: 0)]
         self.applyNavigationGradient(colors: colors)
-        
-//        self.backgroundColor = black.withAlphaComponent(0.1)
-        
-    }
-
-    func image(fromLayer layer: CALayer) -> UIImage {
-        UIGraphicsBeginImageContext(layer.frame.size)
-        layer.render(in: UIGraphicsGetCurrentContext()!)
-        let outputImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return outputImage!
     }
 }
 
-extension CAGradientLayer {
-    
-    class func primaryGradient(on view: UIView) -> UIImage? {
-        let gradient = CAGradientLayer()
-        let flareRed = UIColor(displayP3Red: 241.0/255.0, green: 39.0/255.0, blue: 17.0/255.0, alpha: 1.0)
-        let flareOrange = UIColor(displayP3Red: 245.0/255.0, green: 175.0/255.0, blue: 25.0/255.0, alpha: 1.0)
-        var bounds = view.bounds
-        bounds.size.height += UIApplication.shared.statusBarFrame.size.height
-        gradient.frame = bounds
-        gradient.colors = [flareRed.cgColor, flareOrange.cgColor]
-        gradient.startPoint = CGPoint(x: 0, y: 0)
-        gradient.endPoint = CGPoint(x: 0, y: 10)
-        return gradient.createGradientImage(on: view)
-    }
-    
-    private func createGradientImage(on view: UIView) -> UIImage? {
-        var gradientImage: UIImage?
-        UIGraphicsBeginImageContext(view.frame.size)
-        if let context = UIGraphicsGetCurrentContext() {
-            render(in: context)
-            gradientImage = UIGraphicsGetImageFromCurrentImageContext()?.resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .stretch)
-        }
-        UIGraphicsEndImageContext()
-        return gradientImage
-    }
-}
-
-extension UINavigationBar
-{
+extension UINavigationBar {
     /// Applies a background gradient with the given colors
     func applyNavigationGradient( colors : [UIColor]) {
         var frameAndStatusBar: CGRect = self.bounds
-        frameAndStatusBar.size.height += 20 // add 20 to account for the status bar
+        frameAndStatusBar.size.height += UIApplication.shared.statusBarFrame.height
+        frameAndStatusBar.size.height += 120 // add 20 to account for the status bar
         
         setBackgroundImage(UINavigationBar.gradient(size: frameAndStatusBar.size, colors: colors), for: .default)
     }
     
     /// Creates a gradient image with the given settings
-    static func gradient(size : CGSize, colors : [UIColor]) -> UIImage?
-    {
+    static func gradient(size : CGSize, colors : [UIColor]) -> UIImage? {
         // Turn the colors into CGColors
         let cgcolors = colors.map { $0.cgColor }
         
@@ -401,7 +355,7 @@ extension UINavigationBar
         defer { UIGraphicsEndImageContext() }
         
         // Create the Coregraphics gradient
-        var locations : [CGFloat] = [0.0, 1.0]
+        var locations: [CGFloat] = [0.0, 1.0]
         guard let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: cgcolors as NSArray as CFArray, locations: &locations) else { return nil }
         
         // Draw the gradient
