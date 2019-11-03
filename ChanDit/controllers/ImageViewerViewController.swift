@@ -40,7 +40,7 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
         
         let doubleTapZoom = UITapGestureRecognizer(target: self, action: #selector(willZoom))
         doubleTapZoom.numberOfTapsRequired = 2
-        view.addGestureRecognizer(doubleTapZoom)
+        scrollView.addGestureRecognizer(doubleTapZoom)
         
         let tapShowBar = UITapGestureRecognizer(target: self, action: #selector(toggleShowNavBar))
         tapShowBar.numberOfTapsRequired = 1
@@ -58,15 +58,9 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
         navigationController?.popViewController(animated: true)
     }
     
-    @objc
-    func willZoom() {
-        print("will zoom")
-//        imageViewBottomConstraint = imageView.
-//        imageViewTopConstraint
-    }
-    
     override func viewWillDisappear(_ animated: Bool) {
         navigationController?.navigationBar.alpha = 1.0
+        navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
     }
     
     @objc
@@ -101,6 +95,9 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
         guard let url = postViewModel.imageUrl(boardId: boardId) else { return }
         download(url)
     }
+    
+    
+    // MARK: save image functions
     
     fileprivate func storeDownloadedCacheToData(_ image: UIImage?, _ data: Data?, _ url: URL) {
         imageCache.store(image, imageData: data, forKey: url.absoluteString, toDisk: true, completion: nil)
@@ -138,13 +135,6 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
             self.navigationItem.rightBarButtonItem?.isEnabled = true
             self.loadingIndicator.stopAnimating()
         }
-    }
-    
-    private func showFailToast() {
-        showToast(
-            message: "Not authorized to save images in Camera Roll. Go to Settings to fix this.",
-            textColor: nil,
-            backgroundColor: nil)
     }
     
     @objc func saveImage() {
@@ -226,20 +216,29 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
             }
         }
     }
-
+    
+    // MARK: alert builders
+    
+    private func showFailToast() {
+        showToast(
+            message: "Not authorized to save images in Camera Roll. Go to Settings to fix this.",
+            textColor: nil,
+            backgroundColor: nil)
+    }
+    
     func showSuccessToast() {
             self.showToast(message: "Photo was saved to the camera roll.",
                            textColor: UIColor.black,
                            backgroundColor: UIColor(named: "lightGreenSuccess"))
     }
     
+    // MARK: zoom/pinch image functions
+
     fileprivate func updateMinZoomScaleForSize(_ size: CGSize) {
         let widthScale = size.width / imageView.bounds.width
         let heightScale = size.height / imageView.bounds.height
         let minScale = min(widthScale, heightScale)
-
-        //print("\(widthScale) - \(heightScale) - \(minScale)")
-
+        
         scrollView.minimumZoomScale = minScale
         scrollView.zoomScale = minScale
     }
@@ -252,17 +251,40 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
     fileprivate func updateConstraintsForSize(_ size: CGSize?) {
         guard let size = size else { return }
 
-        let yOffset = max(0, (size.height - imageView.frame.height) / 2)
+        let yOffset = max(0, (size.height - imageView.frame.height) / 2)   // half 2 center in screen
         imageViewTopConstraint.constant = yOffset
         imageViewBottomConstraint.constant = yOffset
         
         let xOffset = max(0, (size.width - imageView.frame.width) / 2)
         imageViewLeadingConstraint.constant = xOffset
         imageViewTrailingConstraint.constant = xOffset
-        print("\(size) - \(yOffset) - \(xOffset)")
+            
         view.layoutIfNeeded()
     }
     
+    @objc
+    func willZoom(gestureRecog: UITapGestureRecognizer) {
+        if self.scrollView.zoomScale < 1.0 {
+            self.scrollView.zoom(to:
+                zoomRectForScale(scale: 2.0,
+                                 center: gestureRecog.location(in: gestureRecog.view)),
+                                 animated: true)
+        } else {
+            UIView.animate(withDuration: 0.25) {
+                self.updateMinZoomScaleForSize(self.view.bounds.size)
+            }
+        }
+    }
+    
+    func zoomRectForScale(scale: CGFloat, center: CGPoint) -> CGRect {
+        var zoomRect = CGRect.zero
+        zoomRect.size.height = imageView.frame.size.height / scale
+        zoomRect.size.width  = imageView.frame.size.width  / scale
+        let newCenter = imageView.convert(center, from: scrollView)
+        zoomRect.origin.x = newCenter.x - (zoomRect.size.width / 2.0)
+        zoomRect.origin.y = newCenter.y - (zoomRect.size.height / 2.0)
+        return zoomRect
+    }
 }
 
 extension ImageViewerViewController: UIScrollViewDelegate {
@@ -301,10 +323,45 @@ extension UIViewController {
 extension UINavigationBar {
     func setTransparent() {
         self.isTranslucent = true
-        //self.setBackgroundImage(UIImage(named: "grayscale"), for: .default)
-        //self.shadowImage = UIImage(named: "grayscale")
-        self.setBackgroundImage(UIImage(), for: .default)
         self.shadowImage = UIImage()
         self.backgroundColor = .clear
+        let colors = [UIColor.black, UIColor(displayP3Red: 1, green: 1, blue: 1, alpha: 0)]
+        self.applyNavigationGradient(colors: colors)
+    }
+}
+
+extension UINavigationBar {
+    /// Applies a background gradient with the given colors
+    func applyNavigationGradient( colors : [UIColor]) {
+        var frameAndStatusBar: CGRect = self.bounds
+        frameAndStatusBar.size.height += UIApplication.shared.statusBarFrame.height
+        frameAndStatusBar.size.height += 120 // add 20 to account for the status bar
+        
+        setBackgroundImage(UINavigationBar.gradient(size: frameAndStatusBar.size, colors: colors), for: .default)
+    }
+    
+    /// Creates a gradient image with the given settings
+    static func gradient(size : CGSize, colors : [UIColor]) -> UIImage? {
+        // Turn the colors into CGColors
+        let cgcolors = colors.map { $0.cgColor }
+        
+        // Begin the graphics context
+        UIGraphicsBeginImageContextWithOptions(size, true, 0.0)
+        
+        // If no context was retrieved, then it failed
+        guard let context = UIGraphicsGetCurrentContext() else { return nil }
+        
+        // From now on, the context gets ended if any return happens
+        defer { UIGraphicsEndImageContext() }
+        
+        // Create the Coregraphics gradient
+        var locations: [CGFloat] = [0.0, 1.0]
+        guard let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: cgcolors as NSArray as CFArray, locations: &locations) else { return nil }
+        
+        // Draw the gradient
+        context.drawLinearGradient(gradient, start: CGPoint(x: 0.0, y: 0.0), end: CGPoint(x: 0.0, y: size.height), options: [])
+        
+        // Generate the image (the defer takes care of closing the context)
+        return UIGraphicsGetImageFromCurrentImageContext()
     }
 }
