@@ -147,6 +147,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="postsTable" destination="fJ7-qD-JGi" id="CMa-cc-ePT"/>
+                        <outlet property="reloadButton" destination="6Tg-g5-6dF" id="o1x-J8-D7V"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6u4-uQ-h6m" userLabel="First Responder" sceneMemberID="firstResponder"/>

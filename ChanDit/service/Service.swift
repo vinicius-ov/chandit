@@ -9,26 +9,43 @@
 import UIKit
 
 class Service: NSObject {
+    
+    struct ChanditSuccess {
+        var data: Data
+        var modified: String
+        var code: Int
+    }
+    
     enum Result {
-        case success(Data)
+        case success(ChanditSuccess)
         case failure(Error?)
     }
     
     let session = URLSession(configuration: URLSessionConfiguration.default)
     
-    func loadData(from url: URL,
+    func loadData(from url: URL, lastModified: String?,
                   completionHandler: @escaping (Result) -> Void) {
         
-        let task = session.dataTask(with: url) { data, _, error in
-            guard let data = data else {
-                completionHandler(.failure(error))
+        var request = URLRequest(url: url)
+        if let modified = lastModified {
+            request.addValue(modified, forHTTPHeaderField: "If-Modified-Since")
+            request.cachePolicy = .reloadIgnoringCacheData
+        }
+        
+        let task = session.dataTask(with: request) { data, response, error in
+            guard let data = data,
+                let response = response as? HTTPURLResponse
+                else {
+                    completionHandler(.failure(error))
                 return
             }
-            
-            completionHandler(.success(data))
+            let chandit = ChanditSuccess(
+                data: data,
+                modified: response.allHeaderFields["Last-Modified"] as? String ?? "",
+                code: response.statusCode)
+            completionHandler(.success(chandit))
         }
         
         task.resume()
     }
-    
 }

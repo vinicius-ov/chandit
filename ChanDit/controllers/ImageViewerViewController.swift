@@ -221,15 +221,13 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
     
     private func showFailToast() {
         showToast(
-            message: "Not authorized to save images in Camera Roll. Go to Settings to fix this.",
-            textColor: nil,
-            backgroundColor: nil)
+            message: "Not authorized to save images in Camera Roll. Go to Settings to fix this.")
     }
     
     func showSuccessToast() {
             self.showToast(message: "Photo was saved to the camera roll.",
                            textColor: UIColor.black,
-                           backgroundColor: UIColor(named: "lightGreenSuccess"))
+                           backgroundColor: UIColor(named: "lightGreenSuccess")!)
     }
     
     // MARK: zoom/pinch image functions
@@ -299,17 +297,17 @@ extension ImageViewerViewController: UIScrollViewDelegate {
 
 extension UIViewController {
     func showToast(message: String,
-                   textColor: UIColor?,
-                   backgroundColor: UIColor?) {
+                   textColor: UIColor = UIColor.red,
+                   backgroundColor: UIColor = UIColor.white) {
         let label = UILabel(frame:
             CGRect(x: view.frame.origin.x,
                    y: view.frame.height*0.9,
                    width: view.frame.width, height: 30))
-        label.backgroundColor = backgroundColor ?? .red
+        label.backgroundColor = backgroundColor
         label.clipsToBounds = true
         label.textAlignment = .center
         label.text = message
-        label.textColor = textColor ?? .white
+        label.textColor = textColor
         label.numberOfLines = 0
         view.addSubview(label)
         UIView.animate(withDuration: 2.0, delay: 1.0, animations: {

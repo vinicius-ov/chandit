@@ -30,6 +30,7 @@ class BoardPagesViewController: BaseViewController {
     @IBOutlet weak var boardSelector: UITextField!
     let boardsViewModel = BoardsViewModel() //deveria ser injetado
     let service = Service() //deveria ser injetado
+    var lastModified: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,38 +57,41 @@ class BoardPagesViewController: BaseViewController {
         toolBar.tintColor = UIColor.black
         toolBar.sizeToFit()
         
-        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.plain, target: self, action: #selector(didSelectBoardFromPicker))
-        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
-        let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItem.Style.plain, target: self, action: #selector(hideKeyboardNoAction))
+        let doneButton = UIBarButtonItem(
+            title: "Done",
+            style: UIBarButtonItem.Style.plain,
+            target: self,
+            action: #selector(didSelectBoardFromPicker))
+        let spaceButton = UIBarButtonItem(
+            barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
+            target: nil, action: nil)
+        let cancelButton = UIBarButtonItem(
+            title: "Cancel",
+            style: UIBarButtonItem.Style.plain, target: self,
+            action: #selector(hideKeyboardNoAction))
         cancelButton.tintColor = .white
         doneButton.tintColor = .white
         
         toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
         toolBar.isUserInteractionEnabled = true
         
-        let swipeToTop = UISwipeGestureRecognizer(target: self, action: #selector(scrollToTop))
-        swipeToTop.direction = .down
-        swipeToTop.numberOfTouchesRequired = 2
-        postsTable.addGestureRecognizer(swipeToTop)
-        
         boardSelector.inputAccessoryView = toolBar
         
         fetchBoards()
-    }
-    
-    @objc
-    func scrollToTop() {
-        print("poqw")
+        
+        
+        
     }
     
     func fetchData(append: Bool) {
         let url = URL(string: "https://a.4cdn.org/\(boardsViewModel.selectedBoardId!)/\(boardsViewModel.nextPage()).json")
-        service.loadData(from: url!) { (result) in
+        service.loadData(from: url!, lastModified: lastModified) { (result) in
             switch result {
-            case .success(let data):
+            case .success(let response):
+                self.lastModified =  response.modified
                 do {
-                    guard let page = try? JSONDecoder().decode(Page.self, from: data) else {
-                        print("error trying to convert data to JSON \(data)")
+                    guard let page = try? JSONDecoder().decode(Page.self, from: response.data) else {
+                        print("error trying to convert data to JSON \(response)")
                         return
                     }
                     let threads: [ThreadViewModel] = page.threads.map({ (thread: Thread) in
@@ -115,12 +119,12 @@ class BoardPagesViewController: BaseViewController {
     }
     
     func fetchBoards() {
-        service.loadData(from: URL(string: "https://a.4cdn.org/boards.json")!) { (result) in
+        service.loadData(from: URL(string: "https://a.4cdn.org/boards.json")!, lastModified: lastModified) { (result) in
             switch result {
-            case .success(let data):
+            case .success(let result):
                 do {
-                    guard let boards = try? JSONDecoder().decode(Boards.self, from: data) else {
-                        print("BOARDS error trying to convert data to JSON \(data)")
+                    guard let boards = try? JSONDecoder().decode(Boards.self, from: result.data) else {
+                        print("BOARDS error trying to convert data to JSON \(result)")
                         return
                     }
                     self.boardsViewModel.boards = boards.boards!.sorted()
@@ -149,6 +153,7 @@ class BoardPagesViewController: BaseViewController {
         boardsViewModel.setCurrentBoard(byIndex: index)
         boardsViewModel.reset()
         pageViewModel.threads.removeAllObjects()
+        lastModified = nil
         fetchData(append: false)
     }
     

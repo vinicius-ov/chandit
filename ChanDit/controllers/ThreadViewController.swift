@@ -12,11 +12,13 @@ class ThreadViewController: BaseViewController {
     var threadViewModel: ThreadViewModel!
     var threadNumber: Int!
     var postNumberToReturn = [Int]()
-    @IBOutlet weak var postsTable: UITableView!
     var selectedBoardId: String!
     let service = Service()
-    
+    var lastModified: String?
     var indexPathNav: IndexPath!
+    
+    @IBOutlet weak var postsTable: UITableView!
+    @IBOutlet weak var reloadButton: UIBarButtonItem!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,25 +42,36 @@ class ThreadViewController: BaseViewController {
                 message: "Failed to load thread posts. Try again.", actions: [])
                 return
         }
-        service.loadData(from: URL(string: "https://a.4cdn.org/\(board)/thread/\(opNumber).json")!) { (result) in
+        service.loadData(from: URL(string: "https://a.4cdn.org/\(board)/thread/\(opNumber).json")!, lastModified: lastModified) { (result) in
             switch result {
-            case .success(let data):
-                do {
-                    guard let thread = try? JSONDecoder().decode(Thread.self, from: data) else {
-                        print("error trying to convert data to JSON \(data)")
-                        self.showThreadNotFoundAlert()
-                        return
+            case .success(let response):
+                switch response.code {
+                case 200..<300:
+                    self.threadViewModel.reset()
+                    self.lastModified = response.modified
+                    do {
+                        guard let thread = try? JSONDecoder().decode(Thread.self, from: response.data) else {
+                            print("error trying to convert data to JSON \(response)")
+                            self.showThreadNotFoundAlert()
+                            return
+                        }
+                        self.threadViewModel.posts = thread.posts.map(PostViewModel.init)
+                        DispatchQueue.main.async {
+                            self.title = self.threadViewModel.threadTitle
+                            self.postsTable.reloadData()
+                            self.postsTable.isHidden = false
+                            self.navigateToPost()
+                        }
                     }
-                   
-                    self.threadViewModel.posts = thread.posts.map(PostViewModel.init)
-                   
+                case 300..<400:
                     DispatchQueue.main.async {
-                        self.title = self.threadViewModel.threadTitle
-                        self.postsTable.reloadData()
-                        self.postsTable.isHidden = false
-                        self.navigateToPost()
+                        self.showToast(message: "No new posts")
                     }
+                case 400...500:
+                    self.showThreadNotFoundAlert()
+                default: break
                 }
+                self.reloadButton.isEnabled = true
             case .failure(let error):
                 self.callAlertView(title: "Fetch failed",
                                    message: "Failed to load thread posts. Try again. \(error?.localizedDescription)", actions: [])
@@ -92,9 +105,8 @@ class ThreadViewController: BaseViewController {
         self.postsTable.scrollToRow(at: indexPathNav, at: .top, animated: true)
     }
     
-    @IBAction func reloadData(_ sender: Any) {
-        self.postsTable.isHidden = true
-        self.threadViewModel.reset()
+    @IBAction func reloadData(_ sender: UIBarButtonItem) {
+        sender.isEnabled = false
         self.fetchData()
     }
     
@@ -194,7 +206,9 @@ extension UIViewController {
         } else {
             alert.preferredAction = actions!.first!
         }
-        present(alert, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            self.present(alert, animated: true, completion: nil)
+        }
     }
 }
 
