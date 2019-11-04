@@ -88,28 +88,42 @@ class BoardPagesViewController: BaseViewController {
         service.loadData(from: url!, lastModified: lastModified) { (result) in
             switch result {
             case .success(let response):
-                self.lastModified =  response.modified
-                do {
-                    guard let page = try? JSONDecoder().decode(Page.self, from: response.data) else {
-                        print("error trying to convert data to JSON \(response)")
-                        return
-                    }
-                    let threads: [ThreadViewModel] = page.threads.map({ (thread: Thread) in
-                        let tvm = ThreadViewModel.init(thread: thread)
-                        return tvm
-                    })
-                        self.pageViewModel.threads.addObjects(from: threads)
-                    DispatchQueue.main.async {
-                        self.pickerView.selectRow(self.boardsViewModel.getCurrentBoardIndex() ?? 0,
-                                                  inComponent: 0,
-                                                  animated: true)
-                        self.postsTable.isHidden = false
-                        self.boardSelector.isEnabled = true
-                        self.postsTable.reloadData()
-                        if !append {
-                            self.postsTable.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                switch response.code {
+                case 200..<300:
+                    self.pageViewModel.threads.removeAllObjects()
+                    self.boardsViewModel.reset()
+                    self.lastModified =  response.modified
+                    do {
+                        guard let page = try? JSONDecoder().decode(Page.self, from: response.data) else {
+                            print("error trying to convert data to JSON \(response)")
+                            return
+                        }
+                        let threads: [ThreadViewModel] = page.threads.map({ (thread: Thread) in
+                            let tvm = ThreadViewModel.init(thread: thread)
+                            return tvm
+                        })
+                            self.pageViewModel.threads.addObjects(from: threads)
+                        DispatchQueue.main.async {
+                            self.pickerView.selectRow(self.boardsViewModel.getCurrentBoardIndex() ?? 0,
+                                                      inComponent: 0,
+                                                      animated: true)
+                            self.postsTable.isHidden = false
+                            self.boardSelector.isEnabled = true
+                            self.postsTable.reloadData()
+                            if !append {
+                                self.postsTable.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                            }
                         }
                     }
+                case 300..<400:
+                    DispatchQueue.main.async {
+                        self.showToast(message: "No new threads")
+                    }
+                case 400..<599:
+                    self.callAlertView(title: "Fetch failed",
+                    message: "Failed to load board threads. Try again.",
+                    actions: [])
+                default: break
                 }
             case .failure(let error):
                 self.callAlertView(title: "Fetch failed",
@@ -186,10 +200,6 @@ class BoardPagesViewController: BaseViewController {
     }
     
     @IBAction func reloadData(_ sender: Any) {
-        print(pageViewModel.threads.count)
-        postsTable.isHidden = true
-        pageViewModel.threads.removeAllObjects()
-        boardsViewModel.reset()
         fetchData(append: false)
     }
     
