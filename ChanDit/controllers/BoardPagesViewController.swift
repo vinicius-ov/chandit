@@ -24,10 +24,9 @@ class BaseViewController: UIViewController {
 
 class BoardPagesViewController: BaseViewController {
     @IBOutlet weak var postsTable: UITableView!
-    var pageViewModel = PageViewModel() //deveria ser injetado
-    
-    var pickerView: UIPickerView!
     @IBOutlet weak var boardSelector: UITextField!
+    var pageViewModel = PageViewModel() //deveria ser injetado
+    var pickerView: UIPickerView!
     let boardsViewModel = BoardsViewModel() //deveria ser injetado
     let service = Service() //deveria ser injetado
     var lastModified: String?
@@ -84,14 +83,19 @@ class BoardPagesViewController: BaseViewController {
     }
     
     func fetchData(append: Bool) {
+        DispatchQueue.main.async {
+            self.postsTable.isHidden = false
+        }
         let url = URL(string: "https://a.4cdn.org/\(boardsViewModel.selectedBoardId!)/\(boardsViewModel.nextPage()).json")
         service.loadData(from: url!, lastModified: lastModified) { (result) in
             switch result {
             case .success(let response):
                 switch response.code {
                 case 200..<300:
-                    self.pageViewModel.threads.removeAllObjects()
-                    self.boardsViewModel.reset()
+                    if !append {
+                        self.pageViewModel.threads.removeAllObjects()
+                        self.boardsViewModel.reset()
+                    }
                     self.lastModified =  response.modified
                     do {
                         guard let page = try? JSONDecoder().decode(Page.self, from: response.data) else {
@@ -104,7 +108,8 @@ class BoardPagesViewController: BaseViewController {
                         })
                             self.pageViewModel.threads.addObjects(from: threads)
                         DispatchQueue.main.async {
-                            self.pickerView.selectRow(self.boardsViewModel.getCurrentBoardIndex() ?? 0,
+                            self.pickerView.selectRow(
+                                self.boardsViewModel.getCurrentBoardIndex() ?? 0,
                                                       inComponent: 0,
                                                       animated: true)
                             self.postsTable.isHidden = false
@@ -200,6 +205,7 @@ class BoardPagesViewController: BaseViewController {
     }
     
     @IBAction func reloadData(_ sender: Any) {
+        postsTable.isHidden = true
         fetchData(append: false)
     }
     
