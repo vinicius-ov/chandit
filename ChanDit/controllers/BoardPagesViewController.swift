@@ -87,7 +87,7 @@ class BoardPagesViewController: BaseViewController {
             self.postsTable.isHidden = false
         }
         let url = URL(string: "https://a.4cdn.org/\(boardsViewModel.selectedBoardId!)/\(boardsViewModel.nextPage()).json")
-        service.loadData(from: url!, lastModified: lastModified) { (result) in
+        service.loadData(from: url!, lastModified: !append ? lastModified : nil) { (result) in
             switch result {
             case .success(let response):
                 switch response.code {
@@ -96,7 +96,7 @@ class BoardPagesViewController: BaseViewController {
                         self.pageViewModel.threads.removeAllObjects()
                         self.boardsViewModel.reset()
                     }
-                    self.lastModified =  response.modified
+                    self.lastModified = response.modified
                     do {
                         guard let page = try? JSONDecoder().decode(Page.self, from: response.data) else {
                             print("error trying to convert data to JSON \(response)")

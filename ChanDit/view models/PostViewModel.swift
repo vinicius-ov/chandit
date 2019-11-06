@@ -22,9 +22,11 @@ struct PageViewModel {
 
 class ThreadViewModel: NSObject {
     override func isEqual(_ object: Any?) -> Bool {
-        guard let postLhs = posts.first, let numberLhs = postLhs.number,
-        let viewModel = object as? ThreadViewModel,
-            let postRhs = viewModel.posts.first, let numberRhs = postRhs.number
+        guard let postLhs = posts.first,
+            let numberLhs = postLhs.number,
+            let viewModel = object as? ThreadViewModel,
+            let postRhs = viewModel.posts.first,
+            let numberRhs = postRhs.number
             else { return false }
         print("COMPARE \(numberLhs) == \(numberRhs) \(numberLhs == numberRhs)")
         return numberLhs == numberRhs
