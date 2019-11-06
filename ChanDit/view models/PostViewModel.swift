@@ -34,6 +34,7 @@ class ThreadViewModel: NSObject {
     var threadNumberToNavigate: Int!
     var postNumberToNavigate: Int?
     var boardIdToNavigate: String!
+    var completeBoardName: String?
     
     init(thread: Thread) {
         //self.posts = [PostViewModel]()
@@ -47,10 +48,11 @@ class ThreadViewModel: NSObject {
         return index
     }
     
-    init(threadNumberToNavigate: Int, postNumberToNavigate: Int?, originBoard: String?) {
+    init(threadNumberToNavigate: Int, postNumberToNavigate: Int?, originBoard: String?, completeBoardName: String?) {
         self.threadNumberToNavigate = threadNumberToNavigate
         self.postNumberToNavigate = postNumberToNavigate
         self.boardIdToNavigate = originBoard
+        self.completeBoardName = completeBoardName
     }
     
     func reset() {
@@ -79,7 +81,7 @@ struct PostViewModel {
     var post: Post
 }
 
-extension PostViewModel {
+extension PostViewModel {    
     var spoilerUrl: URL? {
         return URL(string: "https://s.4cdn.org/image/spoiler.png")
     }
@@ -156,14 +158,14 @@ extension PostViewModel {
             fsize /= 1024
             unit = "MiB"
         }
-        return String(format: "%.2f %@",fsize,unit)
+        return String(format: "%.2f %@", fsize,unit)
     }
     
     var mediaFullName: String? {
         return "\(post.filename ?? "")\(post.ext ?? "")"
     }
     
-    fileprivate func getTimeAgo() -> TimeInterval{
+    fileprivate func getTimeAgo() -> TimeInterval {
         let time = post.time
         
         let now = NSDate().timeIntervalSince1970
@@ -198,5 +200,13 @@ extension PostViewModel {
 
     var omittedImages: Int? {
         return post.omittedImages
+    }
+    
+    var isPinned: Bool {
+        return post.sticky == 1
+    }
+    
+    var isClosed: Bool {
+        return post.closed == 1
     }
 }

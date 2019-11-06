@@ -188,7 +188,6 @@
 				81AC6B8D2319865300502931 /* controllers */,
 				81AC6B8C2319864800502931 /* cells */,
 				81AC6B8F2319866B00502931 /* storyboards */,
-				2D2784012357ADD300DD0C9F /* ThreadFooterView.xib */,
 			);
 			path = ChanDit;
 			sourceTree = "<group>";
@@ -233,6 +232,7 @@
 				81921BE922F468DE007F4EFC /* LaunchScreen.storyboard */,
 				F2BAFFE123495AAB006D2CEE /* PostCell.xib */,
 				2DD9C31823576EBA00A14EE4 /* ImageViewerViewController.xib */,
+				2D2784012357ADD300DD0C9F /* ThreadFooterView.xib */,
 			);
 			path = storyboards;
 			sourceTree = "<group>";
@@ -542,6 +542,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = ChanDit/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -551,7 +552,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/ChanDit/SwiftSimplePlayback-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -568,6 +569,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = ChanDit/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -577,7 +579,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/ChanDit/SwiftSimplePlayback-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

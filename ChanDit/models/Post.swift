@@ -36,6 +36,11 @@ struct Post: Decodable {
     var tailSize: Int? //tail_size
     var tripCode: String?
     var spoiler: Int?
+    var sticky: Int?
+    var closed: Int?
+    var fileDeleted: Int?
+    var archived: Int?
+    var archivedOn: String?
     
     enum CodingKeys: String, CodingKey {
         case number = "no"
@@ -65,12 +70,31 @@ struct Post: Decodable {
         case tailSize = "tail_size"
         case tripCode = "trip"
         case spoiler
+        case sticky
+        case closed
+        case fileDeleted = "filedeleted"
+        case archived
+        case archivedOn = "archive_on"
+    }
+}
+
+struct Thread: Decodable, Comparable {
+    static func < (lhs: Thread, rhs: Thread) -> Bool {
+        guard let postLhs = lhs.posts.first, let numberLhs = postLhs.number,
+        let postRhs = rhs.posts.first, let numberRhs = postRhs.number
+            else { return false }
+        return numberLhs < numberRhs
+    }
+    
+    static func == (lhs: Thread, rhs: Thread) -> Bool {
+        return lhs.posts.first!.number == rhs.posts.first!.number
     }
 
 }
 struct Thread: Decodable {
     let posts: [Post]
 }
+    
 struct Page: Decodable {
     let threads: [Thread]
 }

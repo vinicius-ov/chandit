@@ -8,9 +8,10 @@
 
 import UIKit
 
-class PlaybackViewController: UIViewController {
-    //let mediaURL:String? = nil
-    var mediaURL:URL? = nil
+class PlaybackViewController: UIViewController, CompleteBoardNameProtocol {
+    var completeBoardName: String = "I am Error"
+
+    var mediaURL: URL? = nil
     var filename = "filename_my_file"
     
     @IBOutlet weak var movieView: UIView!

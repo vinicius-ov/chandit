@@ -12,6 +12,7 @@ import SDWebImage
 class PostTableViewCell: UITableViewCell {
     var postViewModel: PostViewModel!
     var selectedBoardId: String!
+    var boardName = "Im Error"
     
     @IBOutlet weak var postAuthorName: UILabel!
     @IBOutlet weak var postTimePublishing: UILabel!
@@ -29,6 +30,12 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var mediaExtension: UILabel!
     @IBOutlet weak var mediaSize: UILabel!
     
+    @IBOutlet weak var stickyIcon: UIImageView! {
+        didSet {
+            stickyIcon.sd_setImage(with: URL(string: "https://s.4cdn.org/image/sticky.gif")!)
+        }
+    }
+    
     weak var tapDelegate: CellTapInteractionDelegate?
     var tappedUrl: URL?
     
@@ -41,7 +48,7 @@ class PostTableViewCell: UITableViewCell {
         postAuthorName.text = postViewModel.postAuthorName
         
         if let title = postViewModel.title {
-            postTitle.attributedText = title.toPlainText()
+            postTitle.attributedText = title.toPlainText(fontSize: 14)
         } else {
             postTitle.text = ""
         }
@@ -59,7 +66,13 @@ class PostTableViewCell: UITableViewCell {
             postImage.sd_setImage(with: postViewModel.spoilerUrl)
         } else {
             if let thumbUrl = postViewModel.thumbnailUrl(boardId: selectedBoardId) {
-                postImage.sd_setImage(with: thumbUrl)
+                postImage.sd_setImage(with: thumbUrl,
+                                      completed: { (_, error, _, _) in
+                                        if error != nil {
+                                            self.postImage.sd_setImage(with:
+                                                URL(string: "https://s.4cdn.org/image/filedeleted-res.gif")!)
+                                        }
+                    })
                 postImage.isHidden = false
             } else {
                 postImage.gestureRecognizers?.removeAll()
@@ -77,6 +90,8 @@ class PostTableViewCell: UITableViewCell {
         
         mediaSize.text = postViewModel.fileSize
         mediaExtension.text = postViewModel.mediaFullName
+        
+        stickyIcon.isHidden = !postViewModel.isPinned
     }
     
     var thumbSizeConstraint: NSLayoutConstraint? {
@@ -88,11 +103,13 @@ class PostTableViewCell: UITableViewCell {
         if ext == ".webm" {
             let viewController = PlaybackViewController(nibName: "PlaybackViewController", bundle: Bundle.main)
             viewController.mediaURL = postViewModel.imageUrl(boardId: selectedBoardId)
+            //viewController.completeBoardName = ""
             tapDelegate?.imageTapped(viewController)
         } else {
             let viewController = ImageViewerViewController(nibName: "ImageViewerViewController", bundle: Bundle.main)
             viewController.boardId = selectedBoardId
             viewController.postViewModel = postViewModel
+            viewController.completeBoardName = boardName
             tapDelegate?.imageTapped(viewController)
         }
     }
@@ -103,7 +120,9 @@ class PostTableViewCell: UITableViewCell {
         let quote = tappedUrl.absoluteString.split(separator: "/")
         if quote.first == "chandit:" {
             let postNumber = Int(quote.last!)
-            tapDelegate?.linkTapped(postNumber: postNumber!, opNumber: postViewModel.resto!)
+            tapDelegate?.linkTapped(postNumber: postNumber!,
+                                    opNumber: postViewModel.resto!,
+                                    originNumber: postViewModel.number!)
         } else {
             //see https://stackoverflow.com/questions/39949169/swift-open-url-in-a-specific-browser-tab for other browsers deeplinks
             let actionOk = UIAlertAction(title: "OK", style: .default) { (_) in
@@ -148,5 +167,16 @@ extension PostTableViewCell: UITextViewDelegate {
 extension UIView {
     func constraint(withIdentifier: String) -> NSLayoutConstraint? {
         return self.constraints.filter { $0.identifier == withIdentifier }.first
+    }
+}
+
+protocol CompleteBoardNameProtocol {
+    var completeBoardName: String { get set }
+}
+
+extension PostTableViewCell {
+    @IBAction func savePasta() {
+        guard let com = postViewModel.comment, let url = URL(string: "mobilenotes://\(com)") else { return }
+        UIApplication.shared.open(url)
     }
 }

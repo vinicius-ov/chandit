@@ -9,18 +9,12 @@
 import UIKit
 
 protocol CellTapInteractionDelegate: class {
-    func linkTapped(postNumber: Int, opNumber: Int)
+    func linkTapped(postNumber: Int, opNumber: Int, originNumber: Int)
     func imageTapped(_ viewController: UIViewController)
     func presentAlertExitingApp(_ actions: [UIAlertAction])
 }
 
 class BaseViewController: UIViewController {
-    override var shouldAutorotate: Bool {
-        get {
-            return false
-        }
-    }
-    
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         get {
             return .portrait
@@ -30,12 +24,12 @@ class BaseViewController: UIViewController {
 
 class BoardPagesViewController: BaseViewController {
     @IBOutlet weak var postsTable: UITableView!
-    var pageViewModel = PageViewModel() //deveria ser injetado
-    
-    var pickerView: UIPickerView!
     @IBOutlet weak var boardSelector: UITextField!
+    var pageViewModel = PageViewModel() //deveria ser injetado
+    var pickerView: UIPickerView!
     let boardsViewModel = BoardsViewModel() //deveria ser injetado
     let service = Service() //deveria ser injetado
+    var lastModified: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +38,7 @@ class BoardPagesViewController: BaseViewController {
         postsTable.delegate = self
         postsTable.prefetchDataSource = self
         postsTable.rowHeight = UITableView.automaticDimension
-        postsTable.estimatedRowHeight = 260
+        postsTable.estimatedRowHeight = 400
         postsTable.isHidden = true
         
         pickerView = UIPickerView()
@@ -62,71 +56,94 @@ class BoardPagesViewController: BaseViewController {
         toolBar.tintColor = UIColor.black
         toolBar.sizeToFit()
         
-        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.plain, target: self, action: #selector(didSelectBoardFromPicker))
-        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
-        let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItem.Style.plain, target: self, action: #selector(hideKeyboardNoAction))
+        let doneButton = UIBarButtonItem(
+            title: "Done",
+            style: UIBarButtonItem.Style.plain,
+            target: self,
+            action: #selector(didSelectBoardFromPicker))
+        let spaceButton = UIBarButtonItem(
+            barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
+            target: nil, action: nil)
+        let cancelButton = UIBarButtonItem(
+            title: "Cancel",
+            style: UIBarButtonItem.Style.plain, target: self,
+            action: #selector(hideKeyboardNoAction))
         cancelButton.tintColor = .white
         doneButton.tintColor = .white
         
         toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
         toolBar.isUserInteractionEnabled = true
         
-        let swipeToTop = UISwipeGestureRecognizer(target: self, action: #selector(scrollToTop))
-        swipeToTop.direction = .down
-        swipeToTop.numberOfTouchesRequired = 2
-        postsTable.addGestureRecognizer(swipeToTop)
-        
         boardSelector.inputAccessoryView = toolBar
         
         fetchBoards()
-    }
-    
-    @objc
-    func scrollToTop() {
-        print("poqw")
+        
+        
+        
     }
     
     func fetchData(append: Bool) {
+        DispatchQueue.main.async {
+            self.postsTable.isHidden = false
+        }
         let url = URL(string: "https://a.4cdn.org/\(boardsViewModel.selectedBoardId!)/\(boardsViewModel.nextPage()).json")
-        service.loadData(from: url!) { (result) in
+        service.loadData(from: url!, lastModified: lastModified) { (result) in
             switch result {
-            case .success(let data):
-                do {
-                    guard let page = try? JSONDecoder().decode(Page.self, from: data) else {
-                        print("error trying to convert data to JSON \(data)")
-                        return
+            case .success(let response):
+                switch response.code {
+                case 200..<300:
+                    if !append {
+                        self.pageViewModel.threads.removeAllObjects()
+                        self.boardsViewModel.reset()
                     }
-                    let threads: [ThreadViewModel] = page.threads.map ({ (thread: Thread) in
-                        let tvm = ThreadViewModel.init(thread: thread)
-                        return tvm
-                    })
-                        self.pageViewModel.threads.addObjects(from: threads)
-                    DispatchQueue.main.async {
-                        self.postsTable.reloadData()
-                        if !append {
-                            self.postsTable.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                    self.lastModified =  response.modified
+                    do {
+                        guard let page = try? JSONDecoder().decode(Page.self, from: response.data) else {
+                            print("error trying to convert data to JSON \(response)")
+                            return
                         }
-                        self.postsTable.isHidden = false
-                        self.pickerView.selectRow(self.boardsViewModel.getCurrentBoardIndex() ?? 0,
-                                                  inComponent: 0,
-                                                  animated: true)
-                        self.boardSelector.isEnabled = true
+                        let threads: [ThreadViewModel] = page.threads.map({ (thread: Thread) in
+                            let tvm = ThreadViewModel.init(thread: thread)
+                            return tvm
+                        })
+                            self.pageViewModel.threads.addObjects(from: threads)
+                        DispatchQueue.main.async {
+                            self.pickerView.selectRow(
+                                self.boardsViewModel.getCurrentBoardIndex() ?? 0,
+                                                      inComponent: 0,
+                                                      animated: true)
+                            self.postsTable.isHidden = false
+                            self.boardSelector.isEnabled = true
+                            self.postsTable.reloadData()
+                            if !append {
+                                self.postsTable.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                            }
+                        }
                     }
+                case 300..<400:
+                    DispatchQueue.main.async {
+                        self.showToast(message: "No new threads")
+                    }
+                case 400..<599:
+                    self.callAlertView(title: "Fetch failed",
+                    message: "Failed to load board threads. Try again.",
+                    actions: [])
+                default: break
                 }
-                break
-            case .failure(_):
-                break
+            case .failure(let error):
+                self.callAlertView(title: "Fetch failed",
+                                   message: "Failed to load board threads. Try again. \(error?.localizedDescription)", actions: [])
             }
         }
     }
     
     func fetchBoards() {
-        service.loadData(from: URL(string: "https://a.4cdn.org/boards.json")!) { (result) in
+        service.loadData(from: URL(string: "https://a.4cdn.org/boards.json")!, lastModified: lastModified) { (result) in
             switch result {
-            case .success(let data):
+            case .success(let result):
                 do {
-                    guard let boards = try? JSONDecoder().decode(Boards.self, from: data) else {
-                        print("BOARDS error trying to convert data to JSON \(data)")
+                    guard let boards = try? JSONDecoder().decode(Boards.self, from: result.data) else {
+                        print("BOARDS error trying to convert data to JSON \(result)")
                         return
                     }
                     self.boardsViewModel.boards = boards.boards!.sorted()
@@ -135,8 +152,9 @@ class BoardPagesViewController: BaseViewController {
                     }
                     self.fetchData(append: false)
                 }
-            case .failure(_):
-                break
+            case .failure(let error):
+                self.callAlertView(title: "Fetch failed",
+                                   message: "Failed to load board lista. Try reloading the app. \(error?.localizedDescription)", actions: [])
             }
         }
     }
@@ -154,6 +172,7 @@ class BoardPagesViewController: BaseViewController {
         boardsViewModel.setCurrentBoard(byIndex: index)
         boardsViewModel.reset()
         pageViewModel.threads.removeAllObjects()
+        lastModified = nil
         fetchData(append: false)
     }
     
@@ -181,15 +200,12 @@ class BoardPagesViewController: BaseViewController {
         let threadViewModel = ThreadViewModel(
             threadNumberToNavigate: boardsViewModel.threadToLaunch!,
             postNumberToNavigate: boardsViewModel.postNumberToNavigate,
-            originBoard: boardsViewModel.selectedBoardId)
+            originBoard: boardsViewModel.selectedBoardId, completeBoardName: boardsViewModel.completeBoardName(atRow: pickerView.selectedRow(inComponent: 0)))
         viewController?.threadViewModel = threadViewModel
     }
     
     @IBAction func reloadData(_ sender: Any) {
-        print(pageViewModel.threads.count)
         postsTable.isHidden = true
-        pageViewModel.threads.removeAllObjects()
-        boardsViewModel.reset()
         fetchData(append: false)
     }
     
@@ -199,7 +215,7 @@ class BoardPagesViewController: BaseViewController {
     }
 }
 
-extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource {
+extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let threadViewModel = pageViewModel.threads[section] as? ThreadViewModel else { return 0 }
         return threadViewModel.posts.count
@@ -213,9 +229,10 @@ extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource 
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
         let threadViewModel = pageViewModel.threads[indexPath.section]
         
-        let post = (threadViewModel as? ThreadViewModel)?.postViewModel(at: indexPath.row)
+        let postViewModel = (threadViewModel as? ThreadViewModel)?.postViewModel(at: indexPath.row)
+        cell?.boardName = boardsViewModel.completeBoardName(atRow: pickerView.selectedRow(inComponent: 0))
         cell?.selectedBoardId = boardsViewModel.selectedBoardId
-        cell?.postViewModel = post
+        cell?.postViewModel = postViewModel
         
         cell?.loadCell()
         cell?.tapDelegate = self
@@ -234,6 +251,7 @@ extension BoardPagesViewController : UITableViewDelegate, UITableViewDataSource 
         footerView?.imagesCount.text = "\(threadToLaunch.images ?? 0) (\(threadToLaunch.omittedImages ?? 0))"
         footerView?.postsCount.text = "\(threadToLaunch.replies ?? 0) (\(threadToLaunch.omittedPosts ?? 0))"
         footerView?.delegate = self
+        footerView?.closedIcon.isHidden = !threadToLaunch.isClosed
 
         return footerView
     }
@@ -263,7 +281,7 @@ extension BoardPagesViewController: UIPickerViewDataSource, UIPickerViewDelegate
 }
 
 extension BoardPagesViewController: CellTapInteractionDelegate {
-    func linkTapped(postNumber: Int, opNumber: Int) {
+    func linkTapped(postNumber: Int, opNumber: Int, originNumber: Int) {
         self.boardsViewModel.postNumberToNavigate = postNumber
         self.boardsViewModel.threadToLaunch = opNumber
         self.navigateToThread()
