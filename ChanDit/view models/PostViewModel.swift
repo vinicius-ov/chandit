@@ -18,17 +18,23 @@ struct PageViewModel {
     func threadViewModel(at index: Int) -> ThreadViewModel? {
         return self.threads![index] as? ThreadViewModel
     }
+    
 }
 
 class ThreadViewModel: NSObject {
     override func isEqual(_ object: Any?) -> Bool {
-        guard let postLhs = posts.first,
+        guard let object = object as? ThreadViewModel else {
+            return false
+        }
+        return self == object
+    }
+    
+    static func ==(lhs: ThreadViewModel, rhs: ThreadViewModel) -> Bool {
+        guard let postLhs = lhs.posts.first,
             let numberLhs = postLhs.number,
-            let viewModel = object as? ThreadViewModel,
-            let postRhs = viewModel.posts.first,
+            let postRhs = rhs.posts.first,
             let numberRhs = postRhs.number
             else { return false }
-        print("COMPARE \(numberLhs) == \(numberRhs) \(numberLhs == numberRhs)")
         return numberLhs == numberRhs
     }
     

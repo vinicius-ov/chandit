@@ -104,9 +104,16 @@ class BoardPagesViewController: BaseViewController {
                         }
                         let threads: [ThreadViewModel] = page.threads.map({ (thread: Thread) in
                             let tvm = ThreadViewModel.init(thread: thread)
+                            
+                            print("LISTA \(tvm.opNumber) \(self.pageViewModel.threads.contains(tvm))")
                             return tvm
                         })
-                            self.pageViewModel.threads.addObjects(from: threads)
+                        print("LISTA ------------")
+                        self.pageViewModel.threads.addObjects(from: threads)
+//                        self.pageViewModel.threads.forEach() {
+//                            guard let tvm = $0 as? ThreadViewModel else { return }
+//                            print("LISTA \(tvm.posts.first?.number)")
+//                        }
                         DispatchQueue.main.async {
                             self.pickerView.selectRow(
                                 self.boardsViewModel.getCurrentBoardIndex() ?? 0,
