@@ -85,10 +85,14 @@ class BoardPagesViewController: BaseViewController {
     }
     
     func fetchData(append: Bool) {
-        DispatchQueue.main.async {
-            self.postsTable.isHidden = false
+        guard let selectedBoard = boardsViewModel.selectedBoardId else {
+                self.callAlertView(title: "Fetch failed",
+                message: "Failed to load board threads. Try again. (Board not selected)",
+                actions: [])
+                return
         }
-        let url = URL(string: "https://a.4cdn.org/\(boardsViewModel.selectedBoardId!)/\(boardsViewModel.nextPage()).json")
+        
+        let url = URL(string: "https://a.4cdn.org/\(selectedBoard)/\(boardsViewModel.nextPage()).json")
         service.loadData(from: url!, lastModified: !append ? lastModified : nil) { (result) in
             switch result {
             case .success(let response):
@@ -96,7 +100,6 @@ class BoardPagesViewController: BaseViewController {
                 case 200..<300:
                     if !append {
                         self.pageViewModel.threads.removeAllObjects()
-                        self.boardsViewModel.reset()
                     }
                     self.lastModified = response.modified
                     do {
@@ -104,18 +107,9 @@ class BoardPagesViewController: BaseViewController {
                             print("error trying to convert data to JSON \(response)")
                             return
                         }
-                        
                         page.threads.forEach {
                             self.pageViewModel.threads.add(ThreadViewModel(thread: $0))
                         }
-                        
-                        
-//                        let threads: [ThreadViewModel] = page.threads.map({ (thread: Thread) in
-//                            let tvm = ThreadViewModel.init(thread: thread)
-//
-//                            return tvm
-//                        })
-//                        self.pageViewModel.threads.addObjects(from: threads)
                         DispatchQueue.main.async {
                             self.pickerView.selectRow(
                                 self.boardsViewModel.getCurrentBoardIndex() ?? 0,
@@ -139,6 +133,9 @@ class BoardPagesViewController: BaseViewController {
                     message: "Failed to load board threads. Try again.",
                     actions: [])
                 default: break
+                }
+                DispatchQueue.main.async {
+                    self.postsTable.isHidden = false
                 }
             case .failure(let error):
                 self.callAlertView(title: "Fetch failed",
@@ -216,6 +213,7 @@ class BoardPagesViewController: BaseViewController {
     
     @IBAction func reloadData(_ sender: Any) {
         postsTable.isHidden = true
+        self.boardsViewModel.reset()
         fetchData(append: false)
     }
     
