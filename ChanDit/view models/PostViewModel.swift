@@ -23,10 +23,10 @@ struct PageViewModel {
 
 class ThreadViewModel: NSObject {
     override func isEqual(_ object: Any?) -> Bool {
-        guard let object = object as? ThreadViewModel else {
+        guard let obj = object as? ThreadViewModel else {
             return false
         }
-        return self == object
+        return self == obj
     }
     
     static func ==(lhs: ThreadViewModel, rhs: ThreadViewModel) -> Bool {
@@ -40,7 +40,7 @@ class ThreadViewModel: NSObject {
     }
     
     override var description: String {
-        return "\(posts.first?.number)"
+        return "\(posts.first?.number ?? 0)"
     }
     
     var posts = [PostViewModel]()
