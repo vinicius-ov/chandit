@@ -30,6 +30,8 @@ class BoardPagesViewController: BaseViewController {
     let boardsViewModel = BoardsViewModel() //deveria ser injetado
     let service = Service() //deveria ser injetado
     var lastModified: String?
+    var thrs = NSMutableOrderedSet()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -102,18 +104,18 @@ class BoardPagesViewController: BaseViewController {
                             print("error trying to convert data to JSON \(response)")
                             return
                         }
-                        let threads: [ThreadViewModel] = page.threads.map({ (thread: Thread) in
-                            let tvm = ThreadViewModel.init(thread: thread)
-                            
-                            print("LISTA \(tvm.opNumber) \(self.pageViewModel.threads.contains(tvm))")
-                            return tvm
-                        })
-                        print("LISTA ------------")
-                        self.pageViewModel.threads.addObjects(from: threads)
-//                        self.pageViewModel.threads.forEach() {
-//                            guard let tvm = $0 as? ThreadViewModel else { return }
-//                            print("LISTA \(tvm.posts.first?.number)")
-//                        }
+                        
+                        page.threads.forEach {
+                            self.pageViewModel.threads.add(ThreadViewModel(thread: $0))
+                        }
+                        
+                        
+//                        let threads: [ThreadViewModel] = page.threads.map({ (thread: Thread) in
+//                            let tvm = ThreadViewModel.init(thread: thread)
+//
+//                            return tvm
+//                        })
+//                        self.pageViewModel.threads.addObjects(from: threads)
                         DispatchQueue.main.async {
                             self.pickerView.selectRow(
                                 self.boardsViewModel.getCurrentBoardIndex() ?? 0,
@@ -126,6 +128,7 @@ class BoardPagesViewController: BaseViewController {
                                 self.postsTable.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
                             }
                         }
+                        print(self.thrs)
                     }
                 case 300..<400:
                     DispatchQueue.main.async {

@@ -35,7 +35,12 @@ class ThreadViewModel: NSObject {
             let postRhs = rhs.posts.first,
             let numberRhs = postRhs.number
             else { return false }
+        print("\(numberLhs) - \(numberRhs) - \(numberLhs == numberRhs)")
         return numberLhs == numberRhs
+    }
+    
+    override var description: String {
+        return "\(posts.first?.number)"
     }
     
     var posts = [PostViewModel]()
