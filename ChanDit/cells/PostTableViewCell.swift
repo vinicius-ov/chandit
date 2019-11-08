@@ -103,7 +103,7 @@ class PostTableViewCell: UITableViewCell {
         if ext == ".webm" {
             let viewController = PlaybackViewController(nibName: "PlaybackViewController", bundle: Bundle.main)
             viewController.mediaURL = postViewModel.imageUrl(boardId: selectedBoardId)
-            //viewController.completeBoardName = ""
+            viewController.postNumber = self.postViewModel.number ?? 0
             tapDelegate?.imageTapped(viewController)
         } else {
             let viewController = ImageViewerViewController(nibName: "ImageViewerViewController", bundle: Bundle.main)
