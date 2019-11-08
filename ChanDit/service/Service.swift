@@ -18,7 +18,7 @@ class Service: NSObject {
     
     enum Result {
         case success(ChanditSuccess)
-        case failure(Error?)
+        case failure(Error)
     }
     
     let session = URLSession(configuration: URLSessionConfiguration.default)
@@ -36,7 +36,7 @@ class Service: NSObject {
             guard let data = data,
                 let response = response as? HTTPURLResponse
                 else {
-                    completionHandler(.failure(error))
+                    completionHandler(.failure(error!))
                 return
             }
             let chandit = ChanditSuccess(

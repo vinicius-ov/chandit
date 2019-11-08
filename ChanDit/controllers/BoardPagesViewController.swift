@@ -136,7 +136,7 @@ class BoardPagesViewController: BaseViewController {
                 }
             case .failure(let error):
                 self.callAlertView(title: "Fetch failed",
-                                   message: "Failed to load board threads. Try again. \(error?.localizedDescription)", actions: [])
+                                   message: "Failed to load board threads. Try again. \(error.localizedDescription)", actions: [])
             }
         }
     }
@@ -158,7 +158,7 @@ class BoardPagesViewController: BaseViewController {
                 }
             case .failure(let error):
                 self.callAlertView(title: "Fetch failed",
-                                   message: "Failed to load board lista. Try reloading the app. \(error?.localizedDescription)", actions: [])
+                                   message: "Failed to load board lista. Try reloading the app. \(error.localizedDescription)", actions: [])
             }
         }
     }

@@ -74,7 +74,7 @@ class ThreadViewController: BaseViewController {
                 self.reloadButton.isEnabled = true
             case .failure(let error):
                 self.callAlertView(title: "Fetch failed",
-                                   message: "Failed to load thread posts. Try again. \(error?.localizedDescription)", actions: [])
+                                   message: "Failed to load thread posts. Try again. \(error.localizedDescription)", actions: [])
             }
         }
     }
