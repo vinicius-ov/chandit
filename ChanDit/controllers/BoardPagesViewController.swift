@@ -30,6 +30,8 @@ class BoardPagesViewController: BaseViewController {
     let boardsViewModel = BoardsViewModel() //deveria ser injetado
     let service = Service() //deveria ser injetado
     var lastModified: String?
+    var thrs = NSMutableOrderedSet()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,7 +50,8 @@ class BoardPagesViewController: BaseViewController {
         boardSelector.isEnabled = false
         boardSelector.tintColor = .clear
         
-        postsTable.register(UINib(nibName: "PostCell", bundle: nil), forCellReuseIdentifier: "postCellIdentifier")
+        postsTable.register(UINib(nibName: "PostCell", bundle: nil),
+                            forCellReuseIdentifier: "postCellIdentifier")
         postsTable.register(UINib(nibName: "ThreadFooterView", bundle: nil), forHeaderFooterViewReuseIdentifier: ThreadFooterView.reuseIdentifier)
         
         let toolBar = UIToolbar()
@@ -77,36 +80,34 @@ class BoardPagesViewController: BaseViewController {
         boardSelector.inputAccessoryView = toolBar
         
         fetchBoards()
-        
-        
-        
     }
     
     func fetchData(append: Bool) {
-        DispatchQueue.main.async {
-            self.postsTable.isHidden = false
+        guard let selectedBoard = boardsViewModel.selectedBoardId else {
+                self.callAlertView(title: "Fetch failed",
+                                   message: "Failed to load board threads. Try again. (Board not selected)",
+                actions: [])
+                return
         }
-        let url = URL(string: "https://a.4cdn.org/\(boardsViewModel.selectedBoardId!)/\(boardsViewModel.nextPage()).json")
-        service.loadData(from: url!, lastModified: lastModified) { (result) in
+        
+        let url = URL(string: "https://a.4cdn.org/\(selectedBoard)/\(boardsViewModel.nextPage()).json")
+        service.loadData(from: url!, lastModified: !append ? lastModified : nil) { (result) in
             switch result {
             case .success(let response):
                 switch response.code {
                 case 200..<300:
                     if !append {
                         self.pageViewModel.threads.removeAllObjects()
-                        self.boardsViewModel.reset()
                     }
-                    self.lastModified =  response.modified
+                    self.lastModified = response.modified
                     do {
                         guard let page = try? JSONDecoder().decode(Page.self, from: response.data) else {
                             print("error trying to convert data to JSON \(response)")
                             return
                         }
-                        let threads: [ThreadViewModel] = page.threads.map({ (thread: Thread) in
-                            let tvm = ThreadViewModel.init(thread: thread)
-                            return tvm
-                        })
-                            self.pageViewModel.threads.addObjects(from: threads)
+                        page.threads.forEach {
+                            self.pageViewModel.threads.add(ThreadViewModel(thread: $0))
+                        }
                         DispatchQueue.main.async {
                             self.pickerView.selectRow(
                                 self.boardsViewModel.getCurrentBoardIndex() ?? 0,
@@ -129,6 +130,9 @@ class BoardPagesViewController: BaseViewController {
                     message: "Failed to load board threads. Try again.",
                     actions: [])
                 default: break
+                }
+                DispatchQueue.main.async {
+                    self.postsTable.isHidden = false
                 }
             case .failure(let error):
                 self.callAlertView(title: "Fetch failed",
@@ -206,6 +210,7 @@ class BoardPagesViewController: BaseViewController {
     
     @IBAction func reloadData(_ sender: Any) {
         postsTable.isHidden = true
+        self.boardsViewModel.reset()
         fetchData(append: false)
     }
     

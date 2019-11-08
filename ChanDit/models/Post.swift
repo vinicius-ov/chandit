@@ -78,7 +78,7 @@ struct Post: Decodable {
     }
 }
 
-struct Thread: Decodable, Comparable {
+extension Thread: Decodable, Comparable {
     static func < (lhs: Thread, rhs: Thread) -> Bool {
         guard let postLhs = lhs.posts.first, let numberLhs = postLhs.number,
         let postRhs = rhs.posts.first, let numberRhs = postRhs.number
@@ -89,7 +89,9 @@ struct Thread: Decodable, Comparable {
     static func == (lhs: Thread, rhs: Thread) -> Bool {
         return lhs.posts.first!.number == rhs.posts.first!.number
     }
-    
+
+}
+struct Thread {
     let posts: [Post]
 }
     
