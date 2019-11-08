@@ -50,7 +50,8 @@ class BoardPagesViewController: BaseViewController {
         boardSelector.isEnabled = false
         boardSelector.tintColor = .clear
         
-        postsTable.register(UINib(nibName: "PostCell", bundle: nil), forCellReuseIdentifier: "postCellIdentifier")
+        postsTable.register(UINib(nibName: "PostCell", bundle: nil),
+                            forCellReuseIdentifier: "postCellIdentifier")
         postsTable.register(UINib(nibName: "ThreadFooterView", bundle: nil), forHeaderFooterViewReuseIdentifier: ThreadFooterView.reuseIdentifier)
         
         let toolBar = UIToolbar()
@@ -79,15 +80,12 @@ class BoardPagesViewController: BaseViewController {
         boardSelector.inputAccessoryView = toolBar
         
         fetchBoards()
-        
-        
-        
     }
     
     func fetchData(append: Bool) {
         guard let selectedBoard = boardsViewModel.selectedBoardId else {
                 self.callAlertView(title: "Fetch failed",
-                message: "Failed to load board threads. Try again. (Board not selected)",
+                                   message: "Failed to load board threads. Try again. (Board not selected)",
                 actions: [])
                 return
         }
@@ -122,7 +120,6 @@ class BoardPagesViewController: BaseViewController {
                                 self.postsTable.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
                             }
                         }
-                        print(self.thrs)
                     }
                 case 300..<400:
                     DispatchQueue.main.async {
