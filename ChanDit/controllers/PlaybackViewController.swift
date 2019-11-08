@@ -8,20 +8,20 @@
 
 import UIKit
 
-class PlaybackViewController: UIViewController, CompleteBoardNameProtocol {
-    var completeBoardName: String = "I am Error"
-
-    var mediaURL: URL? = nil
+class PlaybackViewController: UIViewController {
+    var mediaURL: URL?
     var filename = "filename_my_file"
     
     @IBOutlet weak var movieView: UIView!
     
-    var mediaPlayer = VLCMediaPlayer()
+    var mediaPlayer = VLCMediaListPlayer()
+    var media: VLCMedia!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.isNavigationBarHidden = true
         setupMediaPLayer()
+        setupMedia()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -29,14 +29,13 @@ class PlaybackViewController: UIViewController, CompleteBoardNameProtocol {
     }
     
     func setupMediaPLayer() {
-        setupMedia()
-        mediaPlayer.delegate = self
-        mediaPlayer.drawable = movieView
-        mediaPlayer.audio.volume = 0
+        mediaPlayer.mediaPlayer.delegate = self
+        mediaPlayer.mediaPlayer.drawable = movieView
+        mediaPlayer.mediaPlayer.audio.volume = 0
     }
     
     @IBAction func handlePlayPause(_ sender: UIButton) {
-        if mediaPlayer.isPlaying {
+        if mediaPlayer.mediaPlayer.isPlaying {
             mediaPlayer.pause()
             sender.isSelected = true
         } else {
@@ -47,10 +46,10 @@ class PlaybackViewController: UIViewController, CompleteBoardNameProtocol {
     
     @IBAction func handleToggleAudio(_ sender: UIButton) {
         if sender.isSelected {
-            mediaPlayer.audio.volume = 0
+            mediaPlayer.mediaPlayer.audio.volume = 0
             sender.isSelected = false
         } else {
-            mediaPlayer.audio.volume = 100
+            mediaPlayer.mediaPlayer.audio.volume = 100
             sender.isSelected = true
         }
     }
@@ -63,19 +62,18 @@ class PlaybackViewController: UIViewController, CompleteBoardNameProtocol {
     
     fileprivate func setupMedia() {
         guard let url = mediaURL else { return }
-        mediaPlayer.media = VLCMedia(url: url)
+        media = VLCMedia(url: url)
+        let mediaList = VLCMediaList()
+        mediaList.add(media)
+        mediaPlayer.mediaList = mediaList
+        mediaPlayer.repeatMode = .repeatCurrentItem
+        mediaPlayer.play(media)
     }
 }
 
 extension PlaybackViewController: VLCMediaPlayerDelegate {
-    func mediaPlayerStateChanged(_ aNotification: Notification!) {
-        if mediaPlayer.state == .stopped {
-            setupMedia()
-            mediaPlayer.play()
-        }
-    }
     func mediaPlayerTimeChanged(_ aNotification: Notification!) {
-        print(mediaPlayer.time.debugDescription)
-        print(mediaPlayer.remainingTime.debugDescription)
+        print(mediaPlayer.mediaPlayer.time.debugDescription)
+        print(mediaPlayer.mediaPlayer.remainingTime.debugDescription)
     }
 }
