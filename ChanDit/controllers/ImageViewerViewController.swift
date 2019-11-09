@@ -172,9 +172,10 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
     }
     
     private func createTempPicFile(_ data: Data) -> URL? {
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        let documentsDirectory = paths[0]
-        let path = documentsDirectory.appendingPathComponent(postViewModel.mediaFullName!, isDirectory: false)
+        let documentDirectory = try? FileManager.default.url(
+        for: .documentDirectory, in: .userDomainMask,
+        appropriateFor: nil, create: false)
+        let path = documentDirectory!.appendingPathComponent(postViewModel.mediaFullName!, isDirectory: false)
         if FileManager.default.createFile(atPath: path.path, contents: data, attributes: nil) {
             return path
         } else {
@@ -209,6 +210,7 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
                         self.navigationItem.rightBarButtonItem?.isEnabled = true
                         self.showSuccessToast()
                     }
+                    try? FileManager.default.removeItem(at: path)
                 } else {
                     print(error?.localizedDescription)
                     self.showFailToast()
