@@ -13,6 +13,7 @@ class PlaybackViewController: UIViewController {
     var mediaURL: URL!
     var postNumber: Int!
     var filename: String!
+    var shouldSave = false
     
     @IBOutlet weak var movieView: UIView!
     
@@ -24,8 +25,8 @@ class PlaybackViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.isHidden = true
-        
-        if let videoData = UserDefaults.standard.data(forKey: "\(postNumber)") {
+        let number = "\(postNumber ?? 0)"
+        if let videoData = UserDefaults.standard.data(forKey: number) {
             print("cache memory")
             do {
                 try setVideoDataToFolder(videoData: videoData)
@@ -38,31 +39,26 @@ class PlaybackViewController: UIViewController {
             self.setupMedia()
         } else {
             print("remote")
-            Service().loadData(from: mediaURL, lastModified: nil) { [weak self] (result) in
-                switch result {
-                case .success(let response):
-                    UserDefaults.standard.set(response.data, forKey: "\(self?.postNumber ?? 4815162342)")
-                    do {
-                        try self?.setVideoDataToFolder(videoData: response.data)
-                        
-                    } catch {
-                        self?.callAlertView(title: "Failed to load video",
-                        message: "Failed to load video from server. Try again later.")
-                    }
-                    self?.setupMediaPLayer()
-                    self?.setupMedia()
-                case .failure(let error):
-                    self?.callAlertView(title: "Failed to load video",
-                                        message: "Failed to load video from server \(error.localizedDescription). Try again later.")
-                }
-            }
+            Service(delegate: self).loadVideoData(from: mediaURL)
+//            Service(delegate: self).loadData(from: mediaURL, lastModified: nil) { [weak self] (result) in
+//                switch result {
+//                case .success(let response):
+//                     UserDefaults.standard.set(response.data, forKey: number)
+//                    do {
+//                        try self?.setVideoDataToFolder(videoData: response.data)
+//
+//                    } catch {
+//                        self?.callAlertView(title: "Failed to load video",
+//                        message: "Failed to load video from server. Try again later.")
+//                    }
+//                    self?.setupMediaPLayer()
+//                    self?.setupMedia()
+//                case .failure(let error):
+//                    self?.callAlertView(title: "Failed to load video",
+//                                        message: "Failed to load video from server \(error.localizedDescription). Try again later.")
+//                }
+//            }
         }
-    }
-    
-    func bobo(videoData: Data) throws {
-        let tempDir = NSTemporaryDirectory().appending("webm/")
-        try fileManager.createDirectory(atPath: tempDir, withIntermediateDirectories: true, attributes: nil)
-        try videoData.write(to: URL(string: tempDir)!)
     }
     
     private func setVideoDataToFolder(videoData: Data) throws {
@@ -109,10 +105,17 @@ class PlaybackViewController: UIViewController {
     
     @IBAction func closeView(_ sender: Any) {
         mediaPlayer.stop()
+        if let url = fileURL, !shouldSave {
+            do {
+                try fileManager.removeItem(at: url)
+            } catch {
+                print("could not delete file")
+            }
+        }
         navigationController?.popViewController(animated: true)
         navigationController?.navigationBar.isHidden = false
     }
-    
+
     private func setupMedia() {
         media = VLCMedia(url: fileURL!)
         let mediaList = VLCMediaList()
@@ -122,8 +125,10 @@ class PlaybackViewController: UIViewController {
         mediaPlayer.play(media)
     }
     
-    @IBAction func saveVideo() {
-        //movFileTransformToMp4WithSourceUrl(sourceUrl: fileURL!)
+    @IBAction func saveVideo(_ sender: Any) {
+        shouldSave = true
+        (sender as? UIButton)?.setTitle("Saved", for: .normal)
+        (sender as? UIButton)?.isEnabled = false
     }
 }
 
@@ -131,5 +136,20 @@ extension PlaybackViewController: VLCMediaPlayerDelegate {
     func mediaPlayerTimeChanged(_ aNotification: Notification!) {
         print(mediaPlayer.mediaPlayer.time.debugDescription)
         print(mediaPlayer.mediaPlayer.remainingTime.debugDescription)
+    }
+}
+
+extension PlaybackViewController: URLSessionDelegate,
+URLSessionDownloadDelegate {
+    func urlSession(_ session: URLSession,
+                     downloadTask: URLSessionDownloadTask,
+                     didWriteData bytesWritten: Int64,
+                     totalBytesWritten: Int64,
+                     totalBytesExpectedToWrite: Int64) {
+        print("perc \(Double(totalBytesWritten) / Double(totalBytesExpectedToWrite))")
+    }
+    
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
+        print(location.absoluteString)
     }
 }

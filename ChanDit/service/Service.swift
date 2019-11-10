@@ -21,11 +21,20 @@ class Service: NSObject {
         case failure(Error)
     }
     
-    let session = URLSession(configuration: URLSessionConfiguration.default)
+    var session: URLSession!
+    
+    init(delegate: URLSessionDelegate) {
+        super.init()
+        session = URLSession(configuration: URLSessionConfiguration.default, delegate: delegate, delegateQueue: nil)
+    }
+    
+    override init() {
+        super.init()
+        session = URLSession(configuration: URLSessionConfiguration.default)
+    }
     
     func loadData(from url: URL, lastModified: String?,
                   completionHandler: @escaping (Result) -> Void) {
-        
         var request = URLRequest(url: url)
         if let modified = lastModified {
             request.addValue(modified, forHTTPHeaderField: "If-Modified-Since")
@@ -47,5 +56,10 @@ class Service: NSObject {
         }
         
         task.resume()
+    }
+    
+    func loadVideoData(from url: URL) {
+        var request = URLRequest(url: url)
+        session.downloadTask(with: url).resume()
     }
 }
