@@ -27,10 +27,12 @@ class ThreadViewController: BaseViewController {
         postsTable.delegate = self
 
         postsTable.register(UINib(nibName: "PostCell", bundle: nil), forCellReuseIdentifier: "postCellIdentifier")
-        postsTable.register(UINib(nibName: "ThreadFooterView", bundle: nil), forHeaderFooterViewReuseIdentifier: ThreadFooterView.reuseIdentifier)
+        postsTable.register(UINib(nibName: "ThreadFooterView", bundle: nil),
+                            forHeaderFooterViewReuseIdentifier: ThreadFooterView.reuseIdentifier)
     
         postsTable.rowHeight = UITableView.automaticDimension
         postsTable.estimatedRowHeight = 400
+        
         fetchData()
     }
 
@@ -47,7 +49,6 @@ class ThreadViewController: BaseViewController {
             case .success(let response):
                 switch response.code {
                 case 200..<300:
-                    self.threadViewModel.reset()
                     self.lastModified = response.modified
                     do {
                         guard let thread = try? JSONDecoder().decode(Thread.self, from: response.data) else {
@@ -61,6 +62,7 @@ class ThreadViewController: BaseViewController {
                             self.postsTable.reloadData()
                             self.postsTable.isHidden = false
                             self.navigateToPost()
+                            self.title = self.threadViewModel.postViewModel(at: 0)?.title?.toPlainText().string
                         }
                     }
                 case 300..<400:
@@ -86,7 +88,7 @@ class ThreadViewController: BaseViewController {
                                     self.navigationController?.popViewController(animated: true)
         })
         callAlertView(title: "Thread removed",
-                           message: "Thread was prunned or deleted. Returning to board list...",
+                           message: "Thread was pruned or deleted. Returning to board list...",
                            actions: [action])
     }
     
@@ -94,7 +96,6 @@ class ThreadViewController: BaseViewController {
         guard let postNumberToNavigate = threadViewModel.postNumberToNavigate,
              let index = self.threadViewModel.findPostIndexByNumber(postNumberToNavigate) else { return }
             indexPathNav = IndexPath(item: index, section: 0)
-        
         let indexPaths = self.postsTable.indexPathsForVisibleRows!
         for index in indexPaths {
             let post = threadViewModel.postViewModel(at: index.row)
@@ -156,7 +157,6 @@ extension ThreadViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
-        //let thread = pageViewModel.threads[indexPath.section]
         let postViewModel = threadViewModel.postViewModel(at: indexPath.row)
         cell?.selectedBoardId = threadViewModel.boardIdToNavigate
         cell?.postViewModel = postViewModel
@@ -169,14 +169,11 @@ extension ThreadViewController: UITableViewDataSource {
 
 extension ThreadViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-
         let footerView = tableView.dequeueReusableHeaderFooterView(
             withIdentifier: "ThreadFooterView") as? ThreadFooterView
-        
         guard let threadToLaunch = threadViewModel.postViewModel(at: 0) else {
             return footerView
         }
-
         footerView?.threadToNavigate = threadToLaunch.number
         footerView?.imagesCount.text = "\(threadToLaunch.images ?? 0) (\(threadToLaunch.omittedImages ?? 0))"
         footerView?.postsCount.text = "\(threadToLaunch.replies ?? 0) (\(threadToLaunch.omittedPosts ?? 0))"
@@ -184,7 +181,6 @@ extension ThreadViewController: UITableViewDelegate {
         footerView?.navigateButton.isEnabled = !threadToLaunch.isClosed
         footerView?.delegate = !threadToLaunch.isClosed ? self : nil
         footerView?.closedIcon.isHidden = !threadToLaunch.isClosed
-
         return footerView
     }
 
@@ -225,7 +221,6 @@ extension ThreadViewController: CellTapInteractionDelegate {
 
     func imageTapped(_ viewController: UIViewController) {
         show(viewController, sender: self)
-        //present(viewController, animated: true, completion: nil)
     }
 
     func presentAlertExitingApp(_ actions: [UIAlertAction]) {

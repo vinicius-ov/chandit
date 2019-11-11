@@ -35,7 +35,7 @@ class BoardPagesViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+
         postsTable.dataSource = self
         postsTable.delegate = self
         postsTable.prefetchDataSource = self
@@ -209,7 +209,8 @@ class BoardPagesViewController: BaseViewController {
         let threadViewModel = ThreadViewModel(
             threadNumberToNavigate: boardsViewModel.threadToLaunch!,
             postNumberToNavigate: boardsViewModel.postNumberToNavigate,
-            originBoard: boardsViewModel.selectedBoardId, completeBoardName: boardsViewModel.completeBoardName(atRow: pickerView.selectedRow(inComponent: 0)))
+            originBoard: boardsViewModel.selectedBoardId,
+            completeBoardName: boardsViewModel.completeBoardName(atRow: pickerView.selectedRow(inComponent: 0)))
         viewController?.threadViewModel = threadViewModel
     }
     
@@ -305,7 +306,6 @@ extension BoardPagesViewController: CellTapInteractionDelegate {
     }
     
     func imageTapped(_ viewController: UIViewController) {
-        //present(viewController, animated: true, completion: nil)
         show(viewController, sender: self)
     }
     
@@ -317,4 +317,3 @@ extension BoardPagesViewController: ThreadFooterViewDelegate {
         self.navigateToThread()
     }
 }
-
