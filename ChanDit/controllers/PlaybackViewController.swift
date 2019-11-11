@@ -18,6 +18,9 @@ class PlaybackViewController: UIViewController {
     
     @IBOutlet weak var movieView: UIView!
     @IBOutlet weak var downloadProgress: UIProgressView!
+    @IBOutlet weak var elapsedTime: UILabel!
+    @IBOutlet weak var totalTime: UILabel!
+    @IBOutlet weak var sliderTimer: UISlider!
     
     var mediaPlayer = VLCMediaListPlayer()
     var media: VLCMedia!
@@ -126,12 +129,20 @@ class PlaybackViewController: UIViewController {
         (sender as? UIButton)?.setTitle("Saved", for: .normal)
         (sender as? UIButton)?.isEnabled = false
     }
+    
+    @IBAction func valueChanged(_ sender: Any) {
+        //block timer =  true
+        print((sender as? UISlider)?.value)
+    }
 }
 
 extension PlaybackViewController: VLCMediaPlayerDelegate {
     func mediaPlayerTimeChanged(_ aNotification: Notification!) {
-        print(mediaPlayer.mediaPlayer.time.debugDescription)
-        print(mediaPlayer.mediaPlayer.remainingTime.debugDescription)
+        //if !block timer 
+        elapsedTime.text = mediaPlayer.mediaPlayer.time!.debugDescription
+        totalTime.text = mediaPlayer.mediaPlayer.media.length.debugDescription
+        sliderTimer.maximumValue = Float(mediaPlayer.mediaPlayer.media.length.intValue)
+        sliderTimer.value = Float(mediaPlayer.mediaPlayer.time.intValue)
     }
 }
 
