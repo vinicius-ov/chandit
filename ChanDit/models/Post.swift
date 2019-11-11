@@ -42,7 +42,7 @@ struct Post: Decodable {
     var archived: Int?
     var archivedOn: String?
     var country: String?
-    var country_name: String?
+    var countryName: String?
     
     enum CodingKeys: String, CodingKey {
         case number = "no"
@@ -78,7 +78,7 @@ struct Post: Decodable {
         case archived
         case archivedOn = "archive_on"
         case country
-        case country_name
+        case countryName = "country_name"
     }
 }
 
