@@ -58,8 +58,7 @@ class Service: NSObject {
         task.resume()
     }
     
-    func loadVideoData(from url: URL) {
-        var request = URLRequest(url: url)
-        session.downloadTask(with: url).resume()
+    func loadVideoData(from url: URL) -> URLSessionTask {
+        return session.downloadTask(with: url)
     }
 }

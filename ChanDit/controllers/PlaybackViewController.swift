@@ -14,8 +14,10 @@ class PlaybackViewController: UIViewController {
     var postNumber: Int!
     var filename: String!
     var shouldSave = false
+    var task: URLSessionTask!
     
     @IBOutlet weak var movieView: UIView!
+    @IBOutlet weak var downloadProgress: UIProgressView!
     
     var mediaPlayer = VLCMediaListPlayer()
     var media: VLCMedia!
@@ -39,25 +41,8 @@ class PlaybackViewController: UIViewController {
             self.setupMedia()
         } else {
             print("remote")
-            Service(delegate: self).loadVideoData(from: mediaURL)
-//            Service(delegate: self).loadData(from: mediaURL, lastModified: nil) { [weak self] (result) in
-//                switch result {
-//                case .success(let response):
-//                     UserDefaults.standard.set(response.data, forKey: number)
-//                    do {
-//                        try self?.setVideoDataToFolder(videoData: response.data)
-//
-//                    } catch {
-//                        self?.callAlertView(title: "Failed to load video",
-//                        message: "Failed to load video from server. Try again later.")
-//                    }
-//                    self?.setupMediaPLayer()
-//                    self?.setupMedia()
-//                case .failure(let error):
-//                    self?.callAlertView(title: "Failed to load video",
-//                                        message: "Failed to load video from server \(error.localizedDescription). Try again later.")
-//                }
-//            }
+            task = Service(delegate: self).loadVideoData(from: mediaURL)
+            task.resume()
         }
     }
     
@@ -103,8 +88,11 @@ class PlaybackViewController: UIViewController {
         }
     }
     
-    @IBAction func closeView(_ sender: Any) {
+    private func stopActivity() {
         mediaPlayer.stop()
+        if task != nil {
+            task.cancel()
+        }
         if let url = fileURL, !shouldSave {
             do {
                 try fileManager.removeItem(at: url)
@@ -112,8 +100,16 @@ class PlaybackViewController: UIViewController {
                 print("could not delete file")
             }
         }
+        //navigationController?.popViewController(animated: true)
+    }
+    
+    @IBAction func closeView(_ sender: Any) {
         navigationController?.popViewController(animated: true)
-        navigationController?.navigationBar.isHidden = false
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        stopActivity()
     }
 
     private func setupMedia() {
@@ -142,14 +138,27 @@ extension PlaybackViewController: VLCMediaPlayerDelegate {
 extension PlaybackViewController: URLSessionDelegate,
 URLSessionDownloadDelegate {
     func urlSession(_ session: URLSession,
-                     downloadTask: URLSessionDownloadTask,
-                     didWriteData bytesWritten: Int64,
-                     totalBytesWritten: Int64,
-                     totalBytesExpectedToWrite: Int64) {
-        print("perc \(Double(totalBytesWritten) / Double(totalBytesExpectedToWrite))")
+                    downloadTask: URLSessionDownloadTask,
+                    didWriteData bytesWritten: Int64,
+                    totalBytesWritten: Int64,
+                    totalBytesExpectedToWrite: Int64) {
+        DispatchQueue.main.async { [weak self] in
+            self?.downloadProgress.setProgress(
+                Float(totalBytesWritten) / Float(totalBytesExpectedToWrite),
+                animated: true)
+        }
     }
     
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
-        print(location.absoluteString)
+        do {
+            let data = try Data(contentsOf: location)
+            UserDefaults.standard.set(data, forKey: "\(postNumber ?? 0)")
+            try setVideoDataToFolder(videoData: data)
+            setupMediaPLayer()
+            setupMedia()
+        } catch {
+            callAlertView(title: "Failed to load video",
+                          message: "Failed to load video from server. Try again later.")
+        }
     }
 }

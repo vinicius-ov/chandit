@@ -143,6 +143,10 @@ class ThreadViewController: BaseViewController {
             cell.contentView.backgroundColor = .black
         })
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = false
+    }
 }
 
 extension ThreadViewController: UITableViewDataSource {
@@ -221,6 +225,7 @@ extension ThreadViewController: CellTapInteractionDelegate {
 
     func imageTapped(_ viewController: UIViewController) {
         show(viewController, sender: self)
+        //present(viewController, animated: true, completion: nil)
     }
 
     func presentAlertExitingApp(_ actions: [UIAlertAction]) {

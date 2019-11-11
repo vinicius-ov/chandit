@@ -10,6 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PlaybackViewController" customModule="ChanDit" customModuleProvider="target">
             <connections>
+                <outlet property="downloadProgress" destination="U3R-Qk-fzE" id="FI8-8Y-Lia"/>
                 <outlet property="movieView" destination="C4B-gB-uRM" id="Zcp-Sg-3be"/>
                 <outlet property="view" destination="jc2-cj-1JF" id="DqD-sf-mBN"/>
             </connections>
@@ -22,6 +23,12 @@
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="sYO-ap-QLq">
                     <rect key="frame" x="188.5" y="429.5" width="37" height="37"/>
                 </activityIndicatorView>
+                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="U3R-Qk-fzE">
+                    <rect key="frame" x="20" y="487" width="374" height="2"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="2" id="u7r-eW-94s"/>
+                    </constraints>
+                </progressView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C4B-gB-uRM" userLabel="Movie View">
                     <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                 </view>
@@ -67,12 +74,16 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="U3R-Qk-fzE" secondAttribute="trailing" constant="20" id="3aR-c4-MoD"/>
+                <constraint firstItem="U3R-Qk-fzE" firstAttribute="leading" secondItem="jc2-cj-1JF" secondAttribute="leading" constant="20" id="4J0-5S-5sf"/>
                 <constraint firstItem="C4B-gB-uRM" firstAttribute="bottom" secondItem="VdL-HY-gzC" secondAttribute="bottom" id="7gO-hg-gX6"/>
                 <constraint firstItem="C4B-gB-uRM" firstAttribute="leading" secondItem="VdL-HY-gzC" secondAttribute="leading" id="Fug-rx-CQU"/>
                 <constraint firstItem="sYO-ap-QLq" firstAttribute="centerX" secondItem="jc2-cj-1JF" secondAttribute="centerX" id="KCi-fr-Qyy"/>
                 <constraint firstItem="VdL-HY-gzC" firstAttribute="bottom" secondItem="NEc-3V-BSD" secondAttribute="bottom" constant="10" id="Q4m-wy-Fjq"/>
                 <constraint firstItem="C4B-gB-uRM" firstAttribute="top" secondItem="VdL-HY-gzC" secondAttribute="top" id="dmK-YE-fjd"/>
+                <constraint firstItem="U3R-Qk-fzE" firstAttribute="centerY" secondItem="jc2-cj-1JF" secondAttribute="centerY" constant="40" id="ekT-nU-l8Z"/>
                 <constraint firstItem="NEc-3V-BSD" firstAttribute="centerX" secondItem="jc2-cj-1JF" secondAttribute="centerX" id="ikS-B8-whW"/>
+                <constraint firstItem="U3R-Qk-fzE" firstAttribute="centerX" secondItem="jc2-cj-1JF" secondAttribute="centerX" id="qK1-Wj-a9f"/>
                 <constraint firstItem="C4B-gB-uRM" firstAttribute="trailing" secondItem="VdL-HY-gzC" secondAttribute="trailing" id="soC-v8-TcN"/>
                 <constraint firstItem="sYO-ap-QLq" firstAttribute="centerY" secondItem="jc2-cj-1JF" secondAttribute="centerY" id="u1T-49-Dr1"/>
             </constraints>
