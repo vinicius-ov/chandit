@@ -27,6 +27,7 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
     @IBOutlet weak var imageViewTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var imageViewWidth: NSLayoutConstraint!
     @IBOutlet weak var imageViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var downloadProgress: UIProgressView!
     
     var postViewModel: PostViewModel!
     var boardId: String!
@@ -96,9 +97,7 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
         download(url)
     }
     
-    
     // MARK: save image functions
-    
     fileprivate func storeDownloadedCacheToData(_ image: UIImage?, _ data: Data?, _ url: URL) {
         imageCache.store(image, imageData: data, forKey: url.absoluteString, toDisk: true, completion: nil)
     }
@@ -111,9 +110,18 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
                 print("SDWEB: buscando da cache")
             } else {
                 let downloader = SDWebImageDownloader.shared
-                downloader.downloadImage(with: url) { [weak self] (image, data, error, finished) in
+                downloader.downloadImage(with: url,
+                                         options: [],
+                                         progress: { (received, expected, url) in
+                                            DispatchQueue.main.async { [weak self] in
+                                                self?.downloadProgress.setProgress(
+                                                    Float(received) / Float(expected),
+                                                    animated: true)
+                                            }
+                }) { [weak self] (image, data, error, finished) in
                     if let image = image, finished {
                         print("SDWEB: buscando da net")
+                        self?.downloadProgress.isHidden = true
                         self?.setImageToImageView(image)
                         self?.storeDownloadedCacheToData(image, data, url)
                         self?.updateInterfaceImageLoaded()
@@ -332,7 +340,7 @@ extension UINavigationBar {
 
 extension UINavigationBar {
     /// Applies a background gradient with the given colors
-    func applyNavigationGradient( colors : [UIColor]) {
+    func applyNavigationGradient(colors: [UIColor]) {
         var frameAndStatusBar: CGRect = self.bounds
         frameAndStatusBar.size.height += UIApplication.shared.statusBarFrame.height
         frameAndStatusBar.size.height += 120 // add 20 to account for the status bar
@@ -341,7 +349,8 @@ extension UINavigationBar {
     }
     
     /// Creates a gradient image with the given settings
-    static func gradient(size : CGSize, colors : [UIColor]) -> UIImage? {
+    static func gradient(size: CGSize,
+                         colors: [UIColor]) -> UIImage? {
         // Turn the colors into CGColors
         let cgcolors = colors.map { $0.cgColor }
         
@@ -356,10 +365,15 @@ extension UINavigationBar {
         
         // Create the Coregraphics gradient
         var locations: [CGFloat] = [0.0, 1.0]
-        guard let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: cgcolors as NSArray as CFArray, locations: &locations) else { return nil }
+        guard let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(),
+                                        colors: cgcolors as NSArray as CFArray,
+                                        locations: &locations) else { return nil }
         
         // Draw the gradient
-        context.drawLinearGradient(gradient, start: CGPoint(x: 0.0, y: 0.0), end: CGPoint(x: 0.0, y: size.height), options: [])
+        context.drawLinearGradient(gradient,
+                                   start: CGPoint(x: 0.0, y: 0.0),
+                                   end: CGPoint(x: 0.0, y: size.height),
+                                   options: [])
         
         // Generate the image (the defer takes care of closing the context)
         return UIGraphicsGetImageFromCurrentImageContext()
