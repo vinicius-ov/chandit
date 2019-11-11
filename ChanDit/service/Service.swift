@@ -18,14 +18,23 @@ class Service: NSObject {
     
     enum Result {
         case success(ChanditSuccess)
-        case failure(Error?)
+        case failure(Error)
     }
     
-    let session = URLSession(configuration: URLSessionConfiguration.default)
+    var session: URLSession!
+    
+    init(delegate: URLSessionDelegate) {
+        super.init()
+        session = URLSession(configuration: URLSessionConfiguration.default, delegate: delegate, delegateQueue: nil)
+    }
+    
+    override init() {
+        super.init()
+        session = URLSession(configuration: URLSessionConfiguration.default)
+    }
     
     func loadData(from url: URL, lastModified: String?,
                   completionHandler: @escaping (Result) -> Void) {
-        
         var request = URLRequest(url: url)
         if let modified = lastModified {
             request.addValue(modified, forHTTPHeaderField: "If-Modified-Since")
@@ -36,7 +45,7 @@ class Service: NSObject {
             guard let data = data,
                 let response = response as? HTTPURLResponse
                 else {
-                    completionHandler(.failure(error))
+                    completionHandler(.failure(error!))
                 return
             }
             let chandit = ChanditSuccess(
@@ -47,5 +56,9 @@ class Service: NSObject {
         }
         
         task.resume()
+    }
+    
+    func loadVideoData(from url: URL) -> URLSessionTask {
+        return session.downloadTask(with: url)
     }
 }

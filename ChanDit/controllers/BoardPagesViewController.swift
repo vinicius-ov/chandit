@@ -117,7 +117,8 @@ class BoardPagesViewController: BaseViewController {
                             self.boardSelector.isEnabled = true
                             self.postsTable.reloadData()
                             if !append {
-                                self.postsTable.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                                self.postsTable.scrollToRow(at: IndexPath(row: 0, section: 0),
+                                                            at: .top, animated: false)
                             }
                         }
                     }
@@ -136,7 +137,7 @@ class BoardPagesViewController: BaseViewController {
                 }
             case .failure(let error):
                 self.callAlertView(title: "Fetch failed",
-                                   message: "Failed to load board threads. Try again. \(error?.localizedDescription)", actions: [])
+                                   message: "Failed to load board threads. Try again. \(error.localizedDescription)", actions: [])
             }
         }
     }
@@ -158,7 +159,7 @@ class BoardPagesViewController: BaseViewController {
                 }
             case .failure(let error):
                 self.callAlertView(title: "Fetch failed",
-                                   message: "Failed to load board lista. Try reloading the app. \(error?.localizedDescription)", actions: [])
+                                   message: "Failed to load board lista. Try reloading the app. \(error.localizedDescription)", actions: [])
             }
         }
     }
@@ -197,6 +198,10 @@ class BoardPagesViewController: BaseViewController {
     
     func navigateToThread() {
         performSegue(withIdentifier: "gotoThreadView", sender: self)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = false
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -300,6 +305,7 @@ extension BoardPagesViewController: CellTapInteractionDelegate {
     }
     
     func imageTapped(_ viewController: UIViewController) {
+        //present(viewController, animated: true, completion: nil)
         show(viewController, sender: self)
     }
     

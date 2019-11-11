@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15508"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ImageViewerViewController" customModule="ChanDit" customModuleProvider="target">
             <connections>
+                <outlet property="downloadProgress" destination="zxM-vT-TyV" id="zJ0-Sw-lpg"/>
                 <outlet property="imageView" destination="0nz-iC-y4W" id="eMN-M0-PjE"/>
                 <outlet property="imageViewBottomConstraint" destination="onZ-Wp-wai" id="pQw-AU-0Md"/>
                 <outlet property="imageViewHeight" destination="w9J-Qe-lGJ" id="nf5-ya-qc4"/>
@@ -31,6 +32,12 @@
                     <rect key="frame" x="188.5" y="429.5" width="37" height="37"/>
                     <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </activityIndicatorView>
+                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="zxM-vT-TyV">
+                    <rect key="frame" x="40" y="487" width="334" height="3"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="2" id="Qc3-fI-sBR"/>
+                    </constraints>
+                </progressView>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ST4-nc-m3y">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                     <subviews>
@@ -53,11 +60,15 @@
             <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="ST4-nc-m3y" secondAttribute="bottom" id="9as-Ll-VXa"/>
+                <constraint firstAttribute="trailing" secondItem="zxM-vT-TyV" secondAttribute="trailing" constant="40" id="B6y-I9-Or5"/>
+                <constraint firstItem="zxM-vT-TyV" firstAttribute="centerX" secondItem="RBz-0o-wSO" secondAttribute="centerX" id="EDI-sf-MbU"/>
                 <constraint firstItem="g1d-ft-3gO" firstAttribute="centerY" secondItem="RBz-0o-wSO" secondAttribute="centerY" id="JMk-vA-UXN"/>
+                <constraint firstItem="zxM-vT-TyV" firstAttribute="centerY" secondItem="RBz-0o-wSO" secondAttribute="centerY" constant="40" id="PAf-Lo-r2L"/>
                 <constraint firstItem="ST4-nc-m3y" firstAttribute="leading" secondItem="9KD-iU-h2y" secondAttribute="leading" id="UUp-cd-cEp"/>
                 <constraint firstItem="ST4-nc-m3y" firstAttribute="top" secondItem="RBz-0o-wSO" secondAttribute="top" id="YgS-Ob-SBb"/>
                 <constraint firstItem="9KD-iU-h2y" firstAttribute="trailing" secondItem="ST4-nc-m3y" secondAttribute="trailing" id="eRw-hr-eie"/>
                 <constraint firstItem="g1d-ft-3gO" firstAttribute="centerX" secondItem="RBz-0o-wSO" secondAttribute="centerX" id="hGQ-kG-Q1P"/>
+                <constraint firstItem="zxM-vT-TyV" firstAttribute="leading" secondItem="RBz-0o-wSO" secondAttribute="leading" constant="40" id="qD9-HB-5tn"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="9KD-iU-h2y"/>
             <point key="canvasLocation" x="131.8840579710145" y="86.383928571428569"/>

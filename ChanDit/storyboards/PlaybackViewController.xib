@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PlaybackViewController" customModule="ChanDit" customModuleProvider="target">
             <connections>
+                <outlet property="downloadProgress" destination="U3R-Qk-fzE" id="FI8-8Y-Lia"/>
+                <outlet property="elapsedTime" destination="xXk-97-755" id="hhy-ZO-lw5"/>
                 <outlet property="movieView" destination="C4B-gB-uRM" id="Zcp-Sg-3be"/>
+                <outlet property="sliderTimer" destination="lHP-RF-wa5" id="Q0J-d4-dYl"/>
+                <outlet property="totalTime" destination="U2J-RA-NMf" id="yE3-Ny-Qz4"/>
                 <outlet property="view" destination="jc2-cj-1JF" id="DqD-sf-mBN"/>
             </connections>
         </placeholder>
@@ -24,11 +26,40 @@
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="sYO-ap-QLq">
                     <rect key="frame" x="188.5" y="429.5" width="37" height="37"/>
                 </activityIndicatorView>
+                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="U3R-Qk-fzE">
+                    <rect key="frame" x="20" y="487" width="374" height="2"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="2" id="u7r-eW-94s"/>
+                    </constraints>
+                </progressView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C4B-gB-uRM" userLabel="Movie View">
                     <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                 </view>
+                <stackView opaque="NO" contentMode="scaleToFill" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="MPg-VJ-6xN">
+                    <rect key="frame" x="10" y="792" width="394" height="30"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xXk-97-755">
+                            <rect key="frame" x="0.0" y="0.0" width="39" height="30"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="lHP-RF-wa5">
+                            <rect key="frame" x="43" y="0.0" width="308" height="31"/>
+                            <connections>
+                                <action selector="valueChanged:" destination="-1" eventType="valueChanged" id="gCV-0b-uSm"/>
+                            </connections>
+                        </slider>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U2J-RA-NMf">
+                            <rect key="frame" x="355" y="0.0" width="39" height="30"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                </stackView>
                 <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="NEc-3V-BSD">
-                    <rect key="frame" x="114.5" y="822" width="185" height="30"/>
+                    <rect key="frame" x="86.5" y="822" width="241" height="30"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iKW-o1-cbZ">
                             <rect key="frame" x="0.0" y="0.0" width="42" height="30"/>
@@ -56,21 +87,37 @@
                                 <action selector="handlePlayPause:" destination="-1" eventType="touchUpInside" id="EXk-db-6pd"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rQr-mB-BoH">
+                            <rect key="frame" x="205" y="0.0" width="36" height="30"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                            <state key="normal" title="Save"/>
+                            <connections>
+                                <action selector="saveVideo:" destination="-1" eventType="touchUpInside" id="o5G-km-UHM"/>
+                            </connections>
+                        </button>
                     </subviews>
                 </stackView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="U3R-Qk-fzE" secondAttribute="trailing" constant="20" id="3aR-c4-MoD"/>
+                <constraint firstItem="U3R-Qk-fzE" firstAttribute="leading" secondItem="jc2-cj-1JF" secondAttribute="leading" constant="20" id="4J0-5S-5sf"/>
                 <constraint firstItem="C4B-gB-uRM" firstAttribute="bottom" secondItem="VdL-HY-gzC" secondAttribute="bottom" id="7gO-hg-gX6"/>
+                <constraint firstItem="NEc-3V-BSD" firstAttribute="top" secondItem="MPg-VJ-6xN" secondAttribute="bottom" id="7lz-nj-77P"/>
                 <constraint firstItem="C4B-gB-uRM" firstAttribute="leading" secondItem="VdL-HY-gzC" secondAttribute="leading" id="Fug-rx-CQU"/>
                 <constraint firstItem="sYO-ap-QLq" firstAttribute="centerX" secondItem="jc2-cj-1JF" secondAttribute="centerX" id="KCi-fr-Qyy"/>
                 <constraint firstItem="VdL-HY-gzC" firstAttribute="bottom" secondItem="NEc-3V-BSD" secondAttribute="bottom" constant="10" id="Q4m-wy-Fjq"/>
+                <constraint firstAttribute="trailing" secondItem="MPg-VJ-6xN" secondAttribute="trailing" constant="10" id="XFH-OS-uja"/>
                 <constraint firstItem="C4B-gB-uRM" firstAttribute="top" secondItem="VdL-HY-gzC" secondAttribute="top" id="dmK-YE-fjd"/>
+                <constraint firstItem="U3R-Qk-fzE" firstAttribute="centerY" secondItem="jc2-cj-1JF" secondAttribute="centerY" constant="40" id="ekT-nU-l8Z"/>
                 <constraint firstItem="NEc-3V-BSD" firstAttribute="centerX" secondItem="jc2-cj-1JF" secondAttribute="centerX" id="ikS-B8-whW"/>
+                <constraint firstItem="MPg-VJ-6xN" firstAttribute="leading" secondItem="VdL-HY-gzC" secondAttribute="leading" constant="10" id="jk5-a7-pZy"/>
+                <constraint firstItem="U3R-Qk-fzE" firstAttribute="centerX" secondItem="jc2-cj-1JF" secondAttribute="centerX" id="qK1-Wj-a9f"/>
                 <constraint firstItem="C4B-gB-uRM" firstAttribute="trailing" secondItem="VdL-HY-gzC" secondAttribute="trailing" id="soC-v8-TcN"/>
                 <constraint firstItem="sYO-ap-QLq" firstAttribute="centerY" secondItem="jc2-cj-1JF" secondAttribute="centerY" id="u1T-49-Dr1"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="VdL-HY-gzC"/>
+            <point key="canvasLocation" x="131.8840579710145" y="79.6875"/>
         </view>
     </objects>
 </document>

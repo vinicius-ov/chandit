@@ -74,7 +74,7 @@ class ThreadViewController: BaseViewController {
                 self.reloadButton.isEnabled = true
             case .failure(let error):
                 self.callAlertView(title: "Fetch failed",
-                                   message: "Failed to load thread posts. Try again. \(error?.localizedDescription)", actions: [])
+                                   message: "Failed to load thread posts. Try again. \(error.localizedDescription)", actions: [])
             }
         }
     }
@@ -142,6 +142,10 @@ class ThreadViewController: BaseViewController {
             cell.contentView.backgroundColor = .red
             cell.contentView.backgroundColor = .black
         })
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = false
     }
 }
 
@@ -221,6 +225,7 @@ extension ThreadViewController: CellTapInteractionDelegate {
 
     func imageTapped(_ viewController: UIViewController) {
         show(viewController, sender: self)
+        //present(viewController, animated: true, completion: nil)
     }
 
     func presentAlertExitingApp(_ actions: [UIAlertAction]) {
