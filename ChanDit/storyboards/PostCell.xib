@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15508"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -16,54 +16,73 @@
                 <rect key="frame" x="0.0" y="0.0" width="414" height="413"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="Shf-j1-KPS">
+                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Shf-j1-KPS">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="20"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1xE-u5-sLD">
-                                <rect key="frame" x="0.0" y="0.0" width="6" height="20"/>
+                                <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7cV-9t-QDq">
+                                        <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                        <color key="backgroundColor" red="0.12129447609186172" green="0.12922456860542297" blue="0.14169979095458984" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </imageView>
+                                </subviews>
                                 <color key="backgroundColor" red="0.12129447609186172" green="0.12922456860542297" blue="0.14169979095458984" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="20" id="3sl-ky-0uK"/>
-                                    <constraint firstAttribute="width" constant="6" id="Gmy-TV-Q52"/>
+                                    <constraint firstAttribute="bottom" secondItem="7cV-9t-QDq" secondAttribute="bottom" id="HUF-ET-Ne0"/>
+                                    <constraint firstAttribute="trailing" secondItem="7cV-9t-QDq" secondAttribute="trailing" id="XYh-S3-ejZ"/>
+                                    <constraint firstItem="7cV-9t-QDq" firstAttribute="leading" secondItem="1xE-u5-sLD" secondAttribute="leading" id="a04-rO-jeo"/>
+                                    <constraint firstItem="7cV-9t-QDq" firstAttribute="top" secondItem="1xE-u5-sLD" secondAttribute="top" id="dRv-ne-moM"/>
+                                    <constraint firstAttribute="width" constant="20" id="kv4-po-kGZ"/>
+                                    <constraint firstAttribute="height" constant="20" id="v4O-d2-Djb"/>
                                 </constraints>
                             </view>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7cV-9t-QDq">
-                                <rect key="frame" x="6" y="0.0" width="20" height="20"/>
-                                <color key="backgroundColor" red="0.12129447609186172" green="0.12922456860542297" blue="0.14169979095458984" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="20" id="G29-G6-scB"/>
-                                    <constraint firstAttribute="height" constant="20" id="v3b-cW-HuP"/>
-                                </constraints>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nFn-3a-MY2">
-                                <rect key="frame" x="26" y="0.0" width="74.5" height="20"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nFn-3a-MY2">
+                                <rect key="frame" x="20" y="0.0" width="306" height="20"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Name">
                                         <attributes>
                                             <color key="NSColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <font key="NSFont" metaFont="cellTitle"/>
+                                            <font key="NSFont" metaFont="label" size="12"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" firstLineHeadIndent="4" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
                                 </attributedString>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PO5-a1-ln0">
+                                <rect key="frame" x="326" y="0.0" width="20" height="20"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bbC-Mu-H7V">
+                                        <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" red="0.12129447610000001" green="0.12922456860000001" blue="0.14169979099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="BRm-PI-qG3"/>
+                                    <constraint firstAttribute="height" constant="20" id="Ko5-zd-PYb"/>
+                                    <constraint firstAttribute="trailing" secondItem="bbC-Mu-H7V" secondAttribute="trailing" id="MqM-XD-unw"/>
+                                    <constraint firstItem="bbC-Mu-H7V" firstAttribute="top" secondItem="PO5-a1-ln0" secondAttribute="top" id="Ov1-Sc-2ja"/>
+                                    <constraint firstItem="bbC-Mu-H7V" firstAttribute="leading" secondItem="PO5-a1-ln0" secondAttribute="leading" id="PZg-Vx-8BX"/>
+                                    <constraint firstAttribute="bottom" secondItem="bbC-Mu-H7V" secondAttribute="bottom" id="iH8-T1-Yeo"/>
+                                </constraints>
+                            </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zp6-Hk-MGE">
-                                <rect key="frame" x="100.5" y="0.0" width="63" height="20"/>
+                                <rect key="frame" x="346" y="0.0" width="31" height="20"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fvS-N3-HbB">
-                                <rect key="frame" x="163.5" y="0.0" width="250.5" height="20"/>
+                                <rect key="frame" x="377" y="0.0" width="37" height="20"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Label">
                                         <attributes>
                                             <color key="NSColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <font key="NSFont" metaFont="cellTitle"/>
+                                            <font key="NSFont" metaFont="label" size="12"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="right" lineBreakMode="wordWrapping" baseWritingDirection="rightToLeft" firstLineHeadIndent="6" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
@@ -148,6 +167,7 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="flagIcon" destination="bbC-Mu-H7V" id="nXq-EQ-AjY"/>
                 <outlet property="mediaExtension" destination="dVT-y3-NcX" id="5b2-dG-QWX"/>
                 <outlet property="mediaSize" destination="WUP-Ea-z0n" id="jGw-Q6-G7v"/>
                 <outlet property="postAuthorName" destination="nFn-3a-MY2" id="HUe-7C-SYv"/>

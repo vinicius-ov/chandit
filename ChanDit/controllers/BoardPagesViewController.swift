@@ -116,10 +116,10 @@ class BoardPagesViewController: BaseViewController {
                             self.postsTable.isHidden = false
                             self.boardSelector.isEnabled = true
                             self.postsTable.reloadData()
-                            if !append {
-                                self.postsTable.scrollToRow(at: IndexPath(row: 0, section: 0),
-                                                            at: .top, animated: false)
-                            }
+//                            if !append {
+//                                self.postsTable.scrollToRow(at: IndexPath(row: 0, section: 0),
+//                                                            at: .top, animated: false)
+//                            }
                         }
                     }
                 case 300..<400:

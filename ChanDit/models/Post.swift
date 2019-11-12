@@ -41,7 +41,7 @@ struct Post: Decodable {
     var fileDeleted: Int?
     var archived: Int?
     var archivedOn: String?
-    var country: String?
+    var countryCode: String?
     var countryName: String?
     
     enum CodingKeys: String, CodingKey {
@@ -77,7 +77,7 @@ struct Post: Decodable {
         case fileDeleted = "filedeleted"
         case archived
         case archivedOn = "archive_on"
-        case country
+        case countryCode = "country"
         case countryName = "country_name"
     }
 }

@@ -24,6 +24,7 @@ class PostTableViewCell: UITableViewCell {
         }
     }
     
+    @IBOutlet weak var flagIcon: UIImageView!
     @IBOutlet weak var postText: UITextView!
     @IBOutlet weak var postTitle: UILabel!
     @IBOutlet weak var postNumber: UILabel!
@@ -60,6 +61,11 @@ class PostTableViewCell: UITableViewCell {
             postText.attributedText = comment.toPlainText()
         } else {
             postText.text = ""
+        }
+        
+        if let flag = postViewModel.flagCountryCode,
+            let flagUrl = URL(string: "https://s.4cdn.org/image/country/\(flag).gif") {
+            flagIcon.sd_setImage(with: flagUrl)
         }
         
         if postViewModel.isSpoiler {

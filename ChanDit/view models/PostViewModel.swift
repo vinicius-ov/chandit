@@ -222,4 +222,8 @@ extension PostViewModel {
     var isClosed: Bool {
         return post.closed == 1
     }
+    
+    var flagCountryCode: String? {
+        return (post.countryCode ?? "").lowercased()
+    }
 }
