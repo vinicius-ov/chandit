@@ -308,11 +308,12 @@ extension ImageViewerViewController: UIScrollViewDelegate {
 extension UIViewController {
     func showToast(message: String,
                    textColor: UIColor = UIColor.red,
-                   backgroundColor: UIColor = UIColor.white) {
-        let label = UILabel(frame:
-            CGRect(x: view.frame.origin.x,
-                   y: view.frame.height*0.9,
-                   width: view.frame.width, height: 30))
+                   backgroundColor: UIColor = UIColor.white,
+                   duration: Double = 2.0,
+                   heightModifier: Double = 0.9) {
+        let label = UILabel(frame: CGRect(x: view.frame.origin.x,
+                                          y: view.frame.height*0.9,
+                                          width: view.frame.width, height: 30))
         label.backgroundColor = backgroundColor
         label.clipsToBounds = true
         label.textAlignment = .center
@@ -320,7 +321,7 @@ extension UIViewController {
         label.textColor = textColor
         label.numberOfLines = 0
         view.addSubview(label)
-        UIView.animate(withDuration: 2.0, delay: 1.0, animations: {
+        UIView.animate(withDuration: duration, delay: 1.0, animations: {
             label.alpha = 0
         }, completion: { _ in
             label.removeFromSuperview()

@@ -171,7 +171,7 @@ extension PostViewModel {
             fsize /= 1024
             unit = "MiB"
         }
-        return String(format: "%.2f %@", fsize,unit)
+        return String(format: "%.2f %@", fsize, unit)
     }
     
     var mediaFullName: String? {
@@ -221,5 +221,19 @@ extension PostViewModel {
     
     var isClosed: Bool {
         return post.closed == 1
+    }
+    
+    var flagCountryCode: String {
+        if let countryCode = post.countryCode{
+            return countryCode.lowercased()
+        } else if let trollCountry = post.trollCountry {
+            return "troll/\(trollCountry.lowercased())"
+        } else {
+            return ""
+        }
+    }
+    
+    var countryName: String {
+        return post.countryName ?? ""
     }
 }

@@ -22,6 +22,11 @@ class BaseViewController: UIViewController {
     }
 }
 
+protocol ToastDelegate: class {
+    func showToast(flagHint: String)
+}
+    
+
 class BoardPagesViewController: BaseViewController {
     @IBOutlet weak var postsTable: UITableView!
     @IBOutlet weak var boardSelector: UITextField!
@@ -35,7 +40,7 @@ class BoardPagesViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+
         postsTable.dataSource = self
         postsTable.delegate = self
         postsTable.prefetchDataSource = self
@@ -84,7 +89,7 @@ class BoardPagesViewController: BaseViewController {
     
     func fetchData(append: Bool) {
         guard let selectedBoard = boardsViewModel.selectedBoardId else {
-                self.callAlertView(title: "Fetch failed",
+                self.showAlertView(title: "Fetch failed",
                                    message: "Failed to load board threads. Try again. (Board not selected)",
                 actions: [])
                 return
@@ -127,7 +132,7 @@ class BoardPagesViewController: BaseViewController {
                         self.showToast(message: "No new threads")
                     }
                 case 400..<599:
-                    self.callAlertView(title: "Fetch failed",
+                    self.showAlertView(title: "Fetch failed",
                     message: "Failed to load board threads. Try again.",
                     actions: [])
                 default: break
@@ -136,7 +141,7 @@ class BoardPagesViewController: BaseViewController {
                     self.postsTable.isHidden = false
                 }
             case .failure(let error):
-                self.callAlertView(title: "Fetch failed",
+                self.showAlertView(title: "Fetch failed",
                                    message: "Failed to load board threads. Try again. \(error.localizedDescription)", actions: [])
             }
         }
@@ -158,7 +163,7 @@ class BoardPagesViewController: BaseViewController {
                     self.fetchData(append: false)
                 }
             case .failure(let error):
-                self.callAlertView(title: "Fetch failed",
+                self.showAlertView(title: "Fetch failed",
                                    message: "Failed to load board lista. Try reloading the app. \(error.localizedDescription)", actions: [])
             }
         }
@@ -209,7 +214,8 @@ class BoardPagesViewController: BaseViewController {
         let threadViewModel = ThreadViewModel(
             threadNumberToNavigate: boardsViewModel.threadToLaunch!,
             postNumberToNavigate: boardsViewModel.postNumberToNavigate,
-            originBoard: boardsViewModel.selectedBoardId, completeBoardName: boardsViewModel.completeBoardName(atRow: pickerView.selectedRow(inComponent: 0)))
+            originBoard: boardsViewModel.selectedBoardId,
+            completeBoardName: boardsViewModel.completeBoardName(atRow: pickerView.selectedRow(inComponent: 0)))
         viewController?.threadViewModel = threadViewModel
     }
     
@@ -243,10 +249,10 @@ extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
         cell?.boardName = boardsViewModel.completeBoardName(atRow: pickerView.selectedRow(inComponent: 0))
         cell?.selectedBoardId = boardsViewModel.selectedBoardId
         cell?.postViewModel = postViewModel
-        
-        cell?.loadCell()
         cell?.tapDelegate = self
-                
+        cell?.flagDelegate = self
+        cell?.loadCell()
+        
         return cell ?? UITableViewCell()
     }
     
@@ -298,14 +304,13 @@ extension BoardPagesViewController: CellTapInteractionDelegate {
     }
     
     func presentAlertExitingApp(_ actions: [UIAlertAction]) {
-        callAlertView(
+        showAlertView(
             title: "Exit ChanDit",
             message: "This link will take you outside ChanDit. You are in your own. Proceed?",
             actions: actions)
     }
     
     func imageTapped(_ viewController: UIViewController) {
-        //present(viewController, animated: true, completion: nil)
         show(viewController, sender: self)
     }
     
@@ -318,3 +323,10 @@ extension BoardPagesViewController: ThreadFooterViewDelegate {
     }
 }
 
+extension BaseViewController: ToastDelegate {
+    func showToast(flagHint: String) {
+        self.showToast(message: flagHint,
+                       textColor: .white,
+                       backgroundColor: .darkGray)
+    }
+}

@@ -37,7 +37,7 @@ class PlaybackViewController: UIViewController {
                 try setVideoDataToFolder(videoData: videoData)
                 
             } catch {
-                callAlertView(title: "Failed to load video",
+                showAlertView(title: "Failed to load video",
                               message: "Failed to load video from cache. Try again later.")
             }
             self.setupMediaPLayer()
@@ -168,7 +168,7 @@ URLSessionDownloadDelegate {
             setupMediaPLayer()
             setupMedia()
         } catch {
-            callAlertView(title: "Failed to load video",
+            showAlertView(title: "Failed to load video",
                           message: "Failed to load video from server. Try again later.")
         }
     }
