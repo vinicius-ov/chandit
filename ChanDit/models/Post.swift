@@ -43,6 +43,7 @@ struct Post: Decodable {
     var archivedOn: String?
     var countryCode: String?
     var countryName: String?
+    var trollCountry: String?
     
     enum CodingKeys: String, CodingKey {
         case number = "no"
@@ -79,6 +80,7 @@ struct Post: Decodable {
         case archivedOn = "archive_on"
         case countryCode = "country"
         case countryName = "country_name"
+        case trollCountry = "troll_country"
     }
 }
 

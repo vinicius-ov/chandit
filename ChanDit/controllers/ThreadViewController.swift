@@ -40,7 +40,7 @@ class ThreadViewController: BaseViewController {
         guard let board = threadViewModel.boardIdToNavigate,
             let opNumber = threadViewModel.threadNumberToNavigate
             else {
-                self.callAlertView(title: "Fetch failed",
+                self.showAlertView(title: "Fetch failed",
                 message: "Failed to load thread posts. Try again.", actions: [])
                 return
         }
@@ -75,7 +75,7 @@ class ThreadViewController: BaseViewController {
                 }
                 self.reloadButton.isEnabled = true
             case .failure(let error):
-                self.callAlertView(title: "Fetch failed",
+                self.showAlertView(title: "Fetch failed",
                                    message: "Failed to load thread posts. Try again. \(error.localizedDescription)", actions: [])
             }
         }
@@ -87,7 +87,7 @@ class ThreadViewController: BaseViewController {
                                    handler: { _ in
                                     self.navigationController?.popViewController(animated: true)
         })
-        callAlertView(title: "Thread removed",
+        showAlertView(title: "Thread removed",
                            message: "Thread was pruned or deleted. Returning to board list...",
                            actions: [action])
     }
@@ -161,8 +161,10 @@ extension ThreadViewController: UITableViewDataSource {
         cell?.selectedBoardId = threadViewModel.boardIdToNavigate
         cell?.postViewModel = postViewModel
         cell?.boardName = threadViewModel.completeBoardName!
-        cell?.loadCell()
         cell?.tapDelegate = self
+        cell?.flagDelegate = self
+        cell?.loadCell()
+        
         return cell ?? UITableViewCell()
     }
 }
@@ -194,7 +196,7 @@ extension ThreadViewController: UITableViewDelegate {
 }
     
 extension UIViewController {
-    func callAlertView(title: String, message: String, actions: [UIAlertAction]? = []) {
+    func showAlertView(title: String, message: String, actions: [UIAlertAction]? = []) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         actions!.forEach {
             alert.addAction($0)
@@ -224,7 +226,7 @@ extension ThreadViewController: CellTapInteractionDelegate {
     }
 
     func presentAlertExitingApp(_ actions: [UIAlertAction]) {
-        callAlertView(title: "Exit ChanDit",
+        showAlertView(title: "Exit ChanDit",
                       message: "This link will take you outside ChanDit. You are in your own. Proceed?",
                       actions: actions)
     }
@@ -238,3 +240,4 @@ extension ThreadViewController: ThreadFooterViewDelegate {
         show(viewController, sender: nil)
     }
 }
+

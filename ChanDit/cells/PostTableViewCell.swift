@@ -38,6 +38,7 @@ class PostTableViewCell: UITableViewCell {
     }
     
     weak var tapDelegate: CellTapInteractionDelegate?
+    weak var flagDelegate: ToastDelegate?
     var tappedUrl: URL?
     
     override func awakeFromNib() {
@@ -63,8 +64,8 @@ class PostTableViewCell: UITableViewCell {
             postText.text = ""
         }
         
-        if let flag = postViewModel.flagCountryCode,
-            let flagUrl = URL(string: "https://s.4cdn.org/image/country/\(flag).gif") {
+        let flag = postViewModel.flagCountryCode
+        if let flagUrl = URL(string: "https://s.4cdn.org/image/country/\(flag).gif") {
             flagIcon.sd_setImage(with: flagUrl)
         }
         
@@ -93,6 +94,9 @@ class PostTableViewCell: UITableViewCell {
         postText.addGestureRecognizer(
             UITapGestureRecognizer(target: self,
                                    action: #selector(tappedLink(_:))))
+        flagIcon.addGestureRecognizer(
+        UITapGestureRecognizer(target: self,
+                               action: #selector(showFlagHint(_:))))
         
         mediaSize.text = postViewModel.fileSize
         mediaExtension.text = postViewModel.mediaFullName
@@ -119,6 +123,11 @@ class PostTableViewCell: UITableViewCell {
             viewController.completeBoardName = boardName
             tapDelegate?.imageTapped(viewController)
         }
+    }
+    
+    @objc
+    func showFlagHint(_ sender: Any) {
+        flagDelegate?.showToast(flagHint: postViewModel.countryName)
     }
     
     @objc
