@@ -36,7 +36,7 @@ class ThreadViewController: BaseViewController {
         fetchData()
     }
 
-    fileprivate func fetchData() {
+    fileprivate func fetchData(refreshing: Bool =  false) {
         guard let board = threadViewModel.boardIdToNavigate,
             let opNumber = threadViewModel.threadNumberToNavigate
             else {
@@ -61,7 +61,13 @@ class ThreadViewController: BaseViewController {
                             self.title = self.threadViewModel.threadTitle
                             self.postsTable.reloadData()
                             self.postsTable.isHidden = false
-                            self.navigateToPost()
+                            if !refreshing {
+                                self.navigateToPost()
+                            } else {
+                                self.showToast(message: "New posts found.",
+                                               textColor: .white,
+                                               backgroundColor: .green)
+                            }
                             self.title = self.threadViewModel.postViewModel(at: 0)?.title?.toPlainText().string
                         }
                     }
@@ -73,7 +79,9 @@ class ThreadViewController: BaseViewController {
                     self.showThreadNotFoundAlert()
                 default: break
                 }
-                self.reloadButton.isEnabled = true
+                DispatchQueue.main.async {
+                    self.reloadButton.isEnabled = true
+                }
             case .failure(let error):
                 self.showAlertView(title: "Fetch failed",
                                    message: "Failed to load thread posts. Try again. \(error.localizedDescription)", actions: [])
@@ -107,8 +115,11 @@ class ThreadViewController: BaseViewController {
     }
     
     @IBAction func reloadData(_ sender: UIBarButtonItem) {
-        sender.isEnabled = false
-        self.fetchData()
+        DispatchQueue.main.async {
+            sender.isEnabled = false
+        }
+        threadViewModel.reset()
+        self.fetchData(refreshing: true)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -131,8 +142,37 @@ class ThreadViewController: BaseViewController {
     
     @IBAction func gotoBottom(_ sender: Any) {
         let posts = self.threadViewModel.posts.count
-        self.postsTable.scrollToRow(at:
-            IndexPath(item: posts - 1, section: 0), at: .top, animated: true)
+       // self.postsTable.scrollToRow(at:
+       //     IndexPath(item: posts - 1, section: 0), at: .top, animated: true)
+        print(postsTable.contentSize)
+        var size = postsTable.contentSize.height
+        var modif:CGFloat = 1000.0
+        var acumm:CGFloat = 0
+        
+        var timer = Timer()
+        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { _ in
+            
+            acumm = self.postsTable.contentOffset.y+modif
+            
+            self.postsTable.setContentOffset(CGPoint(x: self.postsTable.contentOffset.x,
+            y: acumm), animated: true)
+            //acumm += modif
+            print("\(acumm) \(size/2.0) \(self.postsTable.contentOffset.y+modif)")
+            if acumm >= size/2.0 {
+                timer.invalidate()
+            }
+            
+        })
+        
+//        UIView.animate(withDuration: 10, animations: {
+//            self.postsTable.setContentOffset(CGPoint(x: self.postsTable.contentOffset.x,
+//                                                     y: size), animated: false)
+//        })
+        
+//        while modif < size {
+//
+//            modif += 5
+//        }
     }
     
     func flashThreadLinked() {
