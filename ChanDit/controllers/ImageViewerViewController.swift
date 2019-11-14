@@ -127,6 +127,9 @@ class ImageViewerViewController: UIViewController, CompleteBoardNameProtocol {
                         self?.updateInterfaceImageLoaded()
                     } else if error != nil {
                         print("SDWEB: ERRO buscando da net")
+                        self?.showAlertView(title: "Image fetch failed",
+                        message: "Image was deleted. Nothing to see here.",
+                        actions: [])
                     }
                 }
             }
