@@ -16,6 +16,7 @@ class PostTableViewCell: UITableViewCell {
     
     @IBOutlet weak var postAuthorName: UILabel!
     @IBOutlet weak var postTimePublishing: UILabel!
+    @IBOutlet weak var savePastaButton: UIButton!
     
     @IBOutlet weak var postImage: UIImageView! {
         didSet {
@@ -39,6 +40,7 @@ class PostTableViewCell: UITableViewCell {
     
     weak var tapDelegate: CellTapInteractionDelegate?
     weak var flagDelegate: ToastDelegate?
+    weak var copyTextDelegate: SaveTextDelegate?
     var tappedUrl: URL?
     
     override func awakeFromNib() {
@@ -192,7 +194,7 @@ protocol CompleteBoardNameProtocol {
 
 extension PostTableViewCell {
     @IBAction func savePasta() {
-        guard let com = postViewModel.comment, let url = URL(string: "mobilenotes://\(com)") else { return }
-        UIApplication.shared.open(url)
+//        let a = UIActivityViewController()
+//        self.
     }
 }

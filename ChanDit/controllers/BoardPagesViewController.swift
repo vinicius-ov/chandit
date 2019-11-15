@@ -22,6 +22,10 @@ class BaseViewController: UIViewController {
     }
 }
 
+protocol SaveTextDelegate: class {
+    func saveText(_ text: String)
+}
+
 protocol ToastDelegate: class {
     func showToast(flagHint: String)
 }
@@ -251,6 +255,7 @@ extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
         cell?.postViewModel = postViewModel
         cell?.tapDelegate = self
         cell?.flagDelegate = self
+        cell?.savePastaButton.isHidden = true
         cell?.loadCell()
         
         return cell ?? UITableViewCell()

@@ -136,43 +136,14 @@ class ThreadViewController: BaseViewController {
     }
     
     @IBAction func gotoTop(_ sender: Any) {
-        self.postsTable.scrollToRow(at:
-            IndexPath(item: 0, section: 0), at: .top, animated: true)
+        self.postsTable.scrollToRow(at: IndexPath(item: 0, section: 0),
+                                    at: .top, animated: true)
     }
     
     @IBAction func gotoBottom(_ sender: Any) {
         let posts = self.threadViewModel.posts.count
-       // self.postsTable.scrollToRow(at:
-       //     IndexPath(item: posts - 1, section: 0), at: .top, animated: true)
-        print(postsTable.contentSize)
-        var size = postsTable.contentSize.height
-        var modif:CGFloat = 1000.0
-        var acumm:CGFloat = 0
-        
-        var timer = Timer()
-        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { _ in
-            
-            acumm = self.postsTable.contentOffset.y+modif
-            
-            self.postsTable.setContentOffset(CGPoint(x: self.postsTable.contentOffset.x,
-            y: acumm), animated: true)
-            //acumm += modif
-            print("\(acumm) \(size/2.0) \(self.postsTable.contentOffset.y+modif)")
-            if acumm >= size/2.0 {
-                timer.invalidate()
-            }
-            
-        })
-        
-//        UIView.animate(withDuration: 10, animations: {
-//            self.postsTable.setContentOffset(CGPoint(x: self.postsTable.contentOffset.x,
-//                                                     y: size), animated: false)
-//        })
-        
-//        while modif < size {
-//
-//            modif += 5
-//        }
+        self.postsTable.scrollToRow(at: IndexPath(item: posts - 1, section: 0),
+                                    at: .top, animated: false)
     }
     
     func flashThreadLinked() {
@@ -203,6 +174,7 @@ extension ThreadViewController: UITableViewDataSource {
         cell?.boardName = threadViewModel.completeBoardName!
         cell?.tapDelegate = self
         cell?.flagDelegate = self
+        cell?.copyTextDelegate = self
         cell?.loadCell()
         
         return cell ?? UITableViewCell()
@@ -281,3 +253,9 @@ extension ThreadViewController: ThreadFooterViewDelegate {
     }
 }
 
+extension ThreadViewController: SaveTextDelegate {
+    func saveText(_ text: String) {
+        let aaaa = UIActivityViewController(activityItems: [], applicationActivities: [])
+        self.present(aaaa, animated: true, completion: nil)
+    }
+}
