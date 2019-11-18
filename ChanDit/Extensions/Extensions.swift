@@ -9,8 +9,8 @@
 import UIKit
 
 extension UserDefaults {
-    static var shared: UserDefaults {
-        return UserDefaults(suiteName: "group.johnsundell.app")!
+    static var videoCache: UserDefaults {
+        return UserDefaults(suiteName: "webm.chandit")!
     }
 }
 

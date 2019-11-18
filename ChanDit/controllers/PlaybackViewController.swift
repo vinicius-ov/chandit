@@ -22,6 +22,8 @@ class PlaybackViewController: UIViewController {
     @IBOutlet weak var elapsedTime: UILabel!
     @IBOutlet weak var totalTime: UILabel!
     @IBOutlet weak var sliderTimer: UISlider!
+    @IBOutlet weak var timerHud: UIStackView!
+    @IBOutlet weak var buttonsHud: UIStackView!
     
     var mediaListPlayer = VLCMediaListPlayer()
     var media: VLCMedia!
@@ -33,9 +35,11 @@ class PlaybackViewController: UIViewController {
         navigationController?.navigationBar.isHidden = true
         
         sliderTimer.addTarget(self, action: #selector(onSliderValChanged(slider:event:)), for: .valueChanged)
+        movieView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(toggleHud(_:))))
+        
         
         let number = "\(postNumber ?? 0)"
-        if let videoData = UserDefaults.standard.data(forKey: number) {
+        if let videoData = UserDefaults.videoCache.data(forKey: number) {
             print("cache memory")
             do {
                 try setVideoDataToFolder(videoData: videoData)
@@ -57,14 +61,7 @@ class PlaybackViewController: UIViewController {
     func onSliderValChanged(slider: UISlider, event: UIEvent) {
         if let touchEvent = event.allTouches?.first {
             switch touchEvent.phase {
-            case .began:
-                // handle drag began
-                print(1)
-            case .moved:
-                // handle drag moved
-                print(2)
             case .ended:
-                // handle drag ended
                 let value = slider.value
                 mediaListPlayer.mediaPlayer.time = VLCTime(number: NSNumber(value: value))
                 blockTimer = false
@@ -128,7 +125,6 @@ class PlaybackViewController: UIViewController {
                 print("could not delete file")
             }
         }
-        //navigationController?.popViewController(animated: true)
     }
     
     @IBAction func closeView(_ sender: Any) {
@@ -160,6 +156,14 @@ class PlaybackViewController: UIViewController {
         print(sender.value)
         elapsedTime.text = "\(VLCTime(number: NSNumber(value: sender.value)) ?? VLCTime())"
     }
+    
+    @objc
+    func toggleHud(_ sender: Any) {
+        UIView.animate(withDuration: 0.5, animations: {
+            self.buttonsHud.alpha = self.buttonsHud.alpha == 1.0 ? 0.0 : 1.0
+            self.timerHud.alpha = self.timerHud.alpha == 1.0 ? 0.0 : 1.0
+        })
+    }
 }
 
 extension PlaybackViewController: VLCMediaPlayerDelegate {
@@ -190,7 +194,7 @@ URLSessionDownloadDelegate {
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         do {
             let data = try Data(contentsOf: location)
-            UserDefaults.standard.set(data, forKey: "\(postNumber ?? 0)")
+            UserDefaults.videoCache.set(data, forKey: "\(postNumber ?? 0)")
             try setVideoDataToFolder(videoData: data)
             setupMediaPLayer()
             setupMedia()
