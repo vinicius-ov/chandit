@@ -255,7 +255,7 @@ extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
         cell?.postViewModel = postViewModel
         cell?.tapDelegate = self
         cell?.flagDelegate = self
-        cell?.savePastaButton.isHidden = true
+
         cell?.loadCell()
         
         return cell ?? UITableViewCell()

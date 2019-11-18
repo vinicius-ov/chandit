@@ -93,7 +93,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <textView clipsSubviews="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="MQI-Sz-RTe">
-                        <rect key="frame" x="0.0" y="229" width="414" height="192"/>
+                        <rect key="frame" x="0.0" y="229" width="414" height="214"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="2An-Rg-0lR"/>
                         </constraints>
@@ -103,17 +103,6 @@
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         <dataDetectorType key="dataDetectorTypes" link="YES"/>
                     </textView>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J7v-rc-p56">
-                        <rect key="frame" x="10" y="421" width="62" height="22"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="22" id="E5S-iF-YLI"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                        <state key="normal" title="Save Pasta"/>
-                        <connections>
-                            <action selector="savePasta" destination="42x-lp-gWH" eventType="touchUpInside" id="Gj5-S4-noC"/>
-                        </connections>
-                    </button>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="IWk-m7-jpU">
                         <rect key="frame" x="0.0" y="45" width="414" height="184"/>
                         <subviews>
@@ -152,10 +141,8 @@
                 <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                 <constraints>
                     <constraint firstItem="MQI-Sz-RTe" firstAttribute="top" secondItem="IWk-m7-jpU" secondAttribute="bottom" id="3kg-X0-ee4"/>
-                    <constraint firstItem="J7v-rc-p56" firstAttribute="leading" secondItem="hhV-6z-yhL" secondAttribute="leading" constant="10" id="3xW-VA-Qjv"/>
                     <constraint firstAttribute="trailing" secondItem="IWk-m7-jpU" secondAttribute="trailing" id="9n8-yr-PAu"/>
                     <constraint firstItem="Shf-j1-KPS" firstAttribute="top" secondItem="hhV-6z-yhL" secondAttribute="top" id="Ein-4l-wLT"/>
-                    <constraint firstAttribute="bottom" secondItem="J7v-rc-p56" secondAttribute="bottom" constant="4" id="Eip-w3-VoR"/>
                     <constraint firstItem="leO-uy-2tW" firstAttribute="leading" secondItem="hhV-6z-yhL" secondAttribute="leading" constant="10" id="JYW-Vl-Wbj"/>
                     <constraint firstAttribute="trailing" secondItem="leO-uy-2tW" secondAttribute="trailing" constant="10" id="Lg9-kM-47D"/>
                     <constraint firstAttribute="trailing" secondItem="MQI-Sz-RTe" secondAttribute="trailing" id="PKJ-KI-65d"/>
@@ -163,8 +150,8 @@
                     <constraint firstItem="IWk-m7-jpU" firstAttribute="leading" secondItem="hhV-6z-yhL" secondAttribute="leading" id="WFx-ad-WS7"/>
                     <constraint firstAttribute="trailing" secondItem="Shf-j1-KPS" secondAttribute="trailing" id="YdU-NX-Nl9"/>
                     <constraint firstItem="Shf-j1-KPS" firstAttribute="leading" secondItem="hhV-6z-yhL" secondAttribute="leading" id="dgf-Xb-PAY"/>
-                    <constraint firstItem="J7v-rc-p56" firstAttribute="top" secondItem="MQI-Sz-RTe" secondAttribute="bottom" id="muf-Eu-krw"/>
                     <constraint firstItem="MQI-Sz-RTe" firstAttribute="leading" secondItem="hhV-6z-yhL" secondAttribute="leading" id="que-rV-4I4"/>
+                    <constraint firstAttribute="bottom" secondItem="MQI-Sz-RTe" secondAttribute="bottom" constant="4" id="r59-6f-MAj"/>
                     <constraint firstItem="leO-uy-2tW" firstAttribute="top" secondItem="Shf-j1-KPS" secondAttribute="bottom" constant="4" id="sHh-nA-Y0R"/>
                 </constraints>
             </tableViewCellContentView>
@@ -178,7 +165,6 @@
                 <outlet property="postText" destination="MQI-Sz-RTe" id="doM-RN-nmS"/>
                 <outlet property="postTimePublishing" destination="fvS-N3-HbB" id="zp2-NV-EUg"/>
                 <outlet property="postTitle" destination="leO-uy-2tW" id="v2e-ar-01y"/>
-                <outlet property="savePastaButton" destination="J7v-rc-p56" id="Ztr-mk-SDa"/>
                 <outlet property="stickyIcon" destination="7cV-9t-QDq" id="jpp-pm-T5e"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="145.64732142857142"/>
