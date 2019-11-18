@@ -8,12 +8,6 @@
 
 import UIKit
 
-protocol CellTapInteractionDelegate: class {
-    func linkTapped(postNumber: Int, opNumber: Int, originNumber: Int)
-    func imageTapped(_ viewController: UIViewController)
-    func presentAlertExitingApp(_ actions: [UIAlertAction])
-}
-
 class BaseViewController: UIViewController {
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         get {
@@ -21,11 +15,6 @@ class BaseViewController: UIViewController {
         }
     }
 }
-
-protocol ToastDelegate: class {
-    func showToast(flagHint: String)
-}
-    
 
 class BoardPagesViewController: BaseViewController {
     @IBOutlet weak var postsTable: UITableView!
@@ -114,10 +103,6 @@ class BoardPagesViewController: BaseViewController {
                             self.pageViewModel.threads.add(ThreadViewModel(thread: $0))
                         }
                         DispatchQueue.main.async {
-                            self.pickerView.selectRow(
-                                self.boardsViewModel.getCurrentBoardIndex() ?? 0,
-                                                      inComponent: 0,
-                                                      animated: true)
                             self.postsTable.isHidden = false
                             self.boardSelector.isEnabled = true
                             self.postsTable.reloadData()
@@ -159,6 +144,9 @@ class BoardPagesViewController: BaseViewController {
                     self.boardsViewModel.boards = boards.boards!.sorted()
                     DispatchQueue.main.async {
                         self.boardSelector.text = self.boardsViewModel.selectedBoardName
+                        self.pickerView.selectRow(self.boardsViewModel.getCurrentBoardIndex() ?? 0,
+                        inComponent: 0,
+                        animated: true)
                     }
                     self.fetchData(append: false)
                 }
@@ -251,6 +239,7 @@ extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
         cell?.postViewModel = postViewModel
         cell?.tapDelegate = self
         cell?.flagDelegate = self
+
         cell?.loadCell()
         
         return cell ?? UITableViewCell()

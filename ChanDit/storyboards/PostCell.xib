@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PostTableViewCell" customModule="ChanDit" customModuleProvider="target"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="postCellIdentifier" rowHeight="413" id="42x-lp-gWH" customClass="PostTableViewCell" customModule="ChanDit" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="414" height="413"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="postCellIdentifier" rowHeight="447" id="42x-lp-gWH" customClass="PostTableViewCell" customModule="ChanDit" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="447"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="42x-lp-gWH" id="hhV-6z-yhL">
-                <rect key="frame" x="0.0" y="0.0" width="414" height="413"/>
+                <rect key="frame" x="0.0" y="0.0" width="414" height="447"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="Shf-j1-KPS">
@@ -93,7 +93,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <textView clipsSubviews="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="MQI-Sz-RTe">
-                        <rect key="frame" x="0.0" y="229" width="414" height="180"/>
+                        <rect key="frame" x="0.0" y="229" width="414" height="214"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="2An-Rg-0lR"/>
                         </constraints>
@@ -141,7 +141,6 @@
                 <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                 <constraints>
                     <constraint firstItem="MQI-Sz-RTe" firstAttribute="top" secondItem="IWk-m7-jpU" secondAttribute="bottom" id="3kg-X0-ee4"/>
-                    <constraint firstAttribute="bottom" secondItem="MQI-Sz-RTe" secondAttribute="bottom" constant="4" id="5yN-gt-6cH"/>
                     <constraint firstAttribute="trailing" secondItem="IWk-m7-jpU" secondAttribute="trailing" id="9n8-yr-PAu"/>
                     <constraint firstItem="Shf-j1-KPS" firstAttribute="top" secondItem="hhV-6z-yhL" secondAttribute="top" id="Ein-4l-wLT"/>
                     <constraint firstItem="leO-uy-2tW" firstAttribute="leading" secondItem="hhV-6z-yhL" secondAttribute="leading" constant="10" id="JYW-Vl-Wbj"/>
@@ -152,6 +151,7 @@
                     <constraint firstAttribute="trailing" secondItem="Shf-j1-KPS" secondAttribute="trailing" id="YdU-NX-Nl9"/>
                     <constraint firstItem="Shf-j1-KPS" firstAttribute="leading" secondItem="hhV-6z-yhL" secondAttribute="leading" id="dgf-Xb-PAY"/>
                     <constraint firstItem="MQI-Sz-RTe" firstAttribute="leading" secondItem="hhV-6z-yhL" secondAttribute="leading" id="que-rV-4I4"/>
+                    <constraint firstAttribute="bottom" secondItem="MQI-Sz-RTe" secondAttribute="bottom" constant="4" id="r59-6f-MAj"/>
                     <constraint firstItem="leO-uy-2tW" firstAttribute="top" secondItem="Shf-j1-KPS" secondAttribute="bottom" constant="4" id="sHh-nA-Y0R"/>
                 </constraints>
             </tableViewCellContentView>
@@ -167,7 +167,7 @@
                 <outlet property="postTitle" destination="leO-uy-2tW" id="v2e-ar-01y"/>
                 <outlet property="stickyIcon" destination="7cV-9t-QDq" id="jpp-pm-T5e"/>
             </connections>
-            <point key="canvasLocation" x="137.68115942028987" y="134.93303571428569"/>
+            <point key="canvasLocation" x="137.68115942028987" y="145.64732142857142"/>
         </tableViewCell>
     </objects>
 </document>

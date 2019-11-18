@@ -36,7 +36,7 @@ class ThreadViewController: BaseViewController {
         fetchData()
     }
 
-    fileprivate func fetchData() {
+    fileprivate func fetchData(refreshing: Bool =  false) {
         guard let board = threadViewModel.boardIdToNavigate,
             let opNumber = threadViewModel.threadNumberToNavigate
             else {
@@ -61,7 +61,13 @@ class ThreadViewController: BaseViewController {
                             self.title = self.threadViewModel.threadTitle
                             self.postsTable.reloadData()
                             self.postsTable.isHidden = false
-                            self.navigateToPost()
+                            if !refreshing {
+                                self.navigateToPost()
+                            } else {
+                                self.showToast(message: "New posts found.",
+                                               textColor: .white,
+                                               backgroundColor: .green)
+                            }
                             self.title = self.threadViewModel.postViewModel(at: 0)?.title?.toPlainText().string
                         }
                     }
@@ -73,7 +79,9 @@ class ThreadViewController: BaseViewController {
                     self.showThreadNotFoundAlert()
                 default: break
                 }
-                self.reloadButton.isEnabled = true
+                DispatchQueue.main.async {
+                    self.reloadButton.isEnabled = true
+                }
             case .failure(let error):
                 self.showAlertView(title: "Fetch failed",
                                    message: "Failed to load thread posts. Try again. \(error.localizedDescription)", actions: [])
@@ -107,8 +115,11 @@ class ThreadViewController: BaseViewController {
     }
     
     @IBAction func reloadData(_ sender: UIBarButtonItem) {
-        sender.isEnabled = false
-        self.fetchData()
+        DispatchQueue.main.async {
+            sender.isEnabled = false
+        }
+        threadViewModel.reset()
+        self.fetchData(refreshing: true)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -125,14 +136,14 @@ class ThreadViewController: BaseViewController {
     }
     
     @IBAction func gotoTop(_ sender: Any) {
-        self.postsTable.scrollToRow(at:
-            IndexPath(item: 0, section: 0), at: .top, animated: true)
+        self.postsTable.scrollToRow(at: IndexPath(item: 0, section: 0),
+                                    at: .top, animated: true)
     }
     
     @IBAction func gotoBottom(_ sender: Any) {
         let posts = self.threadViewModel.posts.count
-        self.postsTable.scrollToRow(at:
-            IndexPath(item: posts - 1, section: 0), at: .top, animated: true)
+        self.postsTable.scrollToRow(at: IndexPath(item: posts - 1, section: 0),
+                                    at: .top, animated: false)
     }
     
     func flashThreadLinked() {
@@ -163,6 +174,7 @@ extension ThreadViewController: UITableViewDataSource {
         cell?.boardName = threadViewModel.completeBoardName!
         cell?.tapDelegate = self
         cell?.flagDelegate = self
+        cell?.copyTextDelegate = self
         cell?.loadCell()
         
         return cell ?? UITableViewCell()
@@ -184,10 +196,6 @@ extension ThreadViewController: UITableViewDelegate {
         footerView?.delegate = !threadToLaunch.isClosed ? self : nil
         footerView?.closedIcon.isHidden = !threadToLaunch.isClosed
         return footerView
-    }
-
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        print("drag")
     }
     
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
@@ -241,3 +249,9 @@ extension ThreadViewController: ThreadFooterViewDelegate {
     }
 }
 
+extension ThreadViewController: SaveTextDelegate {
+    func saveText(_ text: String) {
+        let aaaa = UIActivityViewController(activityItems: [], applicationActivities: [])
+        self.present(aaaa, animated: true, completion: nil)
+    }
+}

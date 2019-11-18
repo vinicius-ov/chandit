@@ -10,10 +10,12 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PlaybackViewController" customModule="ChanDit" customModuleProvider="target">
             <connections>
+                <outlet property="buttonsHud" destination="NEc-3V-BSD" id="ong-vm-5bO"/>
                 <outlet property="downloadProgress" destination="U3R-Qk-fzE" id="FI8-8Y-Lia"/>
                 <outlet property="elapsedTime" destination="xXk-97-755" id="hhy-ZO-lw5"/>
                 <outlet property="movieView" destination="C4B-gB-uRM" id="Zcp-Sg-3be"/>
                 <outlet property="sliderTimer" destination="lHP-RF-wa5" id="Q0J-d4-dYl"/>
+                <outlet property="timerHud" destination="MPg-VJ-6xN" id="TId-dH-950"/>
                 <outlet property="totalTime" destination="U2J-RA-NMf" id="yE3-Ny-Qz4"/>
                 <outlet property="view" destination="jc2-cj-1JF" id="DqD-sf-mBN"/>
             </connections>
@@ -47,7 +49,7 @@
                         <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="lHP-RF-wa5">
                             <rect key="frame" x="43" y="0.0" width="308" height="31"/>
                             <connections>
-                                <action selector="valueChanged:" destination="-1" eventType="valueChanged" id="gCV-0b-uSm"/>
+                                <action selector="valueChanged:" destination="-1" eventType="valueChanged" id="OQd-Ix-tZK"/>
                             </connections>
                         </slider>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U2J-RA-NMf">
