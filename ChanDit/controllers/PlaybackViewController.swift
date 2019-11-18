@@ -15,6 +15,7 @@ class PlaybackViewController: UIViewController {
     var filename: String!
     var shouldSave = false
     var task: URLSessionTask!
+    var blockTimer = false
     
     @IBOutlet weak var movieView: UIView!
     @IBOutlet weak var downloadProgress: UIProgressView!
@@ -22,7 +23,7 @@ class PlaybackViewController: UIViewController {
     @IBOutlet weak var totalTime: UILabel!
     @IBOutlet weak var sliderTimer: UISlider!
     
-    var mediaPlayer = VLCMediaListPlayer()
+    var mediaListPlayer = VLCMediaListPlayer()
     var media: VLCMedia!
     let fileManager = FileManager.default
     var fileURL: URL?
@@ -30,6 +31,9 @@ class PlaybackViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.isHidden = true
+        
+        sliderTimer.addTarget(self, action: #selector(onSliderValChanged(slider:event:)), for: .valueChanged)
+        
         let number = "\(postNumber ?? 0)"
         if let videoData = UserDefaults.standard.data(forKey: number) {
             print("cache memory")
@@ -49,6 +53,27 @@ class PlaybackViewController: UIViewController {
         }
     }
     
+    @objc
+    func onSliderValChanged(slider: UISlider, event: UIEvent) {
+        if let touchEvent = event.allTouches?.first {
+            switch touchEvent.phase {
+            case .began:
+                // handle drag began
+                print(1)
+            case .moved:
+                // handle drag moved
+                print(2)
+            case .ended:
+                // handle drag ended
+                let value = slider.value
+                mediaListPlayer.mediaPlayer.time = VLCTime(number: NSNumber(value: value))
+                blockTimer = false
+            default:
+                break
+            }
+        }
+    }
+    
     private func setVideoDataToFolder(videoData: Data) throws {
         let documentDirectory = try? self.fileManager.url(
             for: .documentDirectory, in: .userDomainMask,
@@ -62,37 +87,37 @@ class PlaybackViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        mediaPlayer.play()
+        mediaListPlayer.play()
     }
     
     func setupMediaPLayer() {
-        mediaPlayer.mediaPlayer.delegate = self
-        mediaPlayer.mediaPlayer.drawable = movieView
-        mediaPlayer.mediaPlayer.audio.volume = 0
+        mediaListPlayer.mediaPlayer.delegate = self
+        mediaListPlayer.mediaPlayer.drawable = movieView
+        mediaListPlayer.mediaPlayer.audio.volume = 0
     }
     
     @IBAction func handlePlayPause(_ sender: UIButton) {
-        if mediaPlayer.mediaPlayer.isPlaying {
-            mediaPlayer.pause()
+        if mediaListPlayer.mediaPlayer.isPlaying {
+            mediaListPlayer.pause()
             sender.isSelected = true
         } else {
-            mediaPlayer.play()
+            mediaListPlayer.play()
             sender.isSelected = false
         }
     }
     
     @IBAction func handleToggleAudio(_ sender: UIButton) {
         if sender.isSelected {
-            mediaPlayer.mediaPlayer.audio.volume = 0
+            mediaListPlayer.mediaPlayer.audio.volume = 0
             sender.isSelected = false
         } else {
-            mediaPlayer.mediaPlayer.audio.volume = 100
+            mediaListPlayer.mediaPlayer.audio.volume = 100
             sender.isSelected = true
         }
     }
     
     private func stopActivity() {
-        mediaPlayer.stop()
+        mediaListPlayer.stop()
         if task != nil {
             task.cancel()
         }
@@ -119,9 +144,9 @@ class PlaybackViewController: UIViewController {
         media = VLCMedia(url: fileURL!)
         let mediaList = VLCMediaList()
         mediaList.add(media)
-        mediaPlayer.mediaList = mediaList
-        mediaPlayer.repeatMode = .repeatCurrentItem
-        mediaPlayer.play(media)
+        mediaListPlayer.mediaList = mediaList
+        mediaListPlayer.repeatMode = .repeatCurrentItem
+        mediaListPlayer.play(media)
     }
     
     @IBAction func saveVideo(_ sender: Any) {
@@ -130,19 +155,21 @@ class PlaybackViewController: UIViewController {
         (sender as? UIButton)?.isEnabled = false
     }
     
-    @IBAction func valueChanged(_ sender: Any) {
-        //block timer =  true
-        print((sender as? UISlider)?.value)
+    @IBAction func valueChanged(_ sender: UISlider) {
+        blockTimer = true
+        print(sender.value)
+        elapsedTime.text = "\(VLCTime(number: NSNumber(value: sender.value)) ?? VLCTime())"
     }
 }
 
 extension PlaybackViewController: VLCMediaPlayerDelegate {
     func mediaPlayerTimeChanged(_ aNotification: Notification!) {
-        //if !block timer 
-        elapsedTime.text = mediaPlayer.mediaPlayer.time!.debugDescription
-        totalTime.text = mediaPlayer.mediaPlayer.media.length.debugDescription
-        sliderTimer.maximumValue = Float(mediaPlayer.mediaPlayer.media.length.intValue)
-        sliderTimer.value = Float(mediaPlayer.mediaPlayer.time.intValue)
+        if !blockTimer {
+            elapsedTime.text = mediaListPlayer.mediaPlayer.time!.debugDescription
+            totalTime.text = mediaListPlayer.mediaPlayer.media.length.debugDescription
+            sliderTimer.maximumValue = Float(mediaListPlayer.mediaPlayer.media.length.intValue)
+            sliderTimer.value = Float(mediaListPlayer.mediaPlayer.time.intValue)
+        }
     }
 }
 

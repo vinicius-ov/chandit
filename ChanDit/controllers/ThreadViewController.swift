@@ -197,10 +197,6 @@ extension ThreadViewController: UITableViewDelegate {
         footerView?.closedIcon.isHidden = !threadToLaunch.isClosed
         return footerView
     }
-
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        print("drag")
-    }
     
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         flashThreadLinked()
