@@ -217,6 +217,11 @@ class BoardPagesViewController: BaseViewController {
         self.postsTable.scrollToRow(at:
             IndexPath(item: 0, section: 0), at: .top, animated: true)
     }
+    
+    @IBAction func goSettings(_ sender: Any) {
+        let settings = SettingsViewController(nibName: "SettingsViewController", bundle: Bundle.main)
+        show(settings, sender: self)
+    }
 }
 
 extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {

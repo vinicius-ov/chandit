@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		2D2784022357ADD400DD0C9F /* ThreadFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D2784012357ADD300DD0C9F /* ThreadFooterView.xib */; };
 		2D2784042357B16A00DD0C9F /* ThreadFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2784032357B16A00DD0C9F /* ThreadFooterView.swift */; };
+		2D30934A238429C100FE1D32 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D309348238429C100FE1D32 /* SettingsViewController.swift */; };
+		2D3093502384403100FE1D32 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D30934E2384403100FE1D32 /* SettingsTableViewCell.swift */; };
+		2D3093512384403100FE1D32 /* SettingsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D30934F2384403100FE1D32 /* SettingsTableViewCell.xib */; };
+		2D309353238441B900FE1D32 /* SettingsCellViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D309352238441B800FE1D32 /* SettingsCellViewController.xib */; };
 		2D57A6F5235F7006001DEBE8 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D57A6F4235F7006001DEBE8 /* SDWebImage.framework */; };
 		2DD9C31923576EBA00A14EE4 /* ImageViewerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2DD9C31823576EBA00A14EE4 /* ImageViewerViewController.xib */; };
 		2DDB9D7B234BAE0F002C249F /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DDB9D7A234BAE0F002C249F /* BaseNavigationController.swift */; };
@@ -56,6 +60,10 @@
 /* Begin PBXFileReference section */
 		2D2784012357ADD300DD0C9F /* ThreadFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ThreadFooterView.xib; sourceTree = "<group>"; };
 		2D2784032357B16A00DD0C9F /* ThreadFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadFooterView.swift; sourceTree = "<group>"; };
+		2D309348238429C100FE1D32 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		2D30934E2384403100FE1D32 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
+		2D30934F2384403100FE1D32 /* SettingsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsTableViewCell.xib; sourceTree = "<group>"; };
+		2D309352238441B800FE1D32 /* SettingsCellViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsCellViewController.xib; sourceTree = "<group>"; };
 		2D57A6F4235F7006001DEBE8 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Carthage/Build/iOS/SDWebImage.framework; sourceTree = "<group>"; };
 		2DC383E4235F6F2700B16290 /* SDWebImageMapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImageMapKit.framework; path = Carthage/Build/iOS/SDWebImageMapKit.framework; sourceTree = "<group>"; };
 		2DD9C31823576EBA00A14EE4 /* ImageViewerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageViewerViewController.xib; sourceTree = "<group>"; };
@@ -202,6 +210,8 @@
 			children = (
 				814C458E22F86194007007C5 /* PostTableViewCell.swift */,
 				2D2784032357B16A00DD0C9F /* ThreadFooterView.swift */,
+				2D30934E2384403100FE1D32 /* SettingsTableViewCell.swift */,
+				2D30934F2384403100FE1D32 /* SettingsTableViewCell.xib */,
 			);
 			path = cells;
 			sourceTree = "<group>";
@@ -215,6 +225,7 @@
 				810B4A032327CCF100E7ECC9 /* PlaybackViewController.swift */,
 				F2DEFD04232DD4690031FD98 /* WebViewViewController.swift */,
 				2DDB9D7A234BAE0F002C249F /* BaseNavigationController.swift */,
+				2D309348238429C100FE1D32 /* SettingsViewController.swift */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -231,6 +242,7 @@
 		81AC6B8F2319866B00502931 /* storyboards */ = {
 			isa = PBXGroup;
 			children = (
+				2D309352238441B800FE1D32 /* SettingsCellViewController.xib */,
 				F2DEFD05232DD4690031FD98 /* WebViewViewController.xib */,
 				810B4A042327CCF100E7ECC9 /* PlaybackViewController.xib */,
 				81921BE422F468DD007F4EFC /* Main.storyboard */,
@@ -332,8 +344,10 @@
 				810B4A062327CCF100E7ECC9 /* PlaybackViewController.xib in Resources */,
 				81921BEB22F468DE007F4EFC /* LaunchScreen.storyboard in Resources */,
 				F2BAFFE223495AAB006D2CEE /* PostCell.xib in Resources */,
+				2D309353238441B900FE1D32 /* SettingsCellViewController.xib in Resources */,
 				2D2784022357ADD400DD0C9F /* ThreadFooterView.xib in Resources */,
 				81921BE822F468DE007F4EFC /* Assets.xcassets in Resources */,
+				2D3093512384403100FE1D32 /* SettingsTableViewCell.xib in Resources */,
 				2DD9C31923576EBA00A14EE4 /* ImageViewerViewController.xib in Resources */,
 				814C459322F868A9007007C5 /* Cartfile in Resources */,
 				81921BE622F468DD007F4EFC /* Main.storyboard in Resources */,
@@ -390,6 +404,7 @@
 			files = (
 				2DDB9D7B234BAE0F002C249F /* BaseNavigationController.swift in Sources */,
 				814CD0792315ABAF0097A23E /* ImageViewerViewController.swift in Sources */,
+				2D3093502384403100FE1D32 /* SettingsTableViewCell.swift in Sources */,
 				816ED39922FDB1AC00E13C9E /* PostViewModel.swift in Sources */,
 				2D2784042357B16A00DD0C9F /* ThreadFooterView.swift in Sources */,
 				81AC6B92231D53A400502931 /* Board.swift in Sources */,
@@ -400,6 +415,7 @@
 				814C458F22F86194007007C5 /* PostTableViewCell.swift in Sources */,
 				81B7896E231060AB0093376D /* ThreadViewController.swift in Sources */,
 				F29872612382F23E00BC9000 /* Extensions.swift in Sources */,
+				2D30934A238429C100FE1D32 /* SettingsViewController.swift in Sources */,
 				814C458B22F4BFF8007007C5 /* Service.swift in Sources */,
 				814C458D22F4C67F007007C5 /* Post.swift in Sources */,
 				F2DEFD06232DD4690031FD98 /* WebViewViewController.swift in Sources */,
