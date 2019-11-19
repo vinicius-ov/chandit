@@ -23,14 +23,26 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j8Q-Y9-6pc">
+                        <rect key="frame" x="182" y="7" width="124" height="31"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="120" id="0qG-JB-kgC"/>
+                        </constraints>
+                        <connections>
+                            <action selector="valueChanged:" destination="KGk-i7-Jjw" eventType="valueChanged" id="NTR-SY-b15"/>
+                        </connections>
+                    </slider>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="j8Q-Y9-6pc" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="K6F-Dr-yR8"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="j8Q-Y9-6pc" secondAttribute="trailing" id="W0a-hd-Hlw"/>
                     <constraint firstItem="olh-Oh-rj5" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="iCQ-wS-FNt"/>
                     <constraint firstItem="olh-Oh-rj5" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="tvN-dv-t8K"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="confirmSlider" destination="j8Q-Y9-6pc" id="NDT-Tm-GgG"/>
                 <outlet property="titleLabel" destination="olh-Oh-rj5" id="Kkm-SD-cSk"/>
             </connections>
             <point key="canvasLocation" x="132" y="83"/>

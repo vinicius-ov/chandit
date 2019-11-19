@@ -219,7 +219,7 @@ class BoardPagesViewController: BaseViewController {
     }
     
     @IBAction func goSettings(_ sender: Any) {
-        let settings = SettingsViewController(nibName: "SettingsViewController", bundle: Bundle.main)
+        let settings = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
         show(settings, sender: self)
     }
 }

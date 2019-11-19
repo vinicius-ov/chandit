@@ -7,16 +7,22 @@
 //
 
 import UIKit
+import SDWebImage
 
 class SettingsViewController: UIViewController {
 
     @IBOutlet weak var tableVieww: UITableView!
+    let mediaCacheOptions = ["Clear Image Cache", "Clear Webm Cache"]
+    let optionsCategories = ["Media Cache", "Webm Audio"]
+    let webmAudioOptions = ["Start Webms muted"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableVieww.register(UINib(nibName: "SettingsTableViewCell", bundle: nil),
         forCellReuseIdentifier: "cell")
+        tableVieww.register(UINib(nibName: "MultipleOptionsTableViewCell", bundle: nil),
+        forCellReuseIdentifier: "cellOpts")
         
         tableVieww.dataSource = self
     }
@@ -26,29 +32,46 @@ class SettingsViewController: UIViewController {
 extension SettingsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case 0: return 2
-        case 1: return 1
+        case 0: return mediaCacheOptions.count
+        case 1: return webmAudioOptions.count
         default: return 0
         }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return optionsCategories.count
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case 0: return "Media Cache"
-        case 1: return "Webm Sound"
-        default: return ""
-        }
+        return optionsCategories[section]
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as? SettingsTableViewCell
-        cell?.titleLabel.text = "Clear Webm cache"
-        return cell ?? UITableViewCell()
+        if indexPath.section == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as? SettingsTableViewCell
+            cell?.titleLabel.text = mediaCacheOptions[indexPath.row]
+            cell?.confirmSlider.tag = indexPath.row
+            cell?.sliderDelegate = self
+            return cell ?? UITableViewCell()
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cellOpts") as? MultipleOptionsTableViewCell
+            cell?.titleLabel.text = webmAudioOptions[indexPath.row]
+            return cell ?? UITableViewCell()
+        }
     }
-    
-    
+}
+
+extension SettingsViewController: SettingsSliderDelegate {
+    func confirmSettingsChanged(slider: UISlider) {
+        if slider.tag == 0 {
+            SDImageCache.shared.clearMemory()
+            SDImageCache.shared.clearDisk {
+                // empty
+            }
+        } else if slider.tag == 1 {
+            //TODO: class for managing cache
+            UserDefaults.videoCache.removePersistentDomain(
+                forName: "webm.chandit")
+        }
+    }
 }
