@@ -29,6 +29,7 @@ class PlaybackViewController: UIViewController {
     var media: VLCMedia!
     let fileManager = FileManager.default
     var fileURL: URL?
+    var isNsfw = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,7 +91,13 @@ class PlaybackViewController: UIViewController {
     func setupMediaPLayer() {
         mediaListPlayer.mediaPlayer.delegate = self
         mediaListPlayer.mediaPlayer.drawable = movieView
-        mediaListPlayer.mediaPlayer.audio.volume = 0
+        var volume: Int32 = 0
+        if UserDefaults.standard.integer(forKey: "webm_volume") == 1 {
+            if !isNsfw {
+                volume = 100
+            }
+        }
+        mediaListPlayer.mediaPlayer.audio.volume = volume
     }
     
     @IBAction func handlePlayPause(_ sender: UIButton) {

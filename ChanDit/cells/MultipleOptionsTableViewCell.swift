@@ -12,19 +12,8 @@ class MultipleOptionsTableViewCell: UITableViewCell {
     
     @IBOutlet weak var titleLabel: UILabel!
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-    
     @IBAction func valueChanged(_ sender: UISegmentedControl) {
-        print(sender.selectedSegmentIndex)
+        UserDefaults.standard.set(sender.selectedSegmentIndex, forKey: "webm_volume")
     }
 }
 

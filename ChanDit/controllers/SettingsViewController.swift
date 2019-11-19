@@ -14,7 +14,7 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var tableVieww: UITableView!
     let mediaCacheOptions = ["Clear Image Cache", "Clear Webm Cache"]
     let optionsCategories = ["Media Cache", "Webm Audio"]
-    let webmAudioOptions = ["Start Webms muted"]
+    let webmAudioOptions = ["Start muted"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +26,6 @@ class SettingsViewController: UIViewController {
         
         tableVieww.dataSource = self
     }
-    
 }
 
 extension SettingsViewController: UITableViewDataSource {

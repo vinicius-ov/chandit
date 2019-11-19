@@ -24,11 +24,14 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" apportionsSegmentWidthsByContent="YES" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Xhg-YG-Tu0">
-                        <rect key="frame" x="76" y="13" width="228" height="32"/>
+                        <rect key="frame" x="104" y="7" width="200" height="32"/>
                         <segments>
-                            <segment title="Never"/>
-                            <segment title="Only in SFW boards"/>
+                            <segment title="Always"/>
+                            <segment title="Only in NSFW boards"/>
                         </segments>
+                        <connections>
+                            <action selector="valueChanged:" destination="KGk-i7-Jjw" eventType="valueChanged" id="grf-kg-rW9"/>
+                        </connections>
                     </segmentedControl>
                 </subviews>
                 <constraints>

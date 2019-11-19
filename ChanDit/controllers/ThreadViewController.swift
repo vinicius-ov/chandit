@@ -175,6 +175,7 @@ extension ThreadViewController: UITableViewDataSource {
         cell?.tapDelegate = self
         cell?.flagDelegate = self
         cell?.copyTextDelegate = self
+        //cell?.isNsfw = threadViewModel.is
         cell?.loadCell()
         
         return cell ?? UITableViewCell()
