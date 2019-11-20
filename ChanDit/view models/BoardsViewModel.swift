@@ -54,6 +54,7 @@ class BoardsViewModel {
     func setCurrentBoard(byIndex index: Int) {
         let board = boards[index]
         UserDefaults.standard.set(board.title, forKey: usIdentifier)
+        UserDefaults.standard.set(board.wsBoard, forKey: "isSfw")
     }
     
     func getBoardByTitle(title: String) -> Board {

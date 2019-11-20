@@ -29,7 +29,6 @@ class PlaybackViewController: UIViewController {
     var media: VLCMedia!
     let fileManager = FileManager.default
     var fileURL: URL?
-    var isNsfw = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,7 +92,8 @@ class PlaybackViewController: UIViewController {
         mediaListPlayer.mediaPlayer.drawable = movieView
         var volume: Int32 = 0
         if UserDefaults.standard.integer(forKey: "webm_volume") == 1 {
-            if !isNsfw {
+            let isSfw = UserDefaults.standard.bool(forKey: "isSfw")
+            if isSfw {
                 volume = 100
             }
         }
