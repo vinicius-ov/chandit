@@ -242,10 +242,10 @@ extension ThreadViewController: CellTapInteractionDelegate {
 
 extension ThreadViewController: ThreadFooterViewDelegate {
     func threadFooterView(_ footer: ThreadFooterView, threadToNavigate section: Int) {
-        let viewController = WebViewViewController(nibName: "WebViewViewController", bundle: Bundle.main)
-        viewController.thread = threadViewModel.opNumber
-        viewController.board = threadViewModel.boardIdToNavigate
-        show(viewController, sender: nil)
+        let webVC = SwiftWebVC(
+            urlString: "https://boards.4chan.org/\(threadViewModel.boardIdToNavigate ?? "a")/thread/\(threadViewModel.opNumber ?? 1)/",
+            sharingEnabled: false)
+        show(webVC, sender: self)
     }
 }
 

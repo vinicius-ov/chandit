@@ -78,9 +78,10 @@ class BoardPagesViewController: BaseViewController {
     
     func fetchData(append: Bool) {
         guard let selectedBoard = boardsViewModel.selectedBoardId else {
-                self.showAlertView(title: "Fetch failed",
-                                   message: "Failed to load board threads. Try again. (Board not selected)",
-                actions: [])
+                //self.showAlertView(title: "Fetch failed",
+            //                       message: "Failed to load board threads. Try again. (Board not selected)",
+                //actions: [])
+            fetchBoards()
                 return
         }
         
@@ -217,6 +218,11 @@ class BoardPagesViewController: BaseViewController {
         self.postsTable.scrollToRow(at:
             IndexPath(item: 0, section: 0), at: .top, animated: true)
     }
+    
+    @IBAction func gotoNewThreadWebView(_ sender: Any) {
+        let webVC = SwiftWebVC(urlString: "https://www.4chan.org/\(boardsViewModel.selectedBoardId ?? "a")/", sharingEnabled: false)
+        show(webVC, sender: self)
+    }
 }
 
 extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
@@ -246,7 +252,8 @@ extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "ThreadFooterView") as? ThreadFooterView
+        let footerView = tableView.dequeueReusableHeaderFooterView(
+            withIdentifier: "ThreadFooterView") as? ThreadFooterView
 
         guard let threadToLaunch = pageViewModel.threadViewModel(at: section)?.postViewModel(at: 0) else {
             return footerView
