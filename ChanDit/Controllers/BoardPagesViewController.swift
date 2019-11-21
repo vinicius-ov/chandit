@@ -217,6 +217,11 @@ class BoardPagesViewController: BaseViewController {
         self.postsTable.scrollToRow(at:
             IndexPath(item: 0, section: 0), at: .top, animated: true)
     }
+    
+    @IBAction func gotoNewThreadWebView(_ sender: Any) {
+        let webVC = SwiftWebVC(urlString: "https://www.4chan.org/\(boardsViewModel.selectedBoardId ?? "a")/", sharingEnabled: false)
+        show(webVC, sender: self)
+    }
 }
 
 extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
