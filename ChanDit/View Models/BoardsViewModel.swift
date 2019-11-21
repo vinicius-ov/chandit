@@ -39,10 +39,6 @@ class BoardsViewModel {
         }
         return "/\(selected.board)/ - \(selected.title)"
     }
-    
-//    var isAdult: Bool {
-//        return boards.first?.wsBoard
-//    }
 
     var selectedBoardId: String? {
         guard let selected = currentBoard else {
@@ -56,11 +52,11 @@ class BoardsViewModel {
         UserDefaults.standard.set(board.title, forKey: usIdentifier)
     }
     
-    func getBoardByTitle(title: String) -> Board {
+    func getBoardByTitle(title: String) -> Board? {
         let filtered = boards.filter {
             $0.title == title
         }
-        return filtered.first!
+        return filtered.first
     }
     
     func getCurrentBoardIndex() -> Int? {
