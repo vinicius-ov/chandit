@@ -206,25 +206,21 @@ CompleteBoardNameProtocol {
 
     private func saveToCameraRoll(_ data: Data) {
         if PHPhotoLibrary.authorizationStatus() == .authorized {
-            
             guard let path = createTempPicFile(data) else { return }
             let albumName = self.completeBoardName
                 .trimmingCharacters(in: .whitespacesAndNewlines)
-            let album = fetchAlbum(albumName)
             var albumInsertRequest: PHAssetCollectionChangeRequest!
-            
             PHPhotoLibrary.shared().performChanges({
-                if album == nil {
+                guard let album = self.fetchAlbum(albumName) else {
                     albumInsertRequest = PHAssetCollectionChangeRequest
-                        .creationRequestForAssetCollection(withTitle: albumName)
-                } else {
-                    albumInsertRequest = PHAssetCollectionChangeRequest(for: album!)
+                .creationRequestForAssetCollection(withTitle: albumName)
+                    return
                 }
+                albumInsertRequest = PHAssetCollectionChangeRequest(for: album)
                 let assetChangeRequest = PHAssetChangeRequest
                     .creationRequestForAssetFromImage(atFileURL: path)!
                 albumInsertRequest?.addAssets(
                     [assetChangeRequest.placeholderForCreatedAsset!] as NSArray)
-
             }) { (success, error) in
                 if success {
                     DispatchQueue.main.async {

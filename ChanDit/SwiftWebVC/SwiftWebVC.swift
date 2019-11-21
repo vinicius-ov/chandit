@@ -368,11 +368,10 @@ extension SwiftWebVC: WKNavigationDelegate {
     }
     
     func openCustomApp(urlScheme: String, additionalInfo:String){
-        
-        if let requestUrl: URL = URL(string:"\(urlScheme)"+"\(additionalInfo)") {
-            let application:UIApplication = UIApplication.shared
+        if let requestUrl: URL = URL(string: "\(urlScheme)\(additionalInfo)") {
+            let application: UIApplication = UIApplication.shared
             if application.canOpenURL(requestUrl) {
-                application.openURL(requestUrl)
+                application.open(requestUrl, options: [:], completionHandler: nil) //openURL(requestUrl)
             }
         }
     }
