@@ -175,6 +175,7 @@ extension ThreadViewController: UITableViewDataSource {
         cell?.tapDelegate = self
         cell?.flagDelegate = self
         cell?.copyTextDelegate = self
+        cell?.hideDelegate = self
         cell?.loadCell()
         
         return cell ?? UITableViewCell()
@@ -253,5 +254,16 @@ extension ThreadViewController: SaveTextDelegate {
     func saveText(_ text: String) {
         let aaaa = UIActivityViewController(activityItems: [], applicationActivities: [])
         self.present(aaaa, animated: true, completion: nil)
+    }
+}
+
+extension ThreadViewController: HideDelegate {
+    func hidePost(number: Int) {
+        print("hide post \(number)")
+    }
+
+    func hideThread(number: Int) {
+        print("hide thread \(number)")
+        postsTable.isEditing = true
     }
 }

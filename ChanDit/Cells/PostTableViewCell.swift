@@ -41,6 +41,8 @@ class PostTableViewCell: UITableViewCell {
     weak var tapDelegate: CellTapInteractionDelegate?
     weak var flagDelegate: ToastDelegate?
     weak var copyTextDelegate: SaveTextDelegate?
+    weak var hideDelegate: HideDelegate?
+
     var tappedUrl: URL?
     
     override func awakeFromNib() {
@@ -148,6 +150,14 @@ class PostTableViewCell: UITableViewCell {
             }
             let actionCancel = UIAlertAction(title: "Cancel", style: .default)
             tapDelegate?.presentAlertExitingApp([actionOk, actionCancel])
+        }
+    }
+
+    @IBAction func togglePostVisibility() {
+        if postViewModel.isOp {
+            hideDelegate?.hideThread(number: postViewModel.number ?? 0)
+        } else {
+            hideDelegate?.hidePost(number: postViewModel.number ?? 0)
         }
     }
 }
