@@ -3,7 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -16,6 +16,17 @@
                 <rect key="frame" x="0.0" y="0.0" width="414" height="447"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tC8-tK-ZAa">
+                        <rect key="frame" x="191" y="208" width="32" height="30"/>
+                        <color key="backgroundColor" red="0.90221613649999999" green="0.75405454640000003" blue="0.16206279400000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="bgk-LN-GXy"/>
+                        </constraints>
+                        <state key="normal" title="Hide"/>
+                        <connections>
+                            <action selector="togglePostVisibility" destination="42x-lp-gWH" eventType="touchUpInside" id="EC8-Zt-NS2"/>
+                        </connections>
+                    </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RPg-sf-w21">
                         <rect key="frame" x="0.0" y="0.0" width="32" height="30"/>
                         <color key="backgroundColor" red="0.90221613649999999" green="0.75405454640000003" blue="0.16206279400000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -155,7 +155,7 @@ class ThreadViewController: BaseViewController {
             cell.contentView.backgroundColor = .red
             cell.contentView.backgroundColor = .black
         })
-        self.indexPathNav = nil
+        //self.indexPathNav = nil
     }
     
     override func viewWillAppear(_ animated: Bool) {
