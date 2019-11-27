@@ -133,7 +133,8 @@ class PostTableViewCell: UITableViewCell {
         guard let textView: UITextView = tapGesture.view as? UITextView else { return }
         let tapLocation = tapGesture.location(in: tapGesture.view)
 
-        guard let linkString = getTappedLink(from: textView, in: tapLocation) else { return }
+        guard let linkString = getTappedLink(from: textView, in: tapLocation),
+            !linkString.isEmpty else { return }
         let quote = linkString.split(separator: "/")
 
         if quote.first == "chandit:" {
@@ -144,7 +145,12 @@ class PostTableViewCell: UITableViewCell {
         } else {
             //see https://stackoverflow.com/questions/39949169/swift-open-url-in-a-specific-browser-tab for other browsers deeplinks
             let actionOk = UIAlertAction(title: "OK", style: .default) { (_) in
-                UIApplication.shared.open(URL(string: "firefox://open-url?url=\(linkString)")!)
+                if UIApplication.shared.canOpenURL(URL(string: "firefox://open-url?url=\(linkString)")!) {
+                    UIApplication.shared.open(URL(string: "firefox://open-url?url=\(linkString)")!)
+                } else {
+                    UIApplication.shared.open(URL(string: "firefox://open-url?url=\(linkString)")!)
+                }
+
             }
             let actionCancel = UIAlertAction(title: "Cancel", style: .default)
             tapDelegate?.presentAlertExitingApp([actionOk, actionCancel])
