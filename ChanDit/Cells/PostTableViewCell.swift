@@ -43,13 +43,6 @@ class PostTableViewCell: UITableViewCell {
     weak var copyTextDelegate: SaveTextDelegate?
     weak var hideDelegate: HideDelegate?
 
-    var tappedUrl: URL?
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        postText.delegate = self
-    }
-    
     func loadCell() {
         postAuthorName.text = postViewModel.postAuthorName
         
@@ -135,9 +128,42 @@ class PostTableViewCell: UITableViewCell {
     }
     
     @objc
-    func tappedLink(_ sender: Any) {
-        guard let tappedUrl = tappedUrl else { return }
-        let quote = tappedUrl.absoluteString.split(separator: "/")
+    func tappedLink(_ tapGesture: UITapGestureRecognizer) {
+
+        guard let textView: UITextView = tapGesture.view as? UITextView else { return }
+        let tapLocation = tapGesture.location(in: tapGesture.view)
+        
+        var textPosition1 = textView.closestPosition(to: tapLocation)
+        var textPosition2: UITextPosition?
+        if nil != textPosition1 {
+            textPosition2 = textView.position(from: textPosition1!, offset: 1)
+            if nil != textPosition2 {
+                textPosition1 = textView.position(from: textPosition1!, offset: -1)
+                textPosition2 = textView.position(from: textPosition1!, offset: 1)
+            } else {
+                return
+            }
+        }
+        
+        let range = textView.textRange(from: textPosition1!, to: textPosition2!)
+        let startOffset = textView.offset(from: textView.beginningOfDocument,
+                                          to: range!.start)
+        let endOffset = textView.offset(from: textView.beginningOfDocument,
+                                        to: range!.end)
+        let offsetRange = NSRange(location: startOffset, length: endOffset - startOffset)
+        if offsetRange.location == NSNotFound || offsetRange.length == 0 {
+            return
+        }
+        
+        if NSMaxRange(offsetRange) > textView.attributedText.length {
+            return
+        }
+        
+        let attributedSubstring = textView.attributedText .attributedSubstring(from: offsetRange)
+        let link = attributedSubstring.attribute(NSAttributedString.Key.link, at: 0, effectiveRange: nil)
+
+        let linkString = "\(link ?? "")"
+        let quote = linkString.split(separator: "/")
         if quote.first == "chandit:" {
             let postNumber = Int(quote.last!)
             tapDelegate?.linkTapped(postNumber: postNumber!,
@@ -146,7 +172,7 @@ class PostTableViewCell: UITableViewCell {
         } else {
             //see https://stackoverflow.com/questions/39949169/swift-open-url-in-a-specific-browser-tab for other browsers deeplinks
             let actionOk = UIAlertAction(title: "OK", style: .default) { (_) in
-                UIApplication.shared.open(URL(string: "firefox://open-url?url=\(tappedUrl)")!)
+                UIApplication.shared.open(URL(string: "firefox://open-url?url=\(linkString)")!)
             }
             let actionCancel = UIAlertAction(title: "Cancel", style: .default)
             tapDelegate?.presentAlertExitingApp([actionOk, actionCancel])
@@ -179,16 +205,6 @@ extension String {
             }
         }
         return attribText
-    }
-}
-
-extension PostTableViewCell: UITextViewDelegate {
-    func textView(_ textView: UITextView,
-                  shouldInteractWith URL: URL,
-                  in characterRange: NSRange,
-                  interaction: UITextItemInteraction) -> Bool {
-        tappedUrl = URL
-        return false
     }
 }
 
