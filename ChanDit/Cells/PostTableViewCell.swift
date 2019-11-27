@@ -132,38 +132,10 @@ class PostTableViewCell: UITableViewCell {
 
         guard let textView: UITextView = tapGesture.view as? UITextView else { return }
         let tapLocation = tapGesture.location(in: tapGesture.view)
-        
-        var textPosition1 = textView.closestPosition(to: tapLocation)
-        var textPosition2: UITextPosition?
-        if nil != textPosition1 {
-            textPosition2 = textView.position(from: textPosition1!, offset: 1)
-            if nil != textPosition2 {
-                textPosition1 = textView.position(from: textPosition1!, offset: -1)
-                textPosition2 = textView.position(from: textPosition1!, offset: 1)
-            } else {
-                return
-            }
-        }
-        
-        let range = textView.textRange(from: textPosition1!, to: textPosition2!)
-        let startOffset = textView.offset(from: textView.beginningOfDocument,
-                                          to: range!.start)
-        let endOffset = textView.offset(from: textView.beginningOfDocument,
-                                        to: range!.end)
-        let offsetRange = NSRange(location: startOffset, length: endOffset - startOffset)
-        if offsetRange.location == NSNotFound || offsetRange.length == 0 {
-            return
-        }
-        
-        if NSMaxRange(offsetRange) > textView.attributedText.length {
-            return
-        }
-        
-        let attributedSubstring = textView.attributedText .attributedSubstring(from: offsetRange)
-        let link = attributedSubstring.attribute(NSAttributedString.Key.link, at: 0, effectiveRange: nil)
 
-        let linkString = "\(link ?? "")"
+        guard let linkString = getTappedLink(from: textView, in: tapLocation) else { return }
         let quote = linkString.split(separator: "/")
+
         if quote.first == "chandit:" {
             let postNumber = Int(quote.last!)
             tapDelegate?.linkTapped(postNumber: postNumber!,
@@ -177,6 +149,45 @@ class PostTableViewCell: UITableViewCell {
             let actionCancel = UIAlertAction(title: "Cancel", style: .default)
             tapDelegate?.presentAlertExitingApp([actionOk, actionCancel])
         }
+    }
+
+    private func getTappedLink(from textView: UITextView, in tapLocation: CGPoint) -> String? {
+        var textPosition1 = textView.closestPosition(to: tapLocation)
+        var textPosition2: UITextPosition?
+
+        if nil != textPosition1 {
+            textPosition2 = textView.position(from: textPosition1!, offset: 1)
+
+            if nil != textPosition2 {
+                textPosition1 = textView.position(from: textPosition1!, offset: -1)
+                textPosition2 = textView.position(from: textPosition1!, offset: 1)
+            } else {
+                return nil
+            }
+        }
+
+        let range = textView.textRange(from: textPosition1!, to: textPosition2!)
+        let startOffset = textView.offset(from: textView.beginningOfDocument,
+                                          to: range!.start)
+
+        let endOffset = textView.offset(from: textView.beginningOfDocument,
+                                        to: range!.end)
+
+        let offsetRange = NSRange(location: startOffset,
+                                  length: endOffset - startOffset)
+
+        if offsetRange.location == NSNotFound || offsetRange.length == 0 {
+            return nil
+        }
+
+        if NSMaxRange(offsetRange) > textView.attributedText.length {
+            return nil
+        }
+
+        let attributedSubstring = textView.attributedText.attributedSubstring(from: offsetRange)
+        let link = attributedSubstring.attribute(NSAttributedString.Key.link, at: 0, effectiveRange: nil)
+
+        return "\(link ?? "")"
     }
 
     @IBAction func togglePostVisibility() {
