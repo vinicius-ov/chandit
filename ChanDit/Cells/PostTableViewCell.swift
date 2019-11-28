@@ -52,16 +52,16 @@ class PostTableViewCell: UITableViewCell {
         } else {
             postTitle.text = ""
         }
-        
+
         postNumber.text = "No.\(postViewModel.number!)"
         postTimePublishing.text = postViewModel.timeFromPost
-        
+
         if let comment = postViewModel.comment {
             postText.attributedText = comment.toPlainText()
         } else {
             postText.text = ""
         }
-        
+
         let flag = postViewModel.flagCountryCode
         if let flagUrl = URL(string: "https://s.4cdn.org/image/country/\(flag).gif") {
             flagIcon.sd_setImage(with: flagUrl)

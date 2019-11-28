@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SDWebImage
 
 class SettingsViewController: UIViewController {
 
@@ -15,15 +14,15 @@ class SettingsViewController: UIViewController {
     let mediaCacheOptions = ["Clear Image Cache", "Clear Webm Cache"]
     let optionsCategories = ["Media Cache", "Webm Audio"]
     let webmAudioOptions = ["Start muted"]
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         tableVieww.register(UINib(nibName: "SettingsTableViewCell", bundle: nil),
         forCellReuseIdentifier: "cell")
         tableVieww.register(UINib(nibName: "MultipleOptionsTableViewCell", bundle: nil),
         forCellReuseIdentifier: "cellOpts")
-        
+
         tableVieww.dataSource = self
     }
 }
@@ -40,7 +39,7 @@ extension SettingsViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return optionsCategories.count
     }
-    
+
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return optionsCategories[section]
     }
@@ -63,14 +62,13 @@ extension SettingsViewController: UITableViewDataSource {
 extension SettingsViewController: SettingsSliderDelegate {
     func confirmSettingsChanged(slider: UISlider) {
         if slider.tag == 0 {
-            SDImageCache.shared.clearMemory()
-            SDImageCache.shared.clearDisk {
-                // empty
-            }
+            CacheManager.clearImageMemoryCache()
+            CacheManager.clearImageDiskCache()
+            self.showToast(message: "Image cache cleared!")
         } else if slider.tag == 1 {
             //TODO: class for managing cache
-            UserDefaults.videoCache.removePersistentDomain(
-                forName: "webm.chandit")
+            CacheManager.clearWebmCache()
+            showToast(message: "Webm cache cleared!")
         }
     }
 }

@@ -154,6 +154,11 @@
                                     <action selector="gotoTop:" destination="dxm-dt-aDR" id="uPy-Rc-bSP"/>
                                 </connections>
                             </barButtonItem>
+                            <barButtonItem image="gear" catalog="system" id="nil-Qk-6hl">
+                                <connections>
+                                    <action selector="goSettings:" destination="dxm-dt-aDR" id="UMy-YG-TIy"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>

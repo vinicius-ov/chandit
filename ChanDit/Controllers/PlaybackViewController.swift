@@ -171,9 +171,7 @@ class PlaybackViewController: UIViewController {
     }
     
     override func didReceiveMemoryWarning() {
-        UserDefaults.videoCache.removePersistentDomain(
-        forName: "webm.chandit")
-        UserDefaults.videoCache.synchronize()
+        CacheManager.clearWebmCache()
     }
 }
 
