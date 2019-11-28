@@ -143,17 +143,19 @@ class ThreadViewController: BaseViewController {
     @IBAction func gotoBottom(_ sender: Any) {
         let posts = self.threadViewModel.posts.count
         self.postsTable.scrollToRow(at: IndexPath(item: posts - 1, section: 0),
-                                    at: .top, animated: false)
+                                    at: .top, animated: true)
     }
     
     func flashThreadLinked() {
-       guard let index = self.indexPathNav,
+        //print(postsTable.visibleCells)
+        guard let index = self.indexPathNav,
         let cell = self.postsTable.cellForRow(at: index)
             else { return }
         UIView.animate(withDuration: 1.0, animations: {
             cell.contentView.backgroundColor = .red
             cell.contentView.backgroundColor = .black
         })
+        //self.indexPathNav = nil
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -175,6 +177,7 @@ extension ThreadViewController: UITableViewDataSource {
         cell?.tapDelegate = self
         cell?.flagDelegate = self
         cell?.copyTextDelegate = self
+        cell?.hideDelegate = self
         cell?.loadCell()
         
         return cell ?? UITableViewCell()
@@ -201,6 +204,7 @@ extension ThreadViewController: UITableViewDelegate {
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         flashThreadLinked()
     }
+
 }
     
 extension UIViewController {
@@ -253,5 +257,16 @@ extension ThreadViewController: SaveTextDelegate {
     func saveText(_ text: String) {
         let aaaa = UIActivityViewController(activityItems: [], applicationActivities: [])
         self.present(aaaa, animated: true, completion: nil)
+    }
+}
+
+extension ThreadViewController: HideDelegate {
+    func hidePost(number: Int) {
+        print("hide post \(number)")
+    }
+
+    func hideThread(number: Int) {
+        print("hide thread \(number)")
+        postsTable.isEditing = true
     }
 }

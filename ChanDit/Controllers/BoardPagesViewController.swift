@@ -193,11 +193,11 @@ class BoardPagesViewController: BaseViewController {
     func navigateToThread() {
         performSegue(withIdentifier: "gotoThreadView", sender: self)
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = false
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let viewController = segue.destination as? ThreadViewController
         let threadViewModel = ThreadViewModel(
@@ -245,6 +245,7 @@ extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
         cell?.postViewModel = postViewModel
         cell?.tapDelegate = self
         cell?.flagDelegate = self
+        cell?.hideDelegate = self
 
         cell?.loadCell()
         
@@ -266,6 +267,10 @@ extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
         footerView?.closedIcon.isHidden = !threadToLaunch.isClosed
 
         return footerView
+    }
+
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return UITableViewCell.EditingStyle.delete
     }
 }
 
@@ -324,5 +329,21 @@ extension BaseViewController: ToastDelegate {
         self.showToast(message: flagHint,
                        textColor: .white,
                        backgroundColor: .darkGray)
+    }
+}
+
+protocol HideDelegate: class {
+    func hidePost(number: Int)
+    func hideThread(number: Int)
+}
+
+extension BoardPagesViewController: HideDelegate {
+    func hidePost(number: Int) {
+        print("hide post \(number)")
+    }
+
+    func hideThread(number: Int) {
+        print("hide thread \(number)")
+        postsTable.isEditing = true
     }
 }
