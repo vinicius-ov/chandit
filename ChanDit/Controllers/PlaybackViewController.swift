@@ -37,13 +37,11 @@ class PlaybackViewController: UIViewController {
         sliderTimer.addTarget(self, action: #selector(onSliderValChanged(slider:event:)), for: .valueChanged)
         movieView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(toggleHud(_:))))
         
-        
         let number = "\(postNumber ?? 0)"
         if let videoData = UserDefaults.videoCache.data(forKey: number) {
             print("cache memory")
             do {
                 try setVideoDataToFolder(videoData: videoData)
-                
             } catch {
                 showAlertView(title: "Failed to load video",
                               message: "Failed to load video from cache. Try again later.")
@@ -90,7 +88,14 @@ class PlaybackViewController: UIViewController {
     func setupMediaPLayer() {
         mediaListPlayer.mediaPlayer.delegate = self
         mediaListPlayer.mediaPlayer.drawable = movieView
-        mediaListPlayer.mediaPlayer.audio.volume = 0
+        var volume: Int32 = 0
+        if UserDefaults.standard.integer(forKey: "webm_volume") == 1 {
+            let isSfw = UserDefaults.standard.bool(forKey: "isSfw")
+            if isSfw {
+                volume = 100
+            }
+        }
+        mediaListPlayer.mediaPlayer.audio.volume = volume
     }
     
     @IBAction func handlePlayPause(_ sender: UIButton) {
@@ -163,6 +168,10 @@ class PlaybackViewController: UIViewController {
             self.buttonsHud.alpha = self.buttonsHud.alpha == 1.0 ? 0.0 : 1.0
             self.timerHud.alpha = self.timerHud.alpha == 1.0 ? 0.0 : 1.0
         })
+    }
+    
+    override func didReceiveMemoryWarning() {
+        CacheManager.clearWebmCache()
     }
 }
 

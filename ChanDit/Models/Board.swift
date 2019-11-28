@@ -32,7 +32,6 @@ struct Board: Decodable, Comparable {
     var metaDescription: String?
     var customSpoilers: Int?
     var isArchived: Int?
-    var is18Plus: Bool?
     
     enum CodingKeys: String, CodingKey {
         case board

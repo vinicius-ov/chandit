@@ -13,6 +13,7 @@ class PostTableViewCell: UITableViewCell {
     var postViewModel: PostViewModel!
     var selectedBoardId: String!
     var boardName = "Im Error"
+    var isNsfw = true
     
     @IBOutlet weak var postAuthorName: UILabel!
     @IBOutlet weak var postTimePublishing: UILabel!
@@ -51,16 +52,16 @@ class PostTableViewCell: UITableViewCell {
         } else {
             postTitle.text = ""
         }
-        
+
         postNumber.text = "No.\(postViewModel.number!)"
         postTimePublishing.text = postViewModel.timeFromPost
-        
+
         if let comment = postViewModel.comment {
             postText.attributedText = comment.toPlainText()
         } else {
             postText.text = ""
         }
-        
+
         let flag = postViewModel.flagCountryCode
         if let flagUrl = URL(string: "https://s.4cdn.org/image/country/\(flag).gif") {
             flagIcon.sd_setImage(with: flagUrl)
@@ -112,6 +113,7 @@ class PostTableViewCell: UITableViewCell {
             viewController.mediaURL = postViewModel.imageUrl(boardId: selectedBoardId)
             viewController.postNumber = self.postViewModel.number ?? 0
             viewController.filename = postViewModel.mediaFullName ?? "im error"
+            //viewController.isNsfw = postViewModel.
             tapDelegate?.imageTapped(viewController)
         } else {
             let viewController = ImageViewerViewController(nibName: "ImageViewerViewController", bundle: Bundle.main)

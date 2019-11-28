@@ -161,6 +161,11 @@ class ThreadViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = false
     }
+
+    @IBAction func goSettings(_ sender: Any) {
+        let settings = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
+        show(settings, sender: self)
+    }
 }
 
 extension ThreadViewController: UITableViewDataSource {

@@ -223,6 +223,11 @@ class BoardPagesViewController: BaseViewController {
         let webVC = SwiftWebVC(urlString: "https://www.4chan.org/\(boardsViewModel.selectedBoardId ?? "a")/", sharingEnabled: false)
         show(webVC, sender: self)
     }
+
+    @IBAction func goSettings(_ sender: Any) {
+        let settings = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
+        show(settings, sender: self)
+    }
 }
 
 extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
