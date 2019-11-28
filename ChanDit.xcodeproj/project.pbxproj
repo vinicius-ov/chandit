@@ -9,10 +9,8 @@
 /* Begin PBXBuildFile section */
 		2D2784022357ADD400DD0C9F /* ThreadFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D2784012357ADD300DD0C9F /* ThreadFooterView.xib */; };
 		2D2784042357B16A00DD0C9F /* ThreadFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2784032357B16A00DD0C9F /* ThreadFooterView.swift */; };
-		2D30934A238429C100FE1D32 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D309348238429C100FE1D32 /* SettingsViewController.swift */; };
 		2D3093502384403100FE1D32 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D30934E2384403100FE1D32 /* SettingsTableViewCell.swift */; };
 		2D3093512384403100FE1D32 /* SettingsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D30934F2384403100FE1D32 /* SettingsTableViewCell.xib */; };
-		2D309353238441B900FE1D32 /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D309352238441B800FE1D32 /* SettingsViewController.xib */; };
 		2D3093562384691F00FE1D32 /* MultipleOptionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3093542384691F00FE1D32 /* MultipleOptionsTableViewCell.swift */; };
 		2D3093572384691F00FE1D32 /* MultipleOptionsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D3093552384691F00FE1D32 /* MultipleOptionsTableViewCell.xib */; };
 		2D3093A52386D22A00FE1D32 /* SwiftWebVCActivityChrome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3093912386D22900FE1D32 /* SwiftWebVCActivityChrome.swift */; };
@@ -22,6 +20,8 @@
 		2D3093A92386D22A00FE1D32 /* SwiftModalWebVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3093A22386D22900FE1D32 /* SwiftModalWebVC.swift */; };
 		2D3093AA2386D22A00FE1D32 /* SwiftWebVCActivitySafari.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3093A32386D22900FE1D32 /* SwiftWebVCActivitySafari.swift */; };
 		2D3093AB2386D22A00FE1D32 /* SwiftWebVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3093A42386D22900FE1D32 /* SwiftWebVC.swift */; };
+		2D5034A12390449F0016BBE7 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D309348238429C100FE1D32 /* SettingsViewController.swift */; };
+		2D5034A2239044AD0016BBE7 /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D309352238441B800FE1D32 /* SettingsViewController.xib */; };
 		2D57A6F5235F7006001DEBE8 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D57A6F4235F7006001DEBE8 /* SDWebImage.framework */; };
 		2D879B732388291500BE56D0 /* ThreadViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D879B722388291500BE56D0 /* ThreadViewModel.swift */; };
 		2D879B752388294900BE56D0 /* PageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D879B742388294900BE56D0 /* PageViewModel.swift */; };
@@ -257,8 +257,8 @@
 				81921BE022F468DD007F4EFC /* AppDelegate.swift */,
 				81921BE722F468DE007F4EFC /* Assets.xcassets */,
 				2D3093902386D22900FE1D32 /* SwiftWebVC */,
-				F2C400D123233D5600BFCC89 /* service */,
-				81AC6B902319867900502931 /* models */,
+				F2C400D123233D5600BFCC89 /* Service */,
+				81AC6B902319867900502931 /* Models */,
 				F29872622382F2FD00BC9000 /* Extensions */,
 				81AC6B8E2319865D00502931 /* View Models */,
 				81AC6B8D2319865300502931 /* Controllers */,
@@ -321,13 +321,13 @@
 			path = Storyboards;
 			sourceTree = "<group>";
 		};
-		81AC6B902319867900502931 /* models */ = {
+		81AC6B902319867900502931 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				814C458C22F4C67F007007C5 /* Post.swift */,
 				81AC6B91231D53A400502931 /* Board.swift */,
 			);
-			path = models;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		F29872622382F2FD00BC9000 /* Extensions */ = {
@@ -339,12 +339,12 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		F2C400D123233D5600BFCC89 /* service */ = {
+		F2C400D123233D5600BFCC89 /* Service */ = {
 			isa = PBXGroup;
 			children = (
 				814C458A22F4BFF8007007C5 /* Service.swift */,
 			);
-			path = service;
+			path = Service;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -417,6 +417,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D5034A2239044AD0016BBE7 /* SettingsViewController.xib in Resources */,
 				2D3093572384691F00FE1D32 /* MultipleOptionsTableViewCell.xib in Resources */,
 				2D3093A62386D22A00FE1D32 /* SwiftWebVC.strings in Resources */,
 				F2DEFD07232DD4690031FD98 /* WebViewViewController.xib in Resources */,
@@ -481,6 +482,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D5034A12390449F0016BBE7 /* SettingsViewController.swift in Sources */,
 				2D3093A72386D22A00FE1D32 /* SwiftWebVCActivity.swift in Sources */,
 				2D3093A52386D22A00FE1D32 /* SwiftWebVCActivityChrome.swift in Sources */,
 				2D3093AB2386D22A00FE1D32 /* SwiftWebVC.swift in Sources */,
@@ -502,7 +504,6 @@
 				814C458F22F86194007007C5 /* PostTableViewCell.swift in Sources */,
 				81B7896E231060AB0093376D /* ThreadViewController.swift in Sources */,
 				F29872612382F23E00BC9000 /* Extensions.swift in Sources */,
-				2D30934A238429C100FE1D32 /* SettingsViewController.swift in Sources */,
 				814C458B22F4BFF8007007C5 /* Service.swift in Sources */,
 				814C458D22F4C67F007007C5 /* Post.swift in Sources */,
 				F2DEFD06232DD4690031FD98 /* WebViewViewController.swift in Sources */,

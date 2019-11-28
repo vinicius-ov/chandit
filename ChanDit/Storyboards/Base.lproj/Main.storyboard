@@ -59,18 +59,20 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="3ek-kV-Mus">
                         <nil key="title"/>
-                        <barButtonItem key="leftBarButtonItem" image="gear" catalog="system" id="1Pb-dm-ooy">
-                            <connections>
-                                <action selector="goSettings:" destination="BYZ-38-t0r" id="Kg5-Ck-FlS"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="leftBarButtonItem" image="plus" catalog="system" id="2tF-wi-8vX">
-                            <connections>
-                                <action selector="gotoNewThreadWebView:" destination="BYZ-38-t0r" id="ICo-5E-vVI"/>
-                            </connections>
-                        </barButtonItem>
+                        <leftBarButtonItems>
+                            <barButtonItem image="gear" catalog="system" id="1Pb-dm-ooy">
+                                <connections>
+                                    <action selector="goSettings:" destination="BYZ-38-t0r" id="7GB-HJ-JC1"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem image="plus" catalog="system" id="L2A-FK-sRs">
+                                <connections>
+                                    <action selector="gotoNewThreadWebView:" destination="BYZ-38-t0r" id="47H-w4-6nj"/>
+                                </connections>
+                            </barButtonItem>
+                        </leftBarButtonItems>
                         <textField key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" id="35t-vQ-ASH">
-                            <rect key="frame" x="84.5" y="5" width="220" height="34"/>
+                            <rect key="frame" x="115.5" y="5" width="183.5" height="34"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
