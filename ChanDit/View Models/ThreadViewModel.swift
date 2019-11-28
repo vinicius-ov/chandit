@@ -16,13 +16,13 @@ class ThreadViewModel: NSObject {
         return self == obj
     }
 
-    static func ==(lhs: ThreadViewModel, rhs: ThreadViewModel) -> Bool {
+    static func == (lhs: ThreadViewModel, rhs: ThreadViewModel) -> Bool {
         guard let postLhs = lhs.posts.first,
             let numberLhs = postLhs.number,
             let postRhs = rhs.posts.first,
             let numberRhs = postRhs.number
             else { return false }
-        print("\(numberLhs) - \(numberRhs) - \(numberLhs == numberRhs)")
+//        print("\(numberLhs) - \(numberRhs) - \(numberLhs == numberRhs)")
         return numberLhs == numberRhs
     }
 

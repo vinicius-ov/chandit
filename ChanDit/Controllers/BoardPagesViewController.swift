@@ -10,9 +10,7 @@ import UIKit
 
 class BaseViewController: UIViewController {
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        get {
-            return .portrait
-        }
+        return .portrait
     }
 }
 
@@ -25,8 +23,7 @@ class BoardPagesViewController: BaseViewController {
     let service = Service() //deveria ser injetado
     var lastModified: String?
     var thrs = NSMutableOrderedSet()
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -44,10 +41,15 @@ class BoardPagesViewController: BaseViewController {
         boardSelector.isEnabled = false
         boardSelector.tintColor = .clear
         
-        postsTable.register(UINib(nibName: "PostCell", bundle: nil),
-                            forCellReuseIdentifier: "postCellIdentifier")
-        postsTable.register(UINib(nibName: "ThreadFooterView", bundle: nil), forHeaderFooterViewReuseIdentifier: ThreadFooterView.reuseIdentifier)
-        
+        postsTable.register(
+            UINib(nibName: "PostCell",
+                  bundle: nil),
+            forCellReuseIdentifier: "postCellIdentifier")
+        postsTable.register(
+            UINib(nibName: "ThreadFooterView",
+                  bundle: nil),
+            forHeaderFooterViewReuseIdentifier: ThreadFooterView.reuseIdentifier)
+
         let toolBar = UIToolbar()
         toolBar.barStyle = UIBarStyle.default
         toolBar.tintColor = UIColor.black
@@ -70,19 +72,16 @@ class BoardPagesViewController: BaseViewController {
         
         toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
         toolBar.isUserInteractionEnabled = true
-        
+
         boardSelector.inputAccessoryView = toolBar
         
         fetchBoards()
     }
-    
+
     func fetchData(append: Bool) {
         guard let selectedBoard = boardsViewModel.selectedBoardId else {
-                //self.showAlertView(title: "Fetch failed",
-            //                       message: "Failed to load board threads. Try again. (Board not selected)",
-                //actions: [])
             fetchBoards()
-                return
+            return
         }
         
         let url = URL(string: "https://a.4cdn.org/\(selectedBoard)/\(boardsViewModel.nextPage()).json")
@@ -101,7 +100,11 @@ class BoardPagesViewController: BaseViewController {
                             return
                         }
                         page.threads.forEach {
-                            self.pageViewModel.threads.add(ThreadViewModel(thread: $0))
+                            let tvm: ThreadViewModel = ThreadViewModel(thread: $0)
+                            //print(self.pageViewModel.threads.contains(tvm))
+                            print(self.pageViewModel.threads)
+                            print(tvm.posts.first?.number)
+                            self.pageViewModel.threads.add(tvm)
                         }
                         DispatchQueue.main.async {
                             self.postsTable.isHidden = false
