@@ -101,11 +101,12 @@ class BoardPagesViewController: BaseViewController {
                         }
                         page.threads.forEach {
                             let tvm: ThreadViewModel = ThreadViewModel(thread: $0)
-                            //print(self.pageViewModel.threads.contains(tvm))
-                            print(self.pageViewModel.threads)
-                            print(tvm.posts.first?.number)
                             self.pageViewModel.threads.add(tvm)
                         }
+                        self.pageViewModel.threads.map {
+                            print($0)
+                        }
+
                         DispatchQueue.main.async {
                             self.postsTable.isHidden = false
                             self.boardSelector.isEnabled = true

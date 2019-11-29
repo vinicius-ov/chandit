@@ -10,20 +10,11 @@ import UIKit
 
 class ThreadViewModel: NSObject {
     override func isEqual(_ object: Any?) -> Bool {
-        guard let obj = object as? ThreadViewModel else {
-            return false
+        if let obj = object as? ThreadViewModel {
+            return obj.posts.first!.number! == self.posts.first!.number!
         }
-        return self == obj
-    }
+        return false
 
-    static func == (lhs: ThreadViewModel, rhs: ThreadViewModel) -> Bool {
-        guard let postLhs = lhs.posts.first,
-            let numberLhs = postLhs.number,
-            let postRhs = rhs.posts.first,
-            let numberRhs = postRhs.number
-            else { return false }
-//        print("\(numberLhs) - \(numberRhs) - \(numberLhs == numberRhs)")
-        return numberLhs == numberRhs
     }
 
     override var description: String {
