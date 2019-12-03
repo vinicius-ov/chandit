@@ -9,18 +9,6 @@
 import UIKit
 
 class ThreadViewModel: NSObject {
-    override func isEqual(_ object: Any?) -> Bool {
-        if let obj = object as? ThreadViewModel {
-            return obj.posts.first!.number! == self.posts.first!.number!
-        }
-        return false
-
-    }
-
-    override var description: String {
-        return "\(posts.first?.number ?? 0)"
-    }
-
     var posts = [PostViewModel]()
     var threadNumberToNavigate: Int!
     var postNumberToNavigate: Int?

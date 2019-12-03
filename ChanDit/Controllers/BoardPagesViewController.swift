@@ -17,7 +17,7 @@ class BaseViewController: UIViewController {
 class BoardPagesViewController: BaseViewController {
     @IBOutlet weak var postsTable: UITableView!
     @IBOutlet weak var boardSelector: UITextField!
-    var pageViewModel = PageViewModel() //deveria ser injetado
+    var pageViewModel = PageViewModel(threads: Array()) //deveria ser injetado
     var pickerView: UIPickerView!
     let boardsViewModel = BoardsViewModel() //deveria ser injetado
     let service = Service() //deveria ser injetado
@@ -91,7 +91,7 @@ class BoardPagesViewController: BaseViewController {
                 switch response.code {
                 case 200..<300:
                     if !append {
-                        self.pageViewModel.threads.removeAllObjects()
+                        self.pageViewModel.threads.removeAll()
                     }
                     self.lastModified = response.modified
                     do {
@@ -99,12 +99,12 @@ class BoardPagesViewController: BaseViewController {
                             print("error trying to convert data to JSON \(response)")
                             return
                         }
+
                         page.threads.forEach {
                             let tvm: ThreadViewModel = ThreadViewModel(thread: $0)
-                            self.pageViewModel.threads.add(tvm)
-                        }
-                        self.pageViewModel.threads.map {
-                            print($0)
+                            if self.pageViewModel.canAppend(thread: tvm) {
+                                self.pageViewModel.threads.append(tvm)
+                            }
                         }
 
                         DispatchQueue.main.async {
@@ -174,7 +174,7 @@ class BoardPagesViewController: BaseViewController {
         boardSelector.text = title
         boardsViewModel.setCurrentBoard(byIndex: index)
         boardsViewModel.reset()
-        pageViewModel.threads.removeAllObjects()
+        pageViewModel.threads.removeAll()
         lastModified = nil
         fetchData(append: false)
     }

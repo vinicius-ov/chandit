@@ -9,14 +9,27 @@
 import UIKit
 
 struct PageViewModel {
-    var threads: NSMutableOrderedSet!
-
-    init() {
-        self.threads = NSMutableOrderedSet()
-    }
+    var threads: [ThreadViewModel]
 
     func threadViewModel(at index: Int) -> ThreadViewModel? {
-        return self.threads![index] as? ThreadViewModel
+        return self.threads[index]
+    }
+
+    func canAppend(thread: ThreadViewModel) -> Bool {
+        var retorno = true
+
+        if threads.isEmpty {
+            return retorno
+        }
+
+        threads.forEach {
+            if $0.opNumber == thread.opNumber {
+                retorno = false
+                return
+            }
+        }
+
+        return retorno
     }
 
 }
