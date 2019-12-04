@@ -44,7 +44,7 @@ struct Post: Decodable {
     var countryCode: String?
     var countryName: String?
     var trollCountry: String?
-    
+
     enum CodingKeys: String, CodingKey {
         case number = "no"
         case now
@@ -91,16 +91,16 @@ extension Thread: Decodable, Comparable {
             else { return false }
         return numberLhs < numberRhs
     }
-    
+
     static func == (lhs: Thread, rhs: Thread) -> Bool {
         return lhs.posts.first!.number == rhs.posts.first!.number
     }
-
 }
+
 struct Thread {
     let posts: [Post]
 }
-    
+
 struct Page: Decodable {
     let threads: [Thread]
 }
