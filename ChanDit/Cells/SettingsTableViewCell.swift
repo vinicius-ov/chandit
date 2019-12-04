@@ -12,9 +12,9 @@ class SettingsTableViewCell: UITableViewCell {
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var confirmSlider: UISlider!
-    
+
     weak var sliderDelegate: SettingsSliderDelegate!
-    
+
     @IBAction func valueChanged(_ sender: UISlider) {
         if sender.value > 0.9 {
             sliderDelegate.confirmSettingsChanged(slider: sender)

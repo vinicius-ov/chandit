@@ -4,7 +4,7 @@
 //
 //  Created by Vinicius Valvassori on 27/08/19.
 //  Copyright © 2019 Vinicius Valvassori. All rights reserved.
-//
+// swiftlint:disable trailing_whitespaces
 
 import UIKit
 import Photos
@@ -235,9 +235,9 @@ CompleteBoardNameProtocol {
             }
         }
     }
-    
+
     // MARK: alert builders
-    
+
     private func showFailToast() {
         showToast(
             message: "Not authorized to save images in Camera Roll. Go to Settings to fix this.")

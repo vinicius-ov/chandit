@@ -17,6 +17,9 @@ class BaseViewController: UIViewController {
 class BoardPagesViewController: BaseViewController {
     @IBOutlet weak var postsTable: UITableView!
     @IBOutlet weak var boardSelector: UITextField!
+    @IBOutlet weak var reloadActivityView: UIActivityIndicatorView!
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+
     var pageViewModel = PageViewModel(threads: Array()) //deveria ser injetado
     var pickerView: UIPickerView!
     let boardsViewModel = BoardsViewModel() //deveria ser injetado
@@ -54,7 +57,7 @@ class BoardPagesViewController: BaseViewController {
         toolBar.barStyle = UIBarStyle.default
         toolBar.tintColor = UIColor.black
         toolBar.sizeToFit()
-        
+
         let doneButton = UIBarButtonItem(
             title: "Done",
             style: UIBarButtonItem.Style.plain,
@@ -69,13 +72,26 @@ class BoardPagesViewController: BaseViewController {
             action: #selector(hideKeyboardNoAction))
         cancelButton.tintColor = .white
         doneButton.tintColor = .white
-        
+
         toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
         toolBar.isUserInteractionEnabled = true
 
         boardSelector.inputAccessoryView = toolBar
-        
+
+        toggleActivityLoaderVisibility()
+
         fetchBoards()
+    }
+
+    func toggleActivityLoaderVisibility() {
+        DispatchQueue.main.async {
+            self.reloadActivityView.isHidden = !self.reloadActivityView.isHidden
+            if self.bottomConstraint.constant == 37 {  self.bottomConstraint.constant = 0
+            } else {
+                self.bottomConstraint.constant = 37
+            }
+            self.view.setNeedsLayout()
+        }
     }
 
     func fetchData(append: Bool) {
@@ -83,7 +99,7 @@ class BoardPagesViewController: BaseViewController {
             fetchBoards()
             return
         }
-        
+
         let url = URL(string: "https://a.4cdn.org/\(selectedBoard)/\(boardsViewModel.nextPage()).json")
         service.loadData(from: url!, lastModified: !append ? lastModified : nil) { (result) in
             switch result {
@@ -92,6 +108,8 @@ class BoardPagesViewController: BaseViewController {
                 case 200..<300:
                     if !append {
                         self.pageViewModel.threads.removeAll()
+                    } else {
+                        self.toggleActivityLoaderVisibility()
                     }
                     self.lastModified = response.modified
                     do {
@@ -121,11 +139,10 @@ class BoardPagesViewController: BaseViewController {
                     DispatchQueue.main.async {
                         self.showToast(message: "No new threads")
                     }
-                case 400..<599:
+                default:
                     self.showAlertView(title: "Fetch failed",
                     message: "Failed to load board threads. Try again.",
                     actions: [])
-                default: break
                 }
                 DispatchQueue.main.async {
                     self.postsTable.isHidden = false
@@ -136,7 +153,7 @@ class BoardPagesViewController: BaseViewController {
             }
         }
     }
-    
+
     func fetchBoards() {
         service.loadData(from: URL(string: "https://a.4cdn.org/boards.json")!, lastModified: lastModified) { (result) in
             switch result {
@@ -161,12 +178,12 @@ class BoardPagesViewController: BaseViewController {
             }
         }
     }
-    
+
     @objc func didSelectBoardFromPicker() {
         boardSelector.resignFirstResponder()
         updateBoardSelector()
     }
-    
+
     func updateBoardSelector() {
         postsTable.isHidden = true
         let index = pickerView.selectedRow(inComponent: 0)
@@ -178,22 +195,22 @@ class BoardPagesViewController: BaseViewController {
         lastModified = nil
         fetchData(append: false)
     }
-    
+
     @objc func hideKeyboardNoAction() {
         boardSelector.resignFirstResponder()
         boardSelector.text = boardsViewModel.currentBoard?.title
     }
-    
+
     @objc func navigateToThreadView(_ sender: UIButton) {
         boardsViewModel.threadToLaunch = sender.tag
         navigateToThread()
     }
-    
+
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         boardsViewModel.resetNavigation()
     }
-    
+
     func navigateToThread() {
         performSegue(withIdentifier: "gotoThreadView", sender: self)
     }
@@ -211,20 +228,21 @@ class BoardPagesViewController: BaseViewController {
             completeBoardName: boardsViewModel.completeBoardName(atRow: pickerView.selectedRow(inComponent: 0)))
         viewController?.threadViewModel = threadViewModel
     }
-    
+
     @IBAction func reloadData(_ sender: Any) {
         postsTable.isHidden = true
         self.boardsViewModel.reset()
         fetchData(append: false)
     }
-    
+
     @IBAction func gotoTop(_ sender: Any) {
         self.postsTable.scrollToRow(at:
             IndexPath(item: 0, section: 0), at: .top, animated: true)
     }
-    
+
     @IBAction func gotoNewThreadWebView(_ sender: Any) {
-        let webVC = SwiftWebVC(urlString: "https://www.4chan.org/\(boardsViewModel.selectedBoardId ?? "a")/", sharingEnabled: false)
+        let webVC = SwiftWebVC(urlString: "https://www.4chan.org/\(boardsViewModel.selectedBoardId ?? "a")/",
+            sharingEnabled: false)
         show(webVC, sender: self)
     }
 
@@ -236,19 +254,19 @@ class BoardPagesViewController: BaseViewController {
 
 extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let threadViewModel = pageViewModel.threads[section] as? ThreadViewModel else { return 0 }
+        let threadViewModel = pageViewModel.threads[section]
         return threadViewModel.posts.count
     }
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return pageViewModel.threads.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
         let threadViewModel = pageViewModel.threads[indexPath.section]
         
-        let postViewModel = (threadViewModel as? ThreadViewModel)?.postViewModel(at: indexPath.row)
+        let postViewModel = threadViewModel.postViewModel(at: indexPath.row)
         cell?.boardName = boardsViewModel.completeBoardName(atRow: pickerView.selectedRow(inComponent: 0))
         cell?.selectedBoardId = boardsViewModel.selectedBoardId
         cell?.postViewModel = postViewModel
@@ -286,6 +304,7 @@ extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
 extension BoardPagesViewController: UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         if indexPaths.contains([pageViewModel.threads.count-1, 0]) {
+            toggleActivityLoaderVisibility()
             print("RELOAD!!!!")
             fetchData(append: true)
         }

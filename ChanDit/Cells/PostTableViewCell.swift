@@ -4,7 +4,7 @@
 //
 //  Created by Vinicius Valvassori on 05/08/19.
 //  Copyright © 2019 Vinicius Valvassori. All rights reserved.
-//
+//swiftlint: disable trailing_whitespaces
 
 import UIKit
 import SDWebImage
