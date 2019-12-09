@@ -4,7 +4,7 @@
 //
 //  Created by Vinicius Valvassori on 10/09/19.
 //  Copyright © 2019 Vinicius Valvassori. All rights reserved.
-//
+// swiftlint:disable trailing_whitespace
 
 import UIKit
 import AVFoundation
@@ -211,5 +211,9 @@ URLSessionDownloadDelegate {
             showAlertView(title: "Failed to load video",
                           message: "Failed to load video from server. Try again later.")
         }
+    }
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        showAlertView(title: "Failed to load video",
+                      message: "Failed to load video from server. Try again later. \(error?.localizedDescription ?? "")")
     }
 }
