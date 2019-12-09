@@ -33,13 +33,12 @@ class PlaybackViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.isHidden = true
-        
+
         sliderTimer.addTarget(self, action: #selector(onSliderValChanged(slider:event:)), for: .valueChanged)
         movieView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(toggleHud(_:))))
         
         let number = "\(postNumber ?? 0)"
         if let videoData = UserDefaults.videoCache.data(forKey: number) {
-            print("cache memory")
             do {
                 try setVideoDataToFolder(videoData: videoData)
             } catch {
@@ -49,7 +48,6 @@ class PlaybackViewController: UIViewController {
             self.setupMediaPLayer()
             self.setupMedia()
         } else {
-            print("remote")
             task = Service(delegate: self).loadVideoData(from: mediaURL)
             task.resume()
         }
@@ -148,6 +146,7 @@ class PlaybackViewController: UIViewController {
         mediaListPlayer.mediaList = mediaList
         mediaListPlayer.repeatMode = .repeatCurrentItem
         mediaListPlayer.play(media)
+        toggleHud(self)
     }
     
     @IBAction func saveVideo(_ sender: Any) {
@@ -164,10 +163,12 @@ class PlaybackViewController: UIViewController {
     
     @objc
     func toggleHud(_ sender: Any) {
-        UIView.animate(withDuration: 0.5, animations: {
-            self.buttonsHud.alpha = self.buttonsHud.alpha == 1.0 ? 0.0 : 1.0
-            self.timerHud.alpha = self.timerHud.alpha == 1.0 ? 0.0 : 1.0
-        })
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.5, animations: {
+                self.buttonsHud.alpha = self.buttonsHud.alpha == 1.0 ? 0.0 : 1.0
+                self.timerHud.alpha = self.timerHud.alpha == 1.0 ? 0.0 : 1.0
+            })
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -213,7 +214,8 @@ URLSessionDownloadDelegate {
         }
     }
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        guard let error = error else { return }
         showAlertView(title: "Failed to load video",
-                      message: "Failed to load video from server. Try again later. \(error?.localizedDescription ?? "")")
+                      message: "Failed to load video from server. Try again later. \(error.localizedDescription)")
     }
 }
