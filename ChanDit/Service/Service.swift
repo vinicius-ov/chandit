@@ -15,7 +15,7 @@ class Service: NSObject {
         var modified: String
         var code: Int
     }
-    
+
     enum Result {
         case success(ChanditSuccess)
         case failure(Error)

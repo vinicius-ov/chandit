@@ -4,7 +4,7 @@
 //
 //  Created by Vinicius Valvassori on 02/08/19.
 //  Copyright © 2019 Vinicius Valvassori. All rights reserved.
-//
+//  swiftlint:disable trailing_whitespace
 
 import UIKit
 
@@ -296,7 +296,8 @@ extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
         return footerView
     }
 
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+    func tableView(_ tableView: UITableView,
+                   editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return UITableViewCell.EditingStyle.delete
     }
 }

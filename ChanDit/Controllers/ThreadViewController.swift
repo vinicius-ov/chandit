@@ -4,7 +4,7 @@
 //
 //  Created by Vinicius Valvassori on 23/08/19.
 //  Copyright © 2019 Vinicius Valvassori. All rights reserved.
-//
+//  swiftlint:disable trailing_whitespace
 
 import UIKit
 
@@ -36,7 +36,7 @@ class ThreadViewController: BaseViewController {
         fetchData()
     }
 
-    fileprivate func fetchData(refreshing: Bool =  false) {
+    fileprivate func fetchData(refreshing: Bool = false) {
         guard let board = threadViewModel.boardIdToNavigate,
             let opNumber = threadViewModel.threadNumberToNavigate
             else {
@@ -44,7 +44,9 @@ class ThreadViewController: BaseViewController {
                 message: "Failed to load thread posts. Try again.", actions: [])
                 return
         }
-        service.loadData(from: URL(string: "https://a.4cdn.org/\(board)/thread/\(opNumber).json")!, lastModified: lastModified) { (result) in
+        service.loadData(from:
+        URL(string: "https://a.4cdn.org/\(board)/thread/\(opNumber).json")!,
+                         lastModified: lastModified) { (result) in
             switch result {
             case .success(let response):
                 switch response.code {
@@ -53,7 +55,7 @@ class ThreadViewController: BaseViewController {
                     do {
                         guard let thread = try? JSONDecoder().decode(Thread.self, from: response.data) else {
                             print("error trying to convert data to JSON \(response)")
-                            self.showThreadNotFoundAlert()
+                            self.showThreadNotFoundAlert(isRefreshing: refreshing)
                             return
                         }
                         self.threadViewModel.posts = thread.posts.map(PostViewModel.init)
@@ -76,7 +78,7 @@ class ThreadViewController: BaseViewController {
                         self.showToast(message: "No new posts")
                     }
                 case 400...500:
-                    self.showThreadNotFoundAlert()
+                    self.showThreadNotFoundAlert(isRefreshing: refreshing)
                 default: break
                 }
                 DispatchQueue.main.async {
@@ -84,16 +86,19 @@ class ThreadViewController: BaseViewController {
                 }
             case .failure(let error):
                 self.showAlertView(title: "Fetch failed",
-                                   message: "Failed to load thread posts. Try again. \(error.localizedDescription)", actions: [])
+                                   message: "Failed to load thread posts. Try again. \(error.localizedDescription)",
+                    actions: [])
             }
         }
     }
    
-    private func showThreadNotFoundAlert() {
+    private func showThreadNotFoundAlert(isRefreshing: Bool) {
         let action = UIAlertAction(title: "Ok",
                                    style: .default,
                                    handler: { _ in
-                                    self.navigationController?.popViewController(animated: true)
+                                    if !isRefreshing {
+                                        self.navigationController?.popViewController(animated: true)
+                                    }
         })
         showAlertView(title: "Thread removed",
                            message: "Thread was pruned or deleted. Returning to board list...",
@@ -155,7 +160,6 @@ class ThreadViewController: BaseViewController {
             cell.contentView.backgroundColor = .red
             cell.contentView.backgroundColor = .black
         })
-        //self.indexPathNav = nil
     }
     
     override func viewWillAppear(_ animated: Bool) {
