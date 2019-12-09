@@ -149,7 +149,7 @@ extension PostViewModel {
     }
     
     var flagCountryCode: String {
-        if let countryCode = post.countryCode{
+        if let countryCode = post.countryCode {
             return countryCode.lowercased()
         } else if let trollCountry = post.trollCountry {
             return "troll/\(trollCountry.lowercased())"

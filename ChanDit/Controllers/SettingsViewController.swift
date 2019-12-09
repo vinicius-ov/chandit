@@ -35,7 +35,7 @@ extension SettingsViewController: UITableViewDataSource {
         default: return 0
         }
     }
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return optionsCategories.count
     }
@@ -43,7 +43,7 @@ extension SettingsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return optionsCategories[section]
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as? SettingsTableViewCell
@@ -66,7 +66,6 @@ extension SettingsViewController: SettingsSliderDelegate {
             CacheManager.clearImageDiskCache()
             self.showToast(message: "Image cache cleared!")
         } else if slider.tag == 1 {
-            //TODO: class for managing cache
             CacheManager.clearWebmCache()
             showToast(message: "Webm cache cleared!")
         }
