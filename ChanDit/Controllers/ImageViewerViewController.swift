@@ -222,7 +222,7 @@ CompleteBoardNameProtocol {
                     .creationRequestForAssetFromImage(atFileURL: path)!
                 albumInsertRequest?.addAssets(
                     [assetChangeRequest.placeholderForCreatedAsset!] as NSArray)
-            }, completionHandler: { (success, error) in
+            }, completionHandler: { (success, _) in
                 if success {
                     DispatchQueue.main.async {
                         self.navigationItem.rightBarButtonItem?.isEnabled = true

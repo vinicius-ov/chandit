@@ -146,12 +146,11 @@ class PostTableViewCell: UITableViewCell {
                                     opNumber: postViewModel.resto!,
                                     originNumber: postViewModel.number!)
         } else {
-            //see https://stackoverflow.com/questions/39949169/swift-open-url-in-a-specific-browser-tab for other browsers deeplinks
             let actionOk = UIAlertAction(title: "OK", style: .default) { (_) in
                 if UIApplication.shared.canOpenURL(URL(string: "firefox://open-url?url=\(linkString)")!) {
                     UIApplication.shared.open(URL(string: "firefox://open-url?url=\(linkString)")!)
                 } else {
-                    UIApplication.shared.open(URL(string: "firefox://open-url?url=\(linkString)")!)
+                    UIApplication.shared.open(URL(string: linkString)!)
                 }
 
             }
