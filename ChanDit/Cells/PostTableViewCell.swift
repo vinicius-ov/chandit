@@ -17,12 +17,12 @@ class PostTableViewCell: UITableViewCell {
     
     @IBOutlet weak var postAuthorName: UILabel!
     @IBOutlet weak var postTimePublishing: UILabel!
-    @IBOutlet weak var savePastaButton: UIButton!
+    @IBOutlet weak var imageSizeConstraint: NSLayoutConstraint?
     
-    @IBOutlet weak var postImage: UIImageView! {
+    @IBOutlet weak var postImage: UIImageView? {
         didSet {
-            postImage.sd_imageIndicator = SDWebImageActivityIndicator.whiteLarge
-            postImage.sd_imageIndicator?.startAnimatingIndicator()
+            postImage?.sd_imageIndicator = SDWebImageActivityIndicator.whiteLarge
+            postImage?.sd_imageIndicator?.startAnimatingIndicator()
         }
     }
     
@@ -30,8 +30,8 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var postText: UITextView!
     @IBOutlet weak var postTitle: UILabel!
     @IBOutlet weak var postNumber: UILabel!
-    @IBOutlet weak var mediaExtension: UILabel!
-    @IBOutlet weak var mediaSize: UILabel!
+//    @IBOutlet weak var mediaExtension: UILabel!
+//    @IBOutlet weak var mediaSize: UILabel!
     
     @IBOutlet weak var stickyIcon: UIImageView! {
         didSet {
@@ -68,25 +68,27 @@ class PostTableViewCell: UITableViewCell {
         }
         
         if postViewModel.isSpoiler {
-            postImage.sd_setImage(with: postViewModel.spoilerUrl)
+            postImage?.sd_setImage(with: postViewModel.spoilerUrl)
         } else {
             if let thumbUrl = postViewModel.thumbnailUrl(boardId: selectedBoardId) {
-                postImage.sd_setImage(with: thumbUrl,
+                postImage?.sd_setImage(with: thumbUrl,
                                       completed: { (_, error, _, _) in
                                         if error != nil {
-                                            self.postImage.sd_setImage(with:
+                                            self.postImage?.sd_setImage(with:
                                                 URL(string: "https://s.4cdn.org/image/filedeleted-res.gif")!)
                                         }
                     })
-                postImage.isHidden = false
+                postImage?.isHidden = false
+                imageSizeConstraint?.constant = 160
             } else {
-                postImage.gestureRecognizers?.removeAll()
-                postImage.isHidden = true
-                postImage.image = nil
+                //postImage.gestureRecognizers?.removeAll()
+                postImage?.isHidden = true
+                imageSizeConstraint?.constant = 0
+                postImage?.image = nil
             }
         }
         
-        postImage.addGestureRecognizer(
+        postImage?.addGestureRecognizer(
         UITapGestureRecognizer(target: self,
                                action: #selector(viewImage(_:))))
         postText.addGestureRecognizer(
@@ -96,15 +98,15 @@ class PostTableViewCell: UITableViewCell {
         UITapGestureRecognizer(target: self,
                                action: #selector(showFlagHint(_:))))
         
-        mediaSize.text = postViewModel.fileSize
-        mediaExtension.text = postViewModel.mediaFullName
-        
+//        mediaSize.text = postViewModel.fileSize
+//        mediaExtension.text = postViewModel.mediaFullName
+//
         stickyIcon.isHidden = !postViewModel.isPinned
     }
     
-    var thumbSizeConstraint: NSLayoutConstraint? {
-        return postImage.constraint(withIdentifier: "thumbnail_size")
-    }
+//    var thumbSizeConstraint: NSLayoutConstraint? {
+//        return postImage.constraint(withIdentifier: "thumbnail_size")
+//    }
     
     @objc func viewImage(_ sender: Any) {
         let ext = postViewModel.post.ext
@@ -113,7 +115,6 @@ class PostTableViewCell: UITableViewCell {
             viewController.mediaURL = postViewModel.imageUrl(boardId: selectedBoardId)
             viewController.postNumber = self.postViewModel.number ?? 0
             viewController.filename = postViewModel.mediaFullName ?? "im error"
-            //viewController.isNsfw = postViewModel.
             tapDelegate?.imageTapped(viewController)
         } else {
             let viewController = ImageViewerViewController(nibName: "ImageViewerViewController", bundle: Bundle.main)

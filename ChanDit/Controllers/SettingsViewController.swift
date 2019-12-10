@@ -66,7 +66,8 @@ extension SettingsViewController: SettingsSliderDelegate {
             CacheManager.clearImageDiskCache()
             self.showToast(message: "Image cache cleared!")
         } else if slider.tag == 1 {
-            CacheManager.clearWebmCache()
+//            CacheManager.clearWebmCache()
+            CacheManager.removeWebmCache()
             showToast(message: "Webm cache cleared!")
         }
     }

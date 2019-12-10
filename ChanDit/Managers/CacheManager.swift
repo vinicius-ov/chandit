@@ -25,4 +25,15 @@ class CacheManager: NSObject {
         SDImageCache.shared.clearMemory()
     }
 
+    static func numberOfItensInCache() -> Int {
+        return UserDefaults.videoCache.dictionaryRepresentation().keys.count
+    }
+
+    static func removeWebmCache() {
+        for key in UserDefaults.videoCache.dictionaryRepresentation().keys {
+            UserDefaults.videoCache.removeObject(forKey: key)
+        }
+        UserDefaults.videoCache.synchronize()
+    }
+
 }

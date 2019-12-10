@@ -20,21 +20,24 @@ extension UIViewController {
                    backgroundColor: UIColor = UIColor.white,
                    duration: Double = 2.0,
                    heightModifier: Double = 0.9) {
-        let label = UILabel(frame: CGRect(x: view.frame.origin.x,
-                                          y: view.frame.height*0.9,
-                                          width: view.frame.width, height: 30))
-        label.backgroundColor = backgroundColor
-        label.clipsToBounds = true
-        label.textAlignment = .center
-        label.text = message
-        label.textColor = textColor
-        label.numberOfLines = 0
-        view.addSubview(label)
-        UIView.animate(withDuration: duration, delay: 1.0, animations: {
-            label.alpha = 0
-        }, completion: { _ in
-            label.removeFromSuperview()
-        })
+
+        DispatchQueue.main.async {
+            let label = UILabel(frame: CGRect(x: self.view.frame.origin.x,
+                                              y: self.view.frame.height*0.9,
+                                              width: self.view.frame.width, height: 30))
+            label.backgroundColor = backgroundColor
+            label.clipsToBounds = true
+            label.textAlignment = .center
+            label.text = message
+            label.textColor = textColor
+            label.numberOfLines = 0
+            self.view.addSubview(label)
+            UIView.animate(withDuration: duration, delay: 1.0, animations: {
+                label.alpha = 0
+            }, completion: { _ in
+                label.removeFromSuperview()
+            })
+        }
     }
 }
 

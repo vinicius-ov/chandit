@@ -27,14 +27,31 @@ class BoardPagesViewController: BaseViewController {
     var lastModified: String?
     var thrs = NSMutableOrderedSet()
 
+    fileprivate func registerCellViews() {
+        postsTable.register(
+            UINib(nibName: "PostCell",
+                  bundle: nil),
+            forCellReuseIdentifier: "postCellIdentifier")
+        postsTable.register(
+            UINib(nibName: "PostCellNoImage",
+                  bundle: nil),
+            forCellReuseIdentifier: "postCell_NoImage_Identifier")
+        postsTable.register(
+            UINib(nibName: "ThreadFooterView",
+                  bundle: nil),
+            forHeaderFooterViewReuseIdentifier: ThreadFooterView.reuseIdentifier)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         postsTable.dataSource = self
         postsTable.delegate = self
         postsTable.prefetchDataSource = self
+
         postsTable.rowHeight = UITableView.automaticDimension
-        postsTable.estimatedRowHeight = 400
+        postsTable.estimatedRowHeight = 200
+
         postsTable.isHidden = true
         
         pickerView = UIPickerView()
@@ -44,14 +61,7 @@ class BoardPagesViewController: BaseViewController {
         boardSelector.isEnabled = false
         boardSelector.tintColor = .clear
         
-        postsTable.register(
-            UINib(nibName: "PostCell",
-                  bundle: nil),
-            forCellReuseIdentifier: "postCellIdentifier")
-        postsTable.register(
-            UINib(nibName: "ThreadFooterView",
-                  bundle: nil),
-            forHeaderFooterViewReuseIdentifier: ThreadFooterView.reuseIdentifier)
+        registerCellViews()
 
         let toolBar = UIToolbar()
         toolBar.barStyle = UIBarStyle.default
@@ -126,7 +136,6 @@ class BoardPagesViewController: BaseViewController {
                         }
 
                         DispatchQueue.main.async {
-                            self.postsTable.isHidden = false
                             self.boardSelector.isEnabled = true
                             self.postsTable.reloadData()
                             if !append {
@@ -149,7 +158,8 @@ class BoardPagesViewController: BaseViewController {
                 }
             case .failure(let error):
                 self.showAlertView(title: "Fetch failed",
-                                   message: "Failed to load board threads. Try again. \(error.localizedDescription)", actions: [])
+                                   message: "Failed to load board threads. Try again. \(error.localizedDescription)",
+                    actions: [])
             }
         }
     }
@@ -174,7 +184,8 @@ class BoardPagesViewController: BaseViewController {
                 }
             case .failure(let error):
                 self.showAlertView(title: "Fetch failed",
-                                   message: "Failed to load board lista. Try reloading the app. \(error.localizedDescription)", actions: [])
+                                   message: "Failed to load board lista. Try reloading the app. \(error.localizedDescription)",
+                    actions: [])
             }
         }
     }
@@ -263,10 +274,18 @@ extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
+
         let threadViewModel = pageViewModel.threads[indexPath.section]
-        
+
         let postViewModel = threadViewModel.postViewModel(at: indexPath.row)
+
+        let cell: PostTableViewCell?
+        if postViewModel!.hasImage {
+            cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
+        } else {
+            cell = tableView.dequeueReusableCell(withIdentifier: "postCell_NoImage_Identifier") as? PostTableViewCell
+        }
+
         cell?.boardName = boardsViewModel.completeBoardName(atRow: pickerView.selectedRow(inComponent: 0))
         cell?.selectedBoardId = boardsViewModel.selectedBoardId
         cell?.postViewModel = postViewModel
@@ -275,6 +294,8 @@ extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
         cell?.hideDelegate = self
 
         cell?.loadCell()
+        cell?.setNeedsUpdateConstraints()
+        cell?.updateConstraintsIfNeeded()
         
         return cell ?? UITableViewCell()
     }

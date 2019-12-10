@@ -17,7 +17,7 @@ class ThreadFooterView: UITableViewHeaderFooterView {
             closedIcon.sd_setImage(with: URL(string: "https://s.4cdn.org/image/closed.gif")!)
         }
     }
-    
+
     var threadToNavigate: Int!
         
     @IBAction func didTapButton(_ sender: AnyObject) {

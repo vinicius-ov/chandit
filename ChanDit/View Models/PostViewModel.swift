@@ -111,7 +111,11 @@ extension PostViewModel {
         let diff = now - Double(time ?? 0)
         return diff
     }
-    
+
+    var hasImage: Bool {
+        return post.filename != nil
+    }
+
     var subject: String? {
         return post.sub
     }

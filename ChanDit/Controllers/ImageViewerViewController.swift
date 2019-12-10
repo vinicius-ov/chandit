@@ -20,6 +20,7 @@ CompleteBoardNameProtocol {
             loadingIndicator.startAnimating()
         }
     }
+
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var imageViewBottomConstraint: NSLayoutConstraint!
@@ -119,7 +120,7 @@ CompleteBoardNameProtocol {
                                                     Float(received) / Float(expected),
                                                     animated: true)
                                             }
-                }) { [weak self] (image, data, error, finished) in
+                }, completed: { [weak self] (image, data, error, finished) in
                     if let image = image, finished {
                         print("SDWEB: buscando da net")
                         self?.downloadProgress.isHidden = true
@@ -130,7 +131,7 @@ CompleteBoardNameProtocol {
                         print("SDWEB: ERRO buscando da net")
                         self?.showImageNotFoundAlert()
                     }
-                }
+                })
             }
         }
     }
@@ -221,7 +222,7 @@ CompleteBoardNameProtocol {
                     .creationRequestForAssetFromImage(atFileURL: path)!
                 albumInsertRequest?.addAssets(
                     [assetChangeRequest.placeholderForCreatedAsset!] as NSArray)
-            }) { (success, error) in
+            }, completionHandler: { (success, error) in
                 if success {
                     DispatchQueue.main.async {
                         self.navigationItem.rightBarButtonItem?.isEnabled = true
@@ -229,10 +230,9 @@ CompleteBoardNameProtocol {
                     }
                     try? FileManager.default.removeItem(at: path)
                 } else {
-                    print(error?.localizedDescription)
                     self.showFailToast()
                 }
-            }
+            })
         }
     }
 

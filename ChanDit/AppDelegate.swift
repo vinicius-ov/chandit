@@ -4,7 +4,7 @@
 //
 //  Created by Vinicius Valvassori on 02/08/19.
 //  Copyright © 2019 Vinicius Valvassori. All rights reserved.
-//
+//  swiftlint:disable all
 
 import UIKit
 
@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-         UserDefaults.standard.setValue(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")
+         UserDefaults.standard.setValue(true, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")
         return true
     }
 

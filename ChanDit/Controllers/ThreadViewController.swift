@@ -26,17 +26,22 @@ class ThreadViewController: BaseViewController {
         postsTable.dataSource = self
         postsTable.delegate = self
 
-        postsTable.register(UINib(nibName: "PostCell", bundle: nil), forCellReuseIdentifier: "postCellIdentifier")
+        postsTable.register(UINib(nibName: "PostCell", bundle: nil),
+                            forCellReuseIdentifier: "postCellIdentifier")
+        postsTable.register(
+        UINib(nibName: "PostCellNoImage", bundle: nil),
+                            forCellReuseIdentifier: "postCell_NoImage_Identifier")
+
         postsTable.register(UINib(nibName: "ThreadFooterView", bundle: nil),
                             forHeaderFooterViewReuseIdentifier: ThreadFooterView.reuseIdentifier)
     
         postsTable.rowHeight = UITableView.automaticDimension
-        postsTable.estimatedRowHeight = 400
+        postsTable.estimatedRowHeight = 200
         
         fetchData()
     }
 
-    fileprivate func fetchData(refreshing: Bool = false) {
+    private func fetchData(refreshing: Bool = false) {
         guard let board = threadViewModel.boardIdToNavigate,
             let opNumber = threadViewModel.threadNumberToNavigate
             else {
@@ -60,7 +65,6 @@ class ThreadViewController: BaseViewController {
                         }
                         self.threadViewModel.posts = thread.posts.map(PostViewModel.init)
                         DispatchQueue.main.async {
-                            self.title = self.threadViewModel.threadTitle
                             self.postsTable.reloadData()
                             self.postsTable.isHidden = false
                             if !refreshing {
@@ -70,13 +74,10 @@ class ThreadViewController: BaseViewController {
                                                textColor: .white,
                                                backgroundColor: .green)
                             }
-                            self.title = self.threadViewModel.postViewModel(at: 0)?.title?.toPlainText().string
                         }
                     }
                 case 300..<400:
-                    DispatchQueue.main.async {
-                        self.showToast(message: "No new posts")
-                    }
+                    self.showToast(message: "No new posts")
                 case 400...500:
                     self.showThreadNotFoundAlert(isRefreshing: refreshing)
                 default: break
@@ -167,7 +168,8 @@ class ThreadViewController: BaseViewController {
     }
 
     @IBAction func goSettings(_ sender: Any) {
-        let settings = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
+        let settings = SettingsViewController(nibName: "SettingsViewController",
+                                              bundle: nil)
         show(settings, sender: self)
     }
 }
@@ -178,8 +180,16 @@ extension ThreadViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
+
         let postViewModel = threadViewModel.postViewModel(at: indexPath.row)
+        let cell: PostTableViewCell?
+        
+        if postViewModel!.hasImage {
+            cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
+        } else {
+            cell = tableView.dequeueReusableCell(withIdentifier: "postCell_NoImage_Identifier") as? PostTableViewCell
+        }
+
         cell?.selectedBoardId = threadViewModel.boardIdToNavigate
         cell?.postViewModel = postViewModel
         cell?.boardName = threadViewModel.completeBoardName!
@@ -188,7 +198,10 @@ extension ThreadViewController: UITableViewDataSource {
         cell?.copyTextDelegate = self
         cell?.hideDelegate = self
         cell?.loadCell()
-        
+
+        cell?.setNeedsUpdateConstraints()
+        cell?.updateConstraintsIfNeeded()
+
         return cell ?? UITableViewCell()
     }
 }
@@ -213,23 +226,22 @@ extension ThreadViewController: UITableViewDelegate {
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         flashThreadLinked()
     }
-
 }
     
 extension UIViewController {
     func showAlertView(title: String, message: String, actions: [UIAlertAction]? = []) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        actions!.forEach {
-            alert.addAction($0)
-        }
-        if actions!.isEmpty {
-            let actionOk = UIAlertAction(title: "Ok", style: .default, handler: nil)
-            alert.addAction(actionOk)
-            
-        } else {
-            alert.preferredAction = actions!.first!
-        }
         DispatchQueue.main.async {
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            actions!.forEach {
+                alert.addAction($0)
+            }
+            if actions!.isEmpty {
+                let actionOk = UIAlertAction(title: "Ok", style: .default, handler: nil)
+                alert.addAction(actionOk)
+
+            } else {
+                alert.preferredAction = actions!.first!
+            }
             self.present(alert, animated: true, completion: nil)
         }
     }
@@ -255,8 +267,10 @@ extension ThreadViewController: CellTapInteractionDelegate {
 
 extension ThreadViewController: ThreadFooterViewDelegate {
     func threadFooterView(_ footer: ThreadFooterView, threadToNavigate section: Int) {
+        let boardToNavigate = threadViewModel.boardIdToNavigate ?? "a"
+        let threadNumber = threadViewModel.opNumber ?? 1
         let webVC = SwiftWebVC(
-            urlString: "https://boards.4chan.org/\(threadViewModel.boardIdToNavigate ?? "a")/thread/\(threadViewModel.opNumber ?? 1)/",
+            urlString: "https://boards.4chan.org/\(boardToNavigate)/thread/\(threadNumber)/",
             sharingEnabled: false)
         show(webVC, sender: self)
     }
