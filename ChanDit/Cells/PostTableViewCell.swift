@@ -30,8 +30,8 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var postText: UITextView!
     @IBOutlet weak var postTitle: UILabel!
     @IBOutlet weak var postNumber: UILabel!
-//    @IBOutlet weak var mediaExtension: UILabel!
-//    @IBOutlet weak var mediaSize: UILabel!
+    @IBOutlet weak var mediaExtension: UILabel?
+    @IBOutlet weak var mediaSize: UILabel?
     
     @IBOutlet weak var stickyIcon: UIImageView! {
         didSet {
@@ -80,8 +80,9 @@ class PostTableViewCell: UITableViewCell {
                     })
                 postImage?.isHidden = false
                 imageSizeConstraint?.constant = 160
+                mediaSize?.text = postViewModel.fileSize
+                mediaExtension?.text = postViewModel.mediaFullName
             } else {
-                //postImage.gestureRecognizers?.removeAll()
                 postImage?.isHidden = true
                 imageSizeConstraint?.constant = 0
                 postImage?.image = nil
@@ -97,16 +98,9 @@ class PostTableViewCell: UITableViewCell {
         flagIcon.addGestureRecognizer(
         UITapGestureRecognizer(target: self,
                                action: #selector(showFlagHint(_:))))
-        
-//        mediaSize.text = postViewModel.fileSize
-//        mediaExtension.text = postViewModel.mediaFullName
-//
+
         stickyIcon.isHidden = !postViewModel.isPinned
     }
-    
-//    var thumbSizeConstraint: NSLayoutConstraint? {
-//        return postImage.constraint(withIdentifier: "thumbnail_size")
-//    }
     
     @objc func viewImage(_ sender: Any) {
         let ext = postViewModel.post.ext
