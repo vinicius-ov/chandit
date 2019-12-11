@@ -194,8 +194,7 @@ extension ThreadViewController: UITableViewDataSource {
         cell?.postViewModel = postViewModel
         cell?.boardName = threadViewModel.completeBoardName!
         cell?.tapDelegate = self
-        cell?.flagDelegate = self
-        cell?.copyTextDelegate = self
+        cell?.toastDelegate = self
         cell?.hideDelegate = self
         cell?.loadCell()
 
@@ -273,13 +272,6 @@ extension ThreadViewController: ThreadFooterViewDelegate {
             urlString: "https://boards.4chan.org/\(boardToNavigate)/thread/\(threadNumber)/",
             sharingEnabled: false)
         show(webVC, sender: self)
-    }
-}
-
-extension ThreadViewController: SaveTextDelegate {
-    func saveText(_ text: String) {
-        let aaaa = UIActivityViewController(activityItems: [], applicationActivities: [])
-        self.present(aaaa, animated: true, completion: nil)
     }
 }
 

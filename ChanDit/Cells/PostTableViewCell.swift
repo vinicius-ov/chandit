@@ -40,8 +40,7 @@ class PostTableViewCell: UITableViewCell {
     }
     
     weak var tapDelegate: CellTapInteractionDelegate?
-    weak var flagDelegate: ToastDelegate?
-    weak var copyTextDelegate: SaveTextDelegate?
+    weak var toastDelegate: ToastDelegate?
     weak var hideDelegate: HideDelegate?
 
     func loadCell() {
@@ -121,7 +120,7 @@ class PostTableViewCell: UITableViewCell {
     
     @objc
     func showFlagHint(_ sender: Any) {
-        flagDelegate?.showToast(flagHint: postViewModel.countryName)
+        toastDelegate?.showToast(flagHint: postViewModel.countryName)
     }
     
     @objc
@@ -130,26 +129,32 @@ class PostTableViewCell: UITableViewCell {
         guard let textView: UITextView = tapGesture.view as? UITextView else { return }
         let tapLocation = tapGesture.location(in: tapGesture.view)
 
-        guard let linkString = getTappedLink(from: textView, in: tapLocation),
-            !linkString.isEmpty else { return }
-        let quote = linkString.split(separator: "/")
+        guard let linkString = getTappedLink(from: textView, in: tapLocation) else { return }
 
-        if quote.first == "chandit:" {
-            let postNumber = Int(quote.last!)
-            tapDelegate?.linkTapped(postNumber: postNumber!,
-                                    opNumber: postViewModel.resto!,
-                                    originNumber: postViewModel.number!)
-        } else {
-            let actionOk = UIAlertAction(title: "OK", style: .default) { (_) in
-                if UIApplication.shared.canOpenURL(URL(string: "firefox://open-url?url=\(linkString)")!) {
-                    UIApplication.shared.open(URL(string: "firefox://open-url?url=\(linkString)")!)
-                } else {
-                    UIApplication.shared.open(URL(string: linkString)!)
+        if !linkString.isEmpty {
+            let quote = linkString.split(separator: "/")
+
+            if quote.first == "chandit:" {
+                let postNumber = Int(quote.last!)
+                tapDelegate?.linkTapped(postNumber: postNumber!,
+                                        opNumber: postViewModel.resto!,
+                                        originNumber: postViewModel.number!)
+            } else {
+                let actionOk = UIAlertAction(title: "OK", style: .default) { (_) in
+                    if UIApplication.shared.canOpenURL(URL(string: "firefox://open-url?url=\(linkString)")!) {
+                        UIApplication.shared.open(URL(string: "firefox://open-url?url=\(linkString)")!)
+                    } else {
+                        UIApplication.shared.open(URL(string: linkString)!)
+                    }
+
                 }
-
+                let actionCancel = UIAlertAction(title: "Cancel", style: .default)
+                tapDelegate?.presentAlertExitingApp([actionOk, actionCancel])
             }
-            let actionCancel = UIAlertAction(title: "Cancel", style: .default)
-            tapDelegate?.presentAlertExitingApp([actionOk, actionCancel])
+        } else {
+            guard let comment = postViewModel.comment else { return }
+            UIPasteboard.general.string = comment.toPlainText().string
+            toastDelegate?.showToast(flagHint: "Pasta added to clipboard")
         }
     }
 

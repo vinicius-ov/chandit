@@ -290,7 +290,7 @@ extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
         cell?.selectedBoardId = boardsViewModel.selectedBoardId
         cell?.postViewModel = postViewModel
         cell?.tapDelegate = self
-        cell?.flagDelegate = self
+        cell?.toastDelegate = self
         cell?.hideDelegate = self
 
         cell?.loadCell()
@@ -380,11 +380,6 @@ extension BaseViewController: ToastDelegate {
                        textColor: .white,
                        backgroundColor: .darkGray)
     }
-}
-
-protocol HideDelegate: class {
-    func hidePost(number: Int)
-    func hideThread(number: Int)
 }
 
 extension BoardPagesViewController: HideDelegate {
