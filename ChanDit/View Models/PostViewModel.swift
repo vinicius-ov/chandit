@@ -25,10 +25,10 @@ extension PostViewModel {
     }
     
     var comment: String? {
-        let formatString = post.com?.replacingOccurrences(of: "#p", with: "chandit://")
+        var formatString = post.com?.replacingOccurrences(of: "#p", with: "chandit://")
         return formatString
     }
-    
+
     var title: String? {
         return post.sub
     }

@@ -91,3 +91,22 @@ extension UINavigationBar {
         return UIGraphicsGetImageFromCurrentImageContext()
     }
 }
+
+extension UIViewController {
+    func showAlertView(title: String, message: String, actions: [UIAlertAction]? = []) {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            actions!.forEach {
+                alert.addAction($0)
+            }
+            if actions!.isEmpty {
+                let actionOk = UIAlertAction(title: "Ok", style: .default, handler: nil)
+                alert.addAction(actionOk)
+
+            } else {
+                alert.preferredAction = actions!.first!
+            }
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+}

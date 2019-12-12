@@ -14,6 +14,8 @@ class PostTableViewCell: UITableViewCell {
     var selectedBoardId: String!
     var boardName = "Im Error"
     var isNsfw = true
+
+    var viewForReset: UIView!
     
     @IBOutlet weak var postAuthorName: UILabel!
     @IBOutlet weak var postTimePublishing: UILabel!
@@ -94,14 +96,49 @@ class PostTableViewCell: UITableViewCell {
         postText.addGestureRecognizer(
             UITapGestureRecognizer(target: self,
                                    action: #selector(tappedLink(_:))))
+        postText.addGestureRecognizer(
+            UILongPressGestureRecognizer(target: self,
+                                         action: #selector(mamamia(_:))))
         flagIcon.addGestureRecognizer(
         UITapGestureRecognizer(target: self,
                                action: #selector(showFlagHint(_:))))
 
         stickyIcon.isHidden = !postViewModel.isPinned
     }
-    
-    @objc func viewImage(_ sender: Any) {
+
+    @objc
+    func opa(_ sender: Any) {
+        print("omelas")
+    }
+
+    @objc
+    func mamamia(_ gestureRecognizer: UILongPressGestureRecognizer) {
+        if gestureRecognizer.state == .began {
+            gestureRecognizer.view?.becomeFirstResponder()
+           self.viewForReset = gestureRecognizer.view
+
+           // Configure the menu item to display
+           let menuItemTitle = NSLocalizedString("Reset", comment: "Reset menu item title")
+            let action = #selector(opa(_:))
+           let resetMenuItem = UIMenuItem(title: menuItemTitle, action: action)
+
+           // Configure the shared menu controller
+           let menuController = UIMenuController.shared
+           menuController.menuItems = [resetMenuItem]
+
+           // Set the location of the menu in the view.
+           let location = gestureRecognizer.location(in: gestureRecognizer.view)
+           let menuLocation = CGRect(x: location.x, y: location.y, width: 0, height: 0)
+            menuController.setTargetRect(menuLocation, in: gestureRecognizer.view!.superview!)
+
+           // Show the menu.
+           menuController.setMenuVisible(true, animated: true)
+            print("mostraria menu")
+        }
+    }
+
+    @objc
+    func viewImage(_ sender: Any) {
         let ext = postViewModel.post.ext
         if ext == ".webm" {
             let viewController = PlaybackViewController(nibName: "PlaybackViewController", bundle: Bundle.main)
