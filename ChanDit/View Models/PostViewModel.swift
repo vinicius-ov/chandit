@@ -23,6 +23,20 @@ extension PostViewModel {
     var spoilerUrl: URL? {
         return URL(string: "https://s.4cdn.org/image/spoiler.png")
     }
+
+    var lowerRangeGreenText: [Int] {
+        guard let comment: String = post.com else {
+            return [Int]()
+        }
+        return comment.indicesOf(string: "<span class=\"quote\">")
+    }
+
+    var upperRangeGreenText: [Int] {
+        guard let comment: String = post.com else {
+            return [Int]()
+        }
+        return comment.indicesOf(string: "</span>")
+    }
     
     var comment: String? {
         let formatString = post.com?.replacingOccurrences(of: "#p", with: "chandit://")
@@ -164,5 +178,9 @@ extension PostViewModel {
 
     var isOp: Bool {
         return post.resto == 0
+    }
+
+    var quotes: [String] {
+        return []
     }
 }

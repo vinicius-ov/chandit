@@ -22,7 +22,6 @@ class BoardPagesViewController: BaseViewController {
     let boardsViewModel = BoardsViewModel() //deveria ser injetado
     let service = Service() //deveria ser injetado
     var lastModified: String?
-    var thrs = NSMutableOrderedSet()
 
     override func viewDidLoad() {
         super.viewDidLoad()
