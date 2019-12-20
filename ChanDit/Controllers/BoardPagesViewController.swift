@@ -280,6 +280,16 @@ extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return UITableViewCell.EditingStyle.delete
     }
+
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+            if editingStyle == .delete {
+
+                let threadViewModel = pageViewModel.threads[indexPath.section]
+                threadViewModel .posts.remove(at: indexPath.row)
+
+               tableView.deleteRows(at: [indexPath], with: .fade)
+            }
+    }
 }
 
 extension BoardPagesViewController: UITableViewDataSourcePrefetching {

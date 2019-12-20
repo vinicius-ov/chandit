@@ -25,17 +25,11 @@ extension PostViewModel {
     }
 
     var lowerRangeGreenText: [Int] {
-        guard let comment: String = post.com else {
-            return [Int]()
-        }
-        return comment.indicesOf(string: "<span class=\"quote\">")
+        return (comment ?? "").indicesOf(string: "<span class=\"quote\">")
     }
 
     var upperRangeGreenText: [Int] {
-        guard let comment: String = post.com else {
-            return [Int]()
-        }
-        return comment.indicesOf(string: "</span>")
+        return (comment ?? "").indicesOf(string: "</span>")
     }
     
     var comment: String? {

@@ -4,7 +4,7 @@
 //
 //  Created by Vinicius Valvassori on 18/11/19.
 //  Copyright © 2019 Vinicius Valvassori. All rights reserved.
-//
+//  swiftlint:disable identifier_name
 
 import UIKit
 
@@ -117,5 +117,38 @@ extension String {
         }
 
         return indices
+    }
+}
+
+extension String {
+    func toPlainText(fontSize: CGFloat? = 17, postViewModel: PostViewModel? = nil) -> NSAttributedString {
+        var attribText = NSMutableAttributedString(string: "")
+        if let htmlData = self.data(using: .unicode) {
+            do {
+                attribText =
+                    try NSMutableAttributedString(data: htmlData,
+                                           options: [.documentType: NSAttributedString.DocumentType.html],
+                                           documentAttributes: nil)
+                attribText.addAttributes([.foregroundColor: UIColor.white,
+                                          .font: UIFont.systemFont(ofSize: fontSize!)],
+                                         range: NSRange(location: 0, length: attribText.mutableString.length))
+//                if let pvm = postViewModel {
+//                    for index in 0..<pvm.lowerRangeGreenText.count {
+//                    attribText.addAttributes([.foregroundColor: UIColor.green,
+//                     .font: UIFont.systemFont(ofSize: fontSize!)],
+//                                             range: NSRange(location: pvm.lowerRangeGreenText[index], length: pvm.upperRangeGreenText[index] - pvm.lowerRangeGreenText[index] - 1))
+//                    }
+//                }
+            } catch let error as NSError {
+                print("Couldn't parse \(self): \(error.localizedDescription)")
+            }
+        }
+        return attribText
+    }
+}
+
+extension UIView {
+    func constraint(withIdentifier: String) -> NSLayoutConstraint? {
+        return self.constraints.filter { $0.identifier == withIdentifier }.first
     }
 }
