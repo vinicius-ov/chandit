@@ -4,7 +4,7 @@
 //
 //  Created by Vinicius Valvassori on 27/08/19.
 //  Copyright © 2019 Vinicius Valvassori. All rights reserved.
-//
+// swiftlint:disable trailing_whitespace
 
 import UIKit
 import Photos
@@ -20,6 +20,7 @@ CompleteBoardNameProtocol {
             loadingIndicator.startAnimating()
         }
     }
+
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var imageViewBottomConstraint: NSLayoutConstraint!
@@ -119,7 +120,7 @@ CompleteBoardNameProtocol {
                                                     Float(received) / Float(expected),
                                                     animated: true)
                                             }
-                }) { [weak self] (image, data, error, finished) in
+                }, completed: { [weak self] (image, data, error, finished) in
                     if let image = image, finished {
                         print("SDWEB: buscando da net")
                         self?.downloadProgress.isHidden = true
@@ -130,7 +131,7 @@ CompleteBoardNameProtocol {
                         print("SDWEB: ERRO buscando da net")
                         self?.showImageNotFoundAlert()
                     }
-                }
+                })
             }
         }
     }
@@ -164,7 +165,22 @@ CompleteBoardNameProtocol {
             if status == .authorized {
                 guard let url = self?.postViewModel.imageUrl(boardId: (self?.boardId)!) else { return }
                 if let data = self?.imageCache.diskImageData(forKey: url.absoluteString) {
-                        self?.saveToCameraRoll(data)
+                    let mediaFullName = self?.postViewModel.mediaFullName ?? "media_name"
+                    let boardName = self?.completeBoardName ?? "Im Error"
+                    ImageService(mediaFullName: mediaFullName)
+                        .saveToCameraRoll(data,
+                                          albumName: boardName,
+                                          completionHandler: { (success, error) in
+                                            if success {
+                                                DispatchQueue.main.async {
+                                                    self?.navigationItem.rightBarButtonItem?.isEnabled = true
+                                                    self?.showSuccessToast()
+                                                }
+                                            } else {
+                                                self?.showFailToast(error: error)
+                                            }
+
+                    })
                     } else {
                         DispatchQueue.main.async {
                             self?.navigationItem.rightBarButtonItem?.isEnabled = true
@@ -181,66 +197,12 @@ CompleteBoardNameProtocol {
             }
         })
     }
-    
-    private func fetchAlbum(_ boardName: String) -> PHAssetCollection? {
-        let fetchOptions = PHFetchOptions()
-        fetchOptions.predicate = NSPredicate(format: "title = %@", boardName)
-        let collection = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: fetchOptions)
-        if let _: AnyObject = collection.firstObject {
-            return collection.firstObject
-        }
-        return nil
-    }
-    
-    private func createTempPicFile(_ data: Data) -> URL? {
-        let documentDirectory = try? FileManager.default.url(
-        for: .documentDirectory, in: .userDomainMask,
-        appropriateFor: nil, create: false)
-        let path = documentDirectory!.appendingPathComponent(postViewModel.mediaFullName!, isDirectory: false)
-        if FileManager.default.createFile(atPath: path.path, contents: data, attributes: nil) {
-            return path
-        } else {
-            return nil
-        }
-    }
 
-    private func saveToCameraRoll(_ data: Data) {
-        if PHPhotoLibrary.authorizationStatus() == .authorized {
-            guard let path = createTempPicFile(data) else { return }
-            let albumName = self.completeBoardName
-                .trimmingCharacters(in: .whitespacesAndNewlines)
-            var albumInsertRequest: PHAssetCollectionChangeRequest!
-            PHPhotoLibrary.shared().performChanges({
-                guard let album = self.fetchAlbum(albumName) else {
-                    albumInsertRequest = PHAssetCollectionChangeRequest
-                .creationRequestForAssetCollection(withTitle: albumName)
-                    return
-                }
-                albumInsertRequest = PHAssetCollectionChangeRequest(for: album)
-                let assetChangeRequest = PHAssetChangeRequest
-                    .creationRequestForAssetFromImage(atFileURL: path)!
-                albumInsertRequest?.addAssets(
-                    [assetChangeRequest.placeholderForCreatedAsset!] as NSArray)
-            }) { (success, error) in
-                if success {
-                    DispatchQueue.main.async {
-                        self.navigationItem.rightBarButtonItem?.isEnabled = true
-                        self.showSuccessToast()
-                    }
-                    try? FileManager.default.removeItem(at: path)
-                } else {
-                    print(error?.localizedDescription)
-                    self.showFailToast()
-                }
-            }
-        }
-    }
-    
     // MARK: alert builders
-    
-    private func showFailToast() {
+
+    private func showFailToast(error: Error? = nil) {
         showToast(
-            message: "Not authorized to save images in Camera Roll. Go to Settings to fix this.")
+            message: "Not authorized to save images in Camera Roll. Go to Settings to fix this. \(error?.localizedDescription)")
     }
     
     func showSuccessToast() {

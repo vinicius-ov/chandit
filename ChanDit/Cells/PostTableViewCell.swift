@@ -4,7 +4,7 @@
 //
 //  Created by Vinicius Valvassori on 05/08/19.
 //  Copyright © 2019 Vinicius Valvassori. All rights reserved.
-//
+//  swiftlint:disable trailing_whitespace
 
 import UIKit
 import SDWebImage
@@ -14,15 +14,17 @@ class PostTableViewCell: UITableViewCell {
     var selectedBoardId: String!
     var boardName = "Im Error"
     var isNsfw = true
+
+    var viewForReset: UIView!
     
     @IBOutlet weak var postAuthorName: UILabel!
     @IBOutlet weak var postTimePublishing: UILabel!
-    @IBOutlet weak var savePastaButton: UIButton!
+    @IBOutlet weak var imageSizeConstraint: NSLayoutConstraint?
     
-    @IBOutlet weak var postImage: UIImageView! {
+    @IBOutlet weak var postImage: UIImageView? {
         didSet {
-            postImage.sd_imageIndicator = SDWebImageActivityIndicator.whiteLarge
-            postImage.sd_imageIndicator?.startAnimatingIndicator()
+            postImage?.sd_imageIndicator = SDWebImageActivityIndicator.whiteLarge
+            postImage?.sd_imageIndicator?.startAnimatingIndicator()
         }
     }
     
@@ -30,8 +32,8 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var postText: UITextView!
     @IBOutlet weak var postTitle: UILabel!
     @IBOutlet weak var postNumber: UILabel!
-    @IBOutlet weak var mediaExtension: UILabel!
-    @IBOutlet weak var mediaSize: UILabel!
+    @IBOutlet weak var mediaExtension: UILabel?
+    @IBOutlet weak var mediaSize: UILabel?
     
     @IBOutlet weak var stickyIcon: UIImageView! {
         didSet {
@@ -40,8 +42,7 @@ class PostTableViewCell: UITableViewCell {
     }
     
     weak var tapDelegate: CellTapInteractionDelegate?
-    weak var flagDelegate: ToastDelegate?
-    weak var copyTextDelegate: SaveTextDelegate?
+    weak var toastDelegate: ToastDelegate?
     weak var hideDelegate: HideDelegate?
 
     func loadCell() {
@@ -68,52 +69,63 @@ class PostTableViewCell: UITableViewCell {
         }
         
         if postViewModel.isSpoiler {
-            postImage.sd_setImage(with: postViewModel.spoilerUrl)
+            postImage?.sd_setImage(with: postViewModel.spoilerUrl)
         } else {
             if let thumbUrl = postViewModel.thumbnailUrl(boardId: selectedBoardId) {
-                postImage.sd_setImage(with: thumbUrl,
+                postImage?.sd_setImage(with: thumbUrl,
                                       completed: { (_, error, _, _) in
+                                        print(error?.localizedDescription)
                                         if error != nil {
-                                            self.postImage.sd_setImage(with:
+                                            self.postImage?.sd_setImage(with:
                                                 URL(string: "https://s.4cdn.org/image/filedeleted-res.gif")!)
                                         }
                     })
-                postImage.isHidden = false
+                postImage?.isHidden = false
+                imageSizeConstraint?.constant = 160
+                mediaSize?.text = postViewModel.fileSize
+                mediaExtension?.text = postViewModel.mediaFullName
             } else {
-                postImage.gestureRecognizers?.removeAll()
-                postImage.isHidden = true
-                postImage.image = nil
+                postImage?.isHidden = true
+                imageSizeConstraint?.constant = 0
+                postImage?.image = nil
             }
         }
         
-        postImage.addGestureRecognizer(
+        postImage?.addGestureRecognizer(
         UITapGestureRecognizer(target: self,
                                action: #selector(viewImage(_:))))
+        
         postText.addGestureRecognizer(
             UITapGestureRecognizer(target: self,
                                    action: #selector(tappedLink(_:))))
+
+        let copyDoubleTap = UITapGestureRecognizer(target: self,
+        action: #selector(copyToClipBoard(_:)))
+        copyDoubleTap.numberOfTapsRequired = 2
+        postText.addGestureRecognizer(copyDoubleTap)
+
         flagIcon.addGestureRecognizer(
         UITapGestureRecognizer(target: self,
                                action: #selector(showFlagHint(_:))))
-        
-        mediaSize.text = postViewModel.fileSize
-        mediaExtension.text = postViewModel.mediaFullName
-        
+
         stickyIcon.isHidden = !postViewModel.isPinned
     }
-    
-    var thumbSizeConstraint: NSLayoutConstraint? {
-        return postImage.constraint(withIdentifier: "thumbnail_size")
+
+    @objc
+    func copyToClipBoard(_ gestureRecognizer: UILongPressGestureRecognizer) {
+        guard let comment = postViewModel.comment else { return }
+        UIPasteboard.general.string = comment.toPlainText().string
+        toastDelegate?.showToastForCopy(text: "Pasta added to clipboard")
     }
-    
-    @objc func viewImage(_ sender: Any) {
+
+    @objc
+    func viewImage(_ sender: Any) {
         let ext = postViewModel.post.ext
         if ext == ".webm" {
             let viewController = PlaybackViewController(nibName: "PlaybackViewController", bundle: Bundle.main)
             viewController.mediaURL = postViewModel.imageUrl(boardId: selectedBoardId)
             viewController.postNumber = self.postViewModel.number ?? 0
             viewController.filename = postViewModel.mediaFullName ?? "im error"
-            //viewController.isNsfw = postViewModel.
             tapDelegate?.imageTapped(viewController)
         } else {
             let viewController = ImageViewerViewController(nibName: "ImageViewerViewController", bundle: Bundle.main)
@@ -126,7 +138,7 @@ class PostTableViewCell: UITableViewCell {
     
     @objc
     func showFlagHint(_ sender: Any) {
-        flagDelegate?.showToast(flagHint: postViewModel.countryName)
+        toastDelegate?.showToast(flagHint: postViewModel.countryName)
     }
     
     @objc
@@ -135,27 +147,28 @@ class PostTableViewCell: UITableViewCell {
         guard let textView: UITextView = tapGesture.view as? UITextView else { return }
         let tapLocation = tapGesture.location(in: tapGesture.view)
 
-        guard let linkString = getTappedLink(from: textView, in: tapLocation),
-            !linkString.isEmpty else { return }
-        let quote = linkString.split(separator: "/")
+        guard let linkString = getTappedLink(from: textView, in: tapLocation) else { return }
 
-        if quote.first == "chandit:" {
-            let postNumber = Int(quote.last!)
-            tapDelegate?.linkTapped(postNumber: postNumber!,
-                                    opNumber: postViewModel.resto!,
-                                    originNumber: postViewModel.number!)
-        } else {
-            //see https://stackoverflow.com/questions/39949169/swift-open-url-in-a-specific-browser-tab for other browsers deeplinks
-            let actionOk = UIAlertAction(title: "OK", style: .default) { (_) in
-                if UIApplication.shared.canOpenURL(URL(string: "firefox://open-url?url=\(linkString)")!) {
-                    UIApplication.shared.open(URL(string: "firefox://open-url?url=\(linkString)")!)
-                } else {
-                    UIApplication.shared.open(URL(string: "firefox://open-url?url=\(linkString)")!)
+        if !linkString.isEmpty {
+            let quote = linkString.split(separator: "/")
+
+            if quote.first == "chandit:" {
+                let postNumber = Int(quote.last!)
+                tapDelegate?.linkTapped(postNumber: postNumber!,
+                                        opNumber: postViewModel.resto!,
+                                        originNumber: postViewModel.number!)
+            } else {
+                let actionOk = UIAlertAction(title: "OK", style: .default) { (_) in
+                    if UIApplication.shared.canOpenURL(URL(string: "firefox://open-url?url=\(linkString)")!) {
+                        UIApplication.shared.open(URL(string: "firefox://open-url?url=\(linkString)")!)
+                    } else {
+                        UIApplication.shared.open(URL(string: linkString)!)
+                    }
+
                 }
-
+                let actionCancel = UIAlertAction(title: "Cancel", style: .default)
+                tapDelegate?.presentAlertExitingApp([actionOk, actionCancel])
             }
-            let actionCancel = UIAlertAction(title: "Cancel", style: .default)
-            tapDelegate?.presentAlertExitingApp([actionOk, actionCancel])
         }
     }
 

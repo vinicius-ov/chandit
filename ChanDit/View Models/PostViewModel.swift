@@ -4,7 +4,7 @@
 //
 //  Created by Vinicius Valvassori on 09/08/19.
 //  Copyright © 2019 Vinicius Valvassori. All rights reserved.
-//
+//  swiftlint:disable trailing_whitespace
 
 import UIKit
 
@@ -25,10 +25,10 @@ extension PostViewModel {
     }
     
     var comment: String? {
-        let formatString = post.com?.replacingOccurrences(of: "#p", with: "chandit://")
+        var formatString = post.com?.replacingOccurrences(of: "#p", with: "chandit://")
         return formatString
     }
-    
+
     var title: String? {
         return post.sub
     }
@@ -111,7 +111,11 @@ extension PostViewModel {
         let diff = now - Double(time ?? 0)
         return diff
     }
-    
+
+    var hasImage: Bool {
+        return post.filename != nil
+    }
+
     var subject: String? {
         return post.sub
     }
@@ -149,7 +153,7 @@ extension PostViewModel {
     }
     
     var flagCountryCode: String {
-        if let countryCode = post.countryCode{
+        if let countryCode = post.countryCode {
             return countryCode.lowercased()
         } else if let trollCountry = post.trollCountry {
             return "troll/\(trollCountry.lowercased())"

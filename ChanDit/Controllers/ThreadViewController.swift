@@ -4,7 +4,7 @@
 //
 //  Created by Vinicius Valvassori on 23/08/19.
 //  Copyright © 2019 Vinicius Valvassori. All rights reserved.
-//
+//  swiftlint:disable trailing_whitespace
 
 import UIKit
 
@@ -26,17 +26,22 @@ class ThreadViewController: BaseViewController {
         postsTable.dataSource = self
         postsTable.delegate = self
 
-        postsTable.register(UINib(nibName: "PostCell", bundle: nil), forCellReuseIdentifier: "postCellIdentifier")
+        postsTable.register(UINib(nibName: "PostCell", bundle: nil),
+                            forCellReuseIdentifier: "postCellIdentifier")
+        postsTable.register(
+        UINib(nibName: "PostCellNoImage", bundle: nil),
+                            forCellReuseIdentifier: "postCell_NoImage_Identifier")
+
         postsTable.register(UINib(nibName: "ThreadFooterView", bundle: nil),
                             forHeaderFooterViewReuseIdentifier: ThreadFooterView.reuseIdentifier)
     
         postsTable.rowHeight = UITableView.automaticDimension
-        postsTable.estimatedRowHeight = 400
+        postsTable.estimatedRowHeight = 200
         
         fetchData()
     }
 
-    fileprivate func fetchData(refreshing: Bool =  false) {
+    private func fetchData(refreshing: Bool = false) {
         guard let board = threadViewModel.boardIdToNavigate,
             let opNumber = threadViewModel.threadNumberToNavigate
             else {
@@ -44,7 +49,9 @@ class ThreadViewController: BaseViewController {
                 message: "Failed to load thread posts. Try again.", actions: [])
                 return
         }
-        service.loadData(from: URL(string: "https://a.4cdn.org/\(board)/thread/\(opNumber).json")!, lastModified: lastModified) { (result) in
+        service.loadData(from:
+        URL(string: "https://a.4cdn.org/\(board)/thread/\(opNumber).json")!,
+                         lastModified: lastModified) { (result) in
             switch result {
             case .success(let response):
                 switch response.code {
@@ -53,12 +60,11 @@ class ThreadViewController: BaseViewController {
                     do {
                         guard let thread = try? JSONDecoder().decode(Thread.self, from: response.data) else {
                             print("error trying to convert data to JSON \(response)")
-                            self.showThreadNotFoundAlert()
+                            self.showThreadNotFoundAlert(isRefreshing: refreshing)
                             return
                         }
                         self.threadViewModel.posts = thread.posts.map(PostViewModel.init)
                         DispatchQueue.main.async {
-                            self.title = self.threadViewModel.threadTitle
                             self.postsTable.reloadData()
                             self.postsTable.isHidden = false
                             if !refreshing {
@@ -68,15 +74,12 @@ class ThreadViewController: BaseViewController {
                                                textColor: .white,
                                                backgroundColor: .green)
                             }
-                            self.title = self.threadViewModel.postViewModel(at: 0)?.title?.toPlainText().string
                         }
                     }
                 case 300..<400:
-                    DispatchQueue.main.async {
-                        self.showToast(message: "No new posts")
-                    }
+                    self.showToast(message: "No new posts")
                 case 400...500:
-                    self.showThreadNotFoundAlert()
+                    self.showThreadNotFoundAlert(isRefreshing: refreshing)
                 default: break
                 }
                 DispatchQueue.main.async {
@@ -84,16 +87,19 @@ class ThreadViewController: BaseViewController {
                 }
             case .failure(let error):
                 self.showAlertView(title: "Fetch failed",
-                                   message: "Failed to load thread posts. Try again. \(error.localizedDescription)", actions: [])
+                                   message: "Failed to load thread posts. Try again. \(error.localizedDescription)",
+                    actions: [])
             }
         }
     }
    
-    private func showThreadNotFoundAlert() {
+    private func showThreadNotFoundAlert(isRefreshing: Bool) {
         let action = UIAlertAction(title: "Ok",
                                    style: .default,
                                    handler: { _ in
-                                    self.navigationController?.popViewController(animated: true)
+                                    if !isRefreshing {
+                                        self.navigationController?.popViewController(animated: true)
+                                    }
         })
         showAlertView(title: "Thread removed",
                            message: "Thread was pruned or deleted. Returning to board list...",
@@ -155,7 +161,6 @@ class ThreadViewController: BaseViewController {
             cell.contentView.backgroundColor = .red
             cell.contentView.backgroundColor = .black
         })
-        //self.indexPathNav = nil
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -163,7 +168,8 @@ class ThreadViewController: BaseViewController {
     }
 
     @IBAction func goSettings(_ sender: Any) {
-        let settings = SettingsViewController(nibName: "SettingsViewController", bundle: nil)
+        let settings = SettingsViewController(nibName: "SettingsViewController",
+                                              bundle: nil)
         show(settings, sender: self)
     }
 }
@@ -174,17 +180,27 @@ extension ThreadViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
+
         let postViewModel = threadViewModel.postViewModel(at: indexPath.row)
+        let cell: PostTableViewCell?
+        
+        if postViewModel!.hasImage {
+            cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
+        } else {
+            cell = tableView.dequeueReusableCell(withIdentifier: "postCell_NoImage_Identifier") as? PostTableViewCell
+        }
+
         cell?.selectedBoardId = threadViewModel.boardIdToNavigate
         cell?.postViewModel = postViewModel
         cell?.boardName = threadViewModel.completeBoardName!
         cell?.tapDelegate = self
-        cell?.flagDelegate = self
-        cell?.copyTextDelegate = self
+        cell?.toastDelegate = self
         cell?.hideDelegate = self
         cell?.loadCell()
-        
+
+        cell?.setNeedsUpdateConstraints()
+        cell?.updateConstraintsIfNeeded()
+
         return cell ?? UITableViewCell()
     }
 }
@@ -209,26 +225,6 @@ extension ThreadViewController: UITableViewDelegate {
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         flashThreadLinked()
     }
-
-}
-    
-extension UIViewController {
-    func showAlertView(title: String, message: String, actions: [UIAlertAction]? = []) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        actions!.forEach {
-            alert.addAction($0)
-        }
-        if actions!.isEmpty {
-            let actionOk = UIAlertAction(title: "Ok", style: .default, handler: nil)
-            alert.addAction(actionOk)
-            
-        } else {
-            alert.preferredAction = actions!.first!
-        }
-        DispatchQueue.main.async {
-            self.present(alert, animated: true, completion: nil)
-        }
-    }
 }
 
 extension ThreadViewController: CellTapInteractionDelegate {
@@ -251,17 +247,12 @@ extension ThreadViewController: CellTapInteractionDelegate {
 
 extension ThreadViewController: ThreadFooterViewDelegate {
     func threadFooterView(_ footer: ThreadFooterView, threadToNavigate section: Int) {
+        let boardToNavigate = threadViewModel.boardIdToNavigate ?? "a"
+        let threadNumber = threadViewModel.opNumber ?? 1
         let webVC = SwiftWebVC(
-            urlString: "https://boards.4chan.org/\(threadViewModel.boardIdToNavigate ?? "a")/thread/\(threadViewModel.opNumber ?? 1)/",
+            urlString: "https://boards.4chan.org/\(boardToNavigate)/thread/\(threadNumber)/",
             sharingEnabled: false)
         show(webVC, sender: self)
-    }
-}
-
-extension ThreadViewController: SaveTextDelegate {
-    func saveText(_ text: String) {
-        let aaaa = UIActivityViewController(activityItems: [], applicationActivities: [])
-        self.present(aaaa, animated: true, completion: nil)
     }
 }
 

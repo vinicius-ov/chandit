@@ -10,12 +10,14 @@ protocol CellTapInteractionDelegate: class {
     func linkTapped(postNumber: Int, opNumber: Int, originNumber: Int)
     func imageTapped(_ viewController: UIViewController)
     func presentAlertExitingApp(_ actions: [UIAlertAction])
-}
-
-protocol SaveTextDelegate: class {
-    func saveText(_ text: String)
-}
+} 
 
 protocol ToastDelegate: class {
     func showToast(flagHint: String)
+    func showToastForCopy(text: String)
+}
+
+protocol HideDelegate: class {
+    func hidePost(number: Int)
+    func hideThread(number: Int)
 }

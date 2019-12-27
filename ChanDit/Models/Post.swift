@@ -17,7 +17,7 @@ struct Post: Decodable {
     var filename: String?
     var ext: String?
     var md5: String?
-    var imageWidth: Int? 
+    var imageWidth: Int?
     var imageHeight: Int?
     var thumbWidth: Int?
     var thumbHeight: Int?

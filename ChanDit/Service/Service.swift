@@ -15,12 +15,12 @@ class Service: NSObject {
         var modified: String
         var code: Int
     }
-    
+
     enum Result {
         case success(ChanditSuccess)
         case failure(Error)
     }
-    
+
     var session: URLSession!
     
     init(delegate: URLSessionDelegate) {
@@ -40,7 +40,7 @@ class Service: NSObject {
             request.addValue(modified, forHTTPHeaderField: "If-Modified-Since")
             request.cachePolicy = .reloadIgnoringCacheData
         }
-        
+
         let task = session.dataTask(with: request) { data, response, error in
             guard let data = data,
                 let response = response as? HTTPURLResponse
@@ -54,10 +54,10 @@ class Service: NSObject {
                 code: response.statusCode)
             completionHandler(.success(chandit))
         }
-        
+
         task.resume()
     }
-    
+
     func loadVideoData(from url: URL) -> URLSessionTask {
         return session.downloadTask(with: url)
     }
