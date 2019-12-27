@@ -14,6 +14,7 @@ protocol CellTapInteractionDelegate: class {
 
 protocol ToastDelegate: class {
     func showToast(flagHint: String)
+    func showToastForCopy(text: String)
 }
 
 protocol HideDelegate: class {

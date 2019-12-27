@@ -74,6 +74,7 @@ class PostTableViewCell: UITableViewCell {
             if let thumbUrl = postViewModel.thumbnailUrl(boardId: selectedBoardId) {
                 postImage?.sd_setImage(with: thumbUrl,
                                       completed: { (_, error, _, _) in
+                                        print(error?.localizedDescription)
                                         if error != nil {
                                             self.postImage?.sd_setImage(with:
                                                 URL(string: "https://s.4cdn.org/image/filedeleted-res.gif")!)
@@ -93,12 +94,16 @@ class PostTableViewCell: UITableViewCell {
         postImage?.addGestureRecognizer(
         UITapGestureRecognizer(target: self,
                                action: #selector(viewImage(_:))))
+        
         postText.addGestureRecognizer(
             UITapGestureRecognizer(target: self,
                                    action: #selector(tappedLink(_:))))
-        postText.addGestureRecognizer(
-            UILongPressGestureRecognizer(target: self,
-                                         action: #selector(mamamia(_:))))
+
+        let copyDoubleTap = UITapGestureRecognizer(target: self,
+        action: #selector(copyToClipBoard(_:)))
+        copyDoubleTap.numberOfTapsRequired = 2
+        postText.addGestureRecognizer(copyDoubleTap)
+
         flagIcon.addGestureRecognizer(
         UITapGestureRecognizer(target: self,
                                action: #selector(showFlagHint(_:))))
@@ -107,34 +112,10 @@ class PostTableViewCell: UITableViewCell {
     }
 
     @objc
-    func opa(_ sender: Any) {
-        print("omelas")
-    }
-
-    @objc
-    func mamamia(_ gestureRecognizer: UILongPressGestureRecognizer) {
-        if gestureRecognizer.state == .began {
-            gestureRecognizer.view?.becomeFirstResponder()
-           self.viewForReset = gestureRecognizer.view
-
-           // Configure the menu item to display
-           let menuItemTitle = NSLocalizedString("Reset", comment: "Reset menu item title")
-            let action = #selector(opa(_:))
-           let resetMenuItem = UIMenuItem(title: menuItemTitle, action: action)
-
-           // Configure the shared menu controller
-           let menuController = UIMenuController.shared
-           menuController.menuItems = [resetMenuItem]
-
-           // Set the location of the menu in the view.
-           let location = gestureRecognizer.location(in: gestureRecognizer.view)
-           let menuLocation = CGRect(x: location.x, y: location.y, width: 0, height: 0)
-            menuController.setTargetRect(menuLocation, in: gestureRecognizer.view!.superview!)
-
-           // Show the menu.
-           menuController.setMenuVisible(true, animated: true)
-            print("mostraria menu")
-        }
+    func copyToClipBoard(_ gestureRecognizer: UILongPressGestureRecognizer) {
+        guard let comment = postViewModel.comment else { return }
+        UIPasteboard.general.string = comment.toPlainText().string
+        toastDelegate?.showToastForCopy(text: "Pasta added to clipboard")
     }
 
     @objc
@@ -188,10 +169,6 @@ class PostTableViewCell: UITableViewCell {
                 let actionCancel = UIAlertAction(title: "Cancel", style: .default)
                 tapDelegate?.presentAlertExitingApp([actionOk, actionCancel])
             }
-        } else {
-            guard let comment = postViewModel.comment else { return }
-            UIPasteboard.general.string = comment.toPlainText().string
-            toastDelegate?.showToast(flagHint: "Pasta added to clipboard")
         }
     }
 

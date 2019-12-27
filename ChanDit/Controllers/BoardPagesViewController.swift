@@ -380,6 +380,12 @@ extension BaseViewController: ToastDelegate {
                        textColor: .white,
                        backgroundColor: .darkGray)
     }
+
+    func showToastForCopy(text: String) {
+        self.showToast(message: text,
+                       textColor: .black,
+                       backgroundColor: .green)
+    }
 }
 
 extension BoardPagesViewController: HideDelegate {
