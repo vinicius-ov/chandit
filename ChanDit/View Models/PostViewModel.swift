@@ -8,13 +8,12 @@
 
 import UIKit
 
-struct PostViewModel {
+class PostViewModel: NSObject {
     var post: Post
-    var isHidden: Bool
+    var hidden: Bool = false
 
     init(post: Post) {
         self.post = post
-        self.isHidden = false
     }
 }
 
@@ -176,5 +175,13 @@ extension PostViewModel {
 
     var quotes: [String] {
         return []
+    }
+
+    var isHidden: Bool {
+        return hidden
+    }
+
+    func toggleHidden() {
+        self.hidden = !self.hidden
     }
 }

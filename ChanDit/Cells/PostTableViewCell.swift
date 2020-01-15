@@ -45,6 +45,11 @@ class PostTableViewCell: UITableViewCell {
     weak var hideDelegate: HideDelegate?
 
     func loadCell() {
+
+        if postViewModel.isHidden {
+            print("HIDDEN \(postViewModel.number) \(postViewModel.isOp)")
+            
+        }
         postAuthorName.text = postViewModel.postAuthorName
         
         if let title = postViewModel.title {

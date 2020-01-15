@@ -283,12 +283,10 @@ extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
             if editingStyle == .delete {
-
-                let threadViewModel = pageViewModel.threads[indexPath.section]
-                threadViewModel .posts.remove(at: indexPath.row)
-
-               tableView.deleteRows(at: [indexPath], with: .fade)
+                let threadViewModel: ThreadViewModel = pageViewModel.threads[indexPath.section]
+                threadViewModel.postViewModel(at: indexPath.row)?.toggleHidden()
             }
+        tableView.reloadData()
     }
 }
 
