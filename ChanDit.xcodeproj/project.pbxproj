@@ -33,6 +33,7 @@
 		2DBD533A23A124C7003E23FA /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DBD533923A124C7003E23FA /* Errors.swift */; };
 		2DD9C31923576EBA00A14EE4 /* ImageViewerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2DD9C31823576EBA00A14EE4 /* ImageViewerViewController.xib */; };
 		2DDB9D7B234BAE0F002C249F /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DDB9D7A234BAE0F002C249F /* BaseNavigationController.swift */; };
+		2DFFF9A323D78C2B006421E2 /* PostCellHidden.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2DFFF9A223D76D49006421E2 /* PostCellHidden.xib */; };
 		810B4A052327CCF100E7ECC9 /* PlaybackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810B4A032327CCF100E7ECC9 /* PlaybackViewController.swift */; };
 		810B4A062327CCF100E7ECC9 /* PlaybackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 810B4A042327CCF100E7ECC9 /* PlaybackViewController.xib */; };
 		814C458B22F4BFF8007007C5 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814C458A22F4BFF8007007C5 /* Service.swift */; };
@@ -131,6 +132,7 @@
 		2DC383E4235F6F2700B16290 /* SDWebImageMapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImageMapKit.framework; path = Carthage/Build/iOS/SDWebImageMapKit.framework; sourceTree = "<group>"; };
 		2DD9C31823576EBA00A14EE4 /* ImageViewerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageViewerViewController.xib; sourceTree = "<group>"; };
 		2DDB9D7A234BAE0F002C249F /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
+		2DFFF9A223D76D49006421E2 /* PostCellHidden.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostCellHidden.xib; sourceTree = "<group>"; };
 		810B4A032327CCF100E7ECC9 /* PlaybackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackViewController.swift; sourceTree = "<group>"; };
 		810B4A042327CCF100E7ECC9 /* PlaybackViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlaybackViewController.xib; sourceTree = "<group>"; };
 		814C458A22F4BFF8007007C5 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
@@ -388,6 +390,7 @@
 				81921BE922F468DE007F4EFC /* LaunchScreen.storyboard */,
 				F2BAFFE123495AAB006D2CEE /* PostCell.xib */,
 				2DBD5335239FCCA7003E23FA /* PostCellNoImage.xib */,
+				2DFFF9A223D76D49006421E2 /* PostCellHidden.xib */,
 				2DD9C31823576EBA00A14EE4 /* ImageViewerViewController.xib */,
 				2D2784012357ADD300DD0C9F /* ThreadFooterView.xib */,
 			);
@@ -552,6 +555,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2DFFF9A323D78C2B006421E2 /* PostCellHidden.xib in Resources */,
 				2DBD5336239FE864003E23FA /* PostCellNoImage.xib in Resources */,
 				2D5034A2239044AD0016BBE7 /* SettingsViewController.xib in Resources */,
 				2D3093572384691F00FE1D32 /* MultipleOptionsTableViewCell.xib in Resources */,

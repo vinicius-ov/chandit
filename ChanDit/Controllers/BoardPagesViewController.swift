@@ -27,7 +27,7 @@ class BoardPagesViewController: BaseViewController {
     var lastModified: String?
     var thrs = NSMutableOrderedSet()
 
-    fileprivate func registerCellViews() {
+    private func registerCellViews() {
         postsTable.register(
             UINib(nibName: "PostCell",
                   bundle: nil),
@@ -36,6 +36,10 @@ class BoardPagesViewController: BaseViewController {
             UINib(nibName: "PostCellNoImage",
                   bundle: nil),
             forCellReuseIdentifier: "postCell_NoImage_Identifier")
+        postsTable.register(
+        UINib(nibName: "PostCellHidden",
+              bundle: nil),
+        forCellReuseIdentifier: "postCell_Hidden_Identifier")
         postsTable.register(
             UINib(nibName: "ThreadFooterView",
                   bundle: nil),
@@ -280,24 +284,30 @@ extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
         let postViewModel = threadViewModel.postViewModel(at: indexPath.row)
 
         let cell: PostTableViewCell?
-        if postViewModel!.hasImage {
-            cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
+        if postViewModel!.isHidden {
+            cell = tableView.dequeueReusableCell(withIdentifier: "postCell_Hidden_Identifier") as? PostTableViewCell
         } else {
-            cell = tableView.dequeueReusableCell(withIdentifier: "postCell_NoImage_Identifier") as? PostTableViewCell
+            if postViewModel!.hasImage {
+                cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
+            } else {
+                cell = tableView.dequeueReusableCell(withIdentifier: "postCell_NoImage_Identifier") as? PostTableViewCell
+            }
+
+            cell?.boardName = boardsViewModel.completeBoardName(atRow: pickerView.selectedRow(inComponent: 0))
+            cell?.selectedBoardId = boardsViewModel.selectedBoardId
+            cell?.postViewModel = postViewModel
+            cell?.tapDelegate = self
+            cell?.toastDelegate = self
+            cell?.hideDelegate = self
+            cell?.loadCell()
         }
-
-        cell?.boardName = boardsViewModel.completeBoardName(atRow: pickerView.selectedRow(inComponent: 0))
-        cell?.selectedBoardId = boardsViewModel.selectedBoardId
         cell?.postViewModel = postViewModel
-        cell?.tapDelegate = self
-        cell?.toastDelegate = self
-        cell?.hideDelegate = self
-
-        cell?.loadCell()
+        cell?.setupPostHeader()
         cell?.setNeedsUpdateConstraints()
         cell?.updateConstraintsIfNeeded()
-        
+
         return cell ?? UITableViewCell()
+
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -317,9 +327,21 @@ extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
         return footerView
     }
 
-    func tableView(_ tableView: UITableView,
-                   editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return UITableViewCell.EditingStyle.delete
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+
+        let reportAction = UITableViewRowAction(style: .normal, title: "Report") { (rowAction, indexPath) in
+            //TODO: edit the row at indexPath here
+        }
+        reportAction.backgroundColor = .red
+
+        let hideAction = UITableViewRowAction(style: .normal, title: "Show/Hide") { (_, indexPath) in
+            let threadViewModel: ThreadViewModel = self.pageViewModel.threads[indexPath.section]
+            threadViewModel.postViewModel(at: indexPath.row)?.toggleHidden()
+            self.postsTable.reloadData()
+        }
+        hideAction.backgroundColor = .blue
+
+        return [hideAction]
     }
 }
 
