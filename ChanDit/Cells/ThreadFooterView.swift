@@ -2,11 +2,14 @@ import UIKit
 
 protocol ThreadFooterViewDelegate: class {
     func threadFooterView(_ footer: ThreadFooterView, threadToNavigate number: Int)
+    func toggleVisibility(section: Int)
 }
 
 class ThreadFooterView: UITableViewHeaderFooterView {
     static let reuseIdentifier = "ThreadFooterView"
-
+    var threadIsVisible: Bool = true
+    var section: Int = 0
+    
     weak var delegate: ThreadFooterViewDelegate?
 
     @IBOutlet weak var postsCount: UILabel!
@@ -21,6 +24,10 @@ class ThreadFooterView: UITableViewHeaderFooterView {
     var threadToNavigate: Int!
         
     @IBAction func didTapButton(_ sender: AnyObject) {
-        delegate?.threadFooterView(self, threadToNavigate: threadToNavigate)
+        if threadIsVisible{
+            delegate?.toggleVisibility(section: section)
+        } else {
+            delegate?.threadFooterView(self, threadToNavigate: threadToNavigate)
+        }
     }
 }

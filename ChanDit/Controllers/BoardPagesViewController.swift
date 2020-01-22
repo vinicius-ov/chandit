@@ -269,8 +269,12 @@ class BoardPagesViewController: BaseViewController {
 
 extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let threadViewModel = pageViewModel.threads[section]
-        return threadViewModel.posts.count
+        if sectionShouldBeHidden(section) {
+            return 0 // Don't show any rows for hidden sections
+        } else {
+            let threadViewModel = pageViewModel.threads[section]
+            return threadViewModel.posts.count
+        }
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -314,10 +318,13 @@ extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
         let footerView = tableView.dequeueReusableHeaderFooterView(
             withIdentifier: "ThreadFooterView") as? ThreadFooterView
 
-        guard let threadToLaunch = pageViewModel.threadViewModel(at: section)?.postViewModel(at: 0) else {
+        guard let threadVM = pageViewModel.threadViewModel(at: section),
+            let threadToLaunch = threadVM.postViewModel(at: 0) else {
             return footerView
         }
-
+        
+        footerView?.threadIsVisible = threadVM.isHidden
+        footerView?.section = section
         footerView?.threadToNavigate = threadToLaunch.number
         footerView?.imagesCount.text = "\(threadToLaunch.images ?? 0) (\(threadToLaunch.omittedImages ?? 0))"
         footerView?.postsCount.text = "\(threadToLaunch.replies ?? 0) (\(threadToLaunch.omittedPosts ?? 0))"
@@ -335,13 +342,23 @@ extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
         reportAction.backgroundColor = .red
 
         let hideAction = UITableViewRowAction(style: .normal, title: "Show/Hide") { (_, indexPath) in
-            let threadViewModel: ThreadViewModel = self.pageViewModel.threads[indexPath.section]
-            threadViewModel.postViewModel(at: indexPath.row)?.toggleHidden()
+            guard let threadViewModel: ThreadViewModel = self.pageViewModel.threads[indexPath.section],
+                let postViewModel = threadViewModel.postViewModel(at: indexPath.row) else { return }
+            if postViewModel.isOp {
+                threadViewModel.toggleHidden()
+            } else {
+                postViewModel.toggleHidden()
+            }
             self.postsTable.reloadData()
         }
         hideAction.backgroundColor = .blue
 
         return [hideAction]
+    }
+
+    private func sectionShouldBeHidden(_ section: Int) -> Bool {
+        let threadViewModel = pageViewModel.threads[section]
+        return threadViewModel.isHidden
     }
 }
 
@@ -390,6 +407,12 @@ extension BoardPagesViewController: CellTapInteractionDelegate {
 }
 
 extension BoardPagesViewController: ThreadFooterViewDelegate {
+    func toggleVisibility(section: Int) {
+        guard let threadVM = pageViewModel.threadViewModel(at: section) else { return }
+        threadVM.toggleHidden()
+        postsTable.reloadData()
+    }
+
     func threadFooterView(_ footer: ThreadFooterView, threadToNavigate section: Int) {
         self.boardsViewModel.threadToLaunch = footer.threadToNavigate
         self.navigateToThread()

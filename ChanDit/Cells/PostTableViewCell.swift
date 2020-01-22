@@ -252,10 +252,3 @@ extension UIView {
 protocol CompleteBoardNameProtocol {
     var completeBoardName: String { get set }
 }
-
-extension PostTableViewCell {
-    @IBAction func savePasta() {
-//        let a = UIActivityViewController()
-//        self.
-    }
-}

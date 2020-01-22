@@ -246,6 +246,10 @@ extension ThreadViewController: CellTapInteractionDelegate {
 }
 
 extension ThreadViewController: ThreadFooterViewDelegate {
+    func toggleVisibility(section: Int) {
+        //empty
+    }
+
     func threadFooterView(_ footer: ThreadFooterView, threadToNavigate section: Int) {
         let boardToNavigate = threadViewModel.boardIdToNavigate ?? "a"
         let threadNumber = threadViewModel.opNumber ?? 1
