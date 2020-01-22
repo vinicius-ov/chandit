@@ -61,6 +61,4 @@ class ThreadViewModel: NSObject {
     var isHidden: Bool {
         return hidden
     }
-
-
 }
