@@ -187,6 +187,7 @@ extension ThreadViewController: UITableViewDataSource {
         let postViewModel = threadViewModel.postViewModel(at: indexPath.row)
         let cell: PostTableViewCell?
 
+
         if postViewModel!.isHidden {
             cell = tableView.dequeueReusableCell(withIdentifier: "postCell_Hidden_Identifier") as? PostTableViewCell
         } else {
@@ -204,7 +205,11 @@ extension ThreadViewController: UITableViewDataSource {
             cell?.hideDelegate = self
             cell?.loadCell()
         }
-
+        //hell
+        cell?.boardName = threadViewModel.completeBoardName!
+        cell?.selectedBoardId = threadViewModel.boardIdToNavigate
+        cell?.postViewModel = postViewModel
+        //hell
         cell?.setupPostHeader()
         cell?.setNeedsUpdateConstraints()
         cell?.updateConstraintsIfNeeded()
