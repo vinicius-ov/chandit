@@ -103,8 +103,8 @@
                             <constraint firstAttribute="height" constant="160" id="W6M-bj-q3z"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UR4-8B-qES">
-                        <rect key="frame" x="191.5" y="205" width="31" height="14.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UR4-8B-qES">
+                        <rect key="frame" x="22" y="205" width="370" height="14.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
@@ -131,6 +131,8 @@
                     <constraint firstAttribute="trailing" secondItem="Shf-j1-KPS" secondAttribute="trailing" id="YdU-NX-Nl9"/>
                     <constraint firstItem="Shf-j1-KPS" firstAttribute="leading" secondItem="hhV-6z-yhL" secondAttribute="leading" id="dgf-Xb-PAY"/>
                     <constraint firstItem="GbS-91-N5I" firstAttribute="leading" secondItem="hhV-6z-yhL" secondAttribute="leading" id="iqi-Og-ivy"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="UR4-8B-qES" secondAttribute="trailing" constant="2" id="jMf-gu-1an"/>
+                    <constraint firstItem="UR4-8B-qES" firstAttribute="leading" secondItem="hhV-6z-yhL" secondAttribute="leadingMargin" constant="2" id="kOY-HX-zhd"/>
                     <constraint firstItem="MQI-Sz-RTe" firstAttribute="leading" secondItem="hhV-6z-yhL" secondAttribute="leading" id="que-rV-4I4"/>
                     <constraint firstAttribute="bottom" secondItem="MQI-Sz-RTe" secondAttribute="bottom" constant="4" id="r59-6f-MAj"/>
                     <constraint firstItem="UR4-8B-qES" firstAttribute="centerX" secondItem="hhV-6z-yhL" secondAttribute="centerX" id="rRD-i9-Lqz"/>
