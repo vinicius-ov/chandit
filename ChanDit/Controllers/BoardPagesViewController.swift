@@ -27,7 +27,7 @@ class BoardPagesViewController: BaseViewController {
     var lastModified: String?
     var thrs = NSMutableOrderedSet()
 
-    fileprivate func registerCellViews() {
+    private func registerCellViews() {
         postsTable.register(
             UINib(nibName: "PostCell",
                   bundle: nil),
@@ -36,6 +36,10 @@ class BoardPagesViewController: BaseViewController {
             UINib(nibName: "PostCellNoImage",
                   bundle: nil),
             forCellReuseIdentifier: "postCell_NoImage_Identifier")
+        postsTable.register(
+        UINib(nibName: "PostCellHidden",
+              bundle: nil),
+        forCellReuseIdentifier: "postCell_Hidden_Identifier")
         postsTable.register(
             UINib(nibName: "ThreadFooterView",
                   bundle: nil),
@@ -265,8 +269,12 @@ class BoardPagesViewController: BaseViewController {
 
 extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let threadViewModel = pageViewModel.threads[section]
-        return threadViewModel.posts.count
+        if sectionShouldBeHidden(section) {
+            return 0 // Don't show any rows for hidden sections
+        } else {
+            let threadViewModel = pageViewModel.threads[section]
+            return threadViewModel.posts.count
+        }
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -280,34 +288,43 @@ extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
         let postViewModel = threadViewModel.postViewModel(at: indexPath.row)
 
         let cell: PostTableViewCell?
-        if postViewModel!.hasImage {
-            cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
+        if postViewModel!.isHidden {
+            cell = tableView.dequeueReusableCell(withIdentifier: "postCell_Hidden_Identifier") as? PostTableViewCell
         } else {
-            cell = tableView.dequeueReusableCell(withIdentifier: "postCell_NoImage_Identifier") as? PostTableViewCell
+            if postViewModel!.hasImage {
+                cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
+            } else {
+                cell = tableView.dequeueReusableCell(withIdentifier: "postCell_NoImage_Identifier") as? PostTableViewCell
+            }
+
+            cell?.boardName = boardsViewModel.completeBoardName(atRow: pickerView.selectedRow(inComponent: 0))
+            cell?.selectedBoardId = boardsViewModel.selectedBoardId
+            cell?.postViewModel = postViewModel
+            cell?.tapDelegate = self
+            cell?.toastDelegate = self
+            cell?.hideDelegate = self
+            cell?.loadCell()
         }
-
-        cell?.boardName = boardsViewModel.completeBoardName(atRow: pickerView.selectedRow(inComponent: 0))
-        cell?.selectedBoardId = boardsViewModel.selectedBoardId
         cell?.postViewModel = postViewModel
-        cell?.tapDelegate = self
-        cell?.toastDelegate = self
-        cell?.hideDelegate = self
-
-        cell?.loadCell()
+        cell?.setupPostHeader()
         cell?.setNeedsUpdateConstraints()
         cell?.updateConstraintsIfNeeded()
-        
+
         return cell ?? UITableViewCell()
+
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footerView = tableView.dequeueReusableHeaderFooterView(
             withIdentifier: "ThreadFooterView") as? ThreadFooterView
 
-        guard let threadToLaunch = pageViewModel.threadViewModel(at: section)?.postViewModel(at: 0) else {
+        guard let threadVM = pageViewModel.threadViewModel(at: section),
+            let threadToLaunch = threadVM.postViewModel(at: 0) else {
             return footerView
         }
-
+        
+        footerView?.threadIsVisible = threadVM.isHidden
+        footerView?.section = section
         footerView?.threadToNavigate = threadToLaunch.number
         footerView?.imagesCount.text = "\(threadToLaunch.images ?? 0) (\(threadToLaunch.omittedImages ?? 0))"
         footerView?.postsCount.text = "\(threadToLaunch.replies ?? 0) (\(threadToLaunch.omittedPosts ?? 0))"
@@ -317,9 +334,31 @@ extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
         return footerView
     }
 
-    func tableView(_ tableView: UITableView,
-                   editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return UITableViewCell.EditingStyle.delete
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+
+        let reportAction = UITableViewRowAction(style: .normal, title: "Report") { (rowAction, indexPath) in
+            //TODO: edit the row at indexPath here
+        }
+        reportAction.backgroundColor = .red
+
+        let hideAction = UITableViewRowAction(style: .normal, title: "Show/Hide") { (_, indexPath) in
+            guard let threadViewModel: ThreadViewModel = self.pageViewModel.threads[indexPath.section],
+                let postViewModel = threadViewModel.postViewModel(at: indexPath.row) else { return }
+            if postViewModel.isOp {
+                threadViewModel.toggleHidden()
+            } else {
+                postViewModel.toggleHidden()
+            }
+            self.postsTable.reloadData()
+        }
+        hideAction.backgroundColor = .blue
+
+        return [hideAction]
+    }
+
+    private func sectionShouldBeHidden(_ section: Int) -> Bool {
+        let threadViewModel = pageViewModel.threads[section]
+        return threadViewModel.isHidden
     }
 }
 
@@ -368,6 +407,12 @@ extension BoardPagesViewController: CellTapInteractionDelegate {
 }
 
 extension BoardPagesViewController: ThreadFooterViewDelegate {
+    func toggleVisibility(section: Int) {
+        guard let threadVM = pageViewModel.threadViewModel(at: section) else { return }
+        threadVM.toggleHidden()
+        postsTable.reloadData()
+    }
+
     func threadFooterView(_ footer: ThreadFooterView, threadToNavigate section: Int) {
         self.boardsViewModel.threadToLaunch = footer.threadToNavigate
         self.navigateToThread()

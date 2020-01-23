@@ -14,7 +14,7 @@ class ThreadViewModel: NSObject {
     var postNumberToNavigate: Int?
     var boardIdToNavigate: String!
     var completeBoardName: String?
-    var isHidden: Bool = false
+    var hidden: Bool = false
 
     init(thread: Thread) {
         self.posts = thread.posts.map(PostViewModel.init)
@@ -54,4 +54,11 @@ class ThreadViewModel: NSObject {
         return postViewModel(at: 0)?.number
     }
 
+    func toggleHidden() {
+        self.hidden = !self.hidden
+    }
+
+    var isHidden: Bool {
+        return hidden
+    }
 }

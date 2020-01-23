@@ -31,7 +31,10 @@ class ThreadViewController: BaseViewController {
         postsTable.register(
         UINib(nibName: "PostCellNoImage", bundle: nil),
                             forCellReuseIdentifier: "postCell_NoImage_Identifier")
-
+        postsTable.register(
+        UINib(nibName: "PostCellHidden",
+              bundle: nil),
+        forCellReuseIdentifier: "postCell_Hidden_Identifier")
         postsTable.register(UINib(nibName: "ThreadFooterView", bundle: nil),
                             forHeaderFooterViewReuseIdentifier: ThreadFooterView.reuseIdentifier)
     
@@ -183,21 +186,31 @@ extension ThreadViewController: UITableViewDataSource {
 
         let postViewModel = threadViewModel.postViewModel(at: indexPath.row)
         let cell: PostTableViewCell?
-        
-        if postViewModel!.hasImage {
-            cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
-        } else {
-            cell = tableView.dequeueReusableCell(withIdentifier: "postCell_NoImage_Identifier") as? PostTableViewCell
-        }
 
+
+        if postViewModel!.isHidden {
+            cell = tableView.dequeueReusableCell(withIdentifier: "postCell_Hidden_Identifier") as? PostTableViewCell
+        } else {
+            if postViewModel!.hasImage {
+                cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
+            } else {
+                cell = tableView.dequeueReusableCell(withIdentifier: "postCell_NoImage_Identifier") as? PostTableViewCell
+            }
+
+            cell?.selectedBoardId = threadViewModel.boardIdToNavigate
+            cell?.postViewModel = postViewModel
+            cell?.boardName = threadViewModel.completeBoardName!
+            cell?.tapDelegate = self
+            cell?.toastDelegate = self
+            cell?.hideDelegate = self
+            cell?.loadCell()
+        }
+        //hell
+        cell?.boardName = threadViewModel.completeBoardName!
         cell?.selectedBoardId = threadViewModel.boardIdToNavigate
         cell?.postViewModel = postViewModel
-        cell?.boardName = threadViewModel.completeBoardName!
-        cell?.tapDelegate = self
-        cell?.toastDelegate = self
-        cell?.hideDelegate = self
-        cell?.loadCell()
-
+        //hell
+        cell?.setupPostHeader()
         cell?.setNeedsUpdateConstraints()
         cell?.updateConstraintsIfNeeded()
 
@@ -225,6 +238,23 @@ extension ThreadViewController: UITableViewDelegate {
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         flashThreadLinked()
     }
+
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+
+        let reportAction = UITableViewRowAction(style: .normal, title: "Report") { (rowAction, indexPath) in
+            //TODO: edit the row at indexPath here
+        }
+        reportAction.backgroundColor = .red
+
+        let hideAction = UITableViewRowAction(style: .normal, title: "Show/Hide") { (_, indexPath) in
+            guard let postViewModel = self.threadViewModel.postViewModel(at: indexPath.row) else { return }
+            postViewModel.toggleHidden()
+            self.postsTable.reloadData()
+        }
+        hideAction.backgroundColor = .blue
+
+        return [hideAction]
+    }
 }
 
 extension ThreadViewController: CellTapInteractionDelegate {
@@ -246,6 +276,10 @@ extension ThreadViewController: CellTapInteractionDelegate {
 }
 
 extension ThreadViewController: ThreadFooterViewDelegate {
+    func toggleVisibility(section: Int) {
+        //empty
+    }
+
     func threadFooterView(_ footer: ThreadFooterView, threadToNavigate section: Int) {
         let boardToNavigate = threadViewModel.boardIdToNavigate ?? "a"
         let threadNumber = threadViewModel.opNumber ?? 1

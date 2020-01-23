@@ -45,17 +45,29 @@ class PostTableViewCell: UITableViewCell {
     weak var toastDelegate: ToastDelegate?
     weak var hideDelegate: HideDelegate?
 
-    func loadCell() {
+    func setupPostHeader() {
         postAuthorName.text = postViewModel.postAuthorName
-        
+        postNumber.text = "No.\(postViewModel.number!)"
+        postTimePublishing.text = postViewModel.timeFromPost
+        let flag = postViewModel.flagCountryCode
+        if let flagUrl = URL(string: "https://s.4cdn.org/image/country/\(flag).gif") {
+            flagIcon.sd_setImage(with: flagUrl)
+        }
+        flagIcon.addGestureRecognizer(
+        UITapGestureRecognizer(target: self,
+                               action: #selector(showFlagHint(_:))))
+
+        stickyIcon.isHidden = !postViewModel.isPinned
+    }
+
+    func loadCell() {
         if let title = postViewModel.title {
             postTitle.attributedText = title.toPlainText(fontSize: 14)
         } else {
             postTitle.text = ""
         }
 
-        postNumber.text = "No.\(postViewModel.number!)"
-        postTimePublishing.text = postViewModel.timeFromPost
+        setupPostHeader()
 
         if let comment = postViewModel.comment {
             postText.attributedText = comment.toPlainText()
@@ -63,10 +75,7 @@ class PostTableViewCell: UITableViewCell {
             postText.text = ""
         }
 
-        let flag = postViewModel.flagCountryCode
-        if let flagUrl = URL(string: "https://s.4cdn.org/image/country/\(flag).gif") {
-            flagIcon.sd_setImage(with: flagUrl)
-        }
+
         
         if postViewModel.isSpoiler {
             postImage?.sd_setImage(with: postViewModel.spoilerUrl)
@@ -103,12 +112,6 @@ class PostTableViewCell: UITableViewCell {
         action: #selector(copyToClipBoard(_:)))
         copyDoubleTap.numberOfTapsRequired = 2
         postText.addGestureRecognizer(copyDoubleTap)
-
-        flagIcon.addGestureRecognizer(
-        UITapGestureRecognizer(target: self,
-                               action: #selector(showFlagHint(_:))))
-
-        stickyIcon.isHidden = !postViewModel.isPinned
     }
 
     @objc
@@ -248,11 +251,4 @@ extension UIView {
 
 protocol CompleteBoardNameProtocol {
     var completeBoardName: String { get set }
-}
-
-extension PostTableViewCell {
-    @IBAction func savePasta() {
-//        let a = UIActivityViewController()
-//        self.
-    }
 }
