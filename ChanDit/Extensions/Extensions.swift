@@ -5,8 +5,10 @@
 //  Created by Vinicius Valvassori on 18/11/19.
 //  Copyright © 2019 Vinicius Valvassori. All rights reserved.
 //
+//  swiftlint:disable identifier_name
 
 import UIKit
+import Foundation
 
 extension UserDefaults {
     static var videoCache: UserDefaults {
@@ -108,5 +110,78 @@ extension UIViewController {
             }
             self.present(alert, animated: true, completion: nil)
         }
+    }
+}
+
+extension String {
+    func toPlainText(fontSize: CGFloat? = 17, postViewModel: PostViewModel? = nil) -> NSAttributedString {
+        var attribText = NSMutableAttributedString(string: "")
+        if let htmlData = self.data(using: .unicode) {
+            do {
+                attribText =
+                    try NSMutableAttributedString(data: htmlData,
+                                           options: [.documentType: NSAttributedString.DocumentType.html],
+                                           documentAttributes: nil)
+                attribText.addAttributes([.foregroundColor: UIColor.white,
+                                          .font: UIFont.systemFont(ofSize: fontSize!)],
+                                         range: NSRange(location: 0, length: attribText.mutableString.length))
+                if let pvm = postViewModel {
+                    for index in 0..<pvm.lowerRangeGreenText.count {
+                        let lowerIndex = pvm.lowerRangeGreenText[index] + 24
+                        let start = String.Index.init(utf16Offset: lowerIndex, in: self)
+                        let upperIndex = pvm.upperRangeGreenText[index]
+                        let count = upperIndex - lowerIndex
+                        if let end: String.Index? = self.index(start, offsetBy: count) {
+                            let substring = self[start..<(end ?? start)]
+                            let attRange = attribText.string.range(of: substring)
+                            if let nsRange = attribText.string.range(of: ">\(substring)")?.nsRange(in: attribText.string) {
+                                (attribText.string as NSString).substring(with: nsRange)
+
+                                attribText.addAttributes([.foregroundColor: UIColor.green,
+                                                          .font: UIFont.boldSystemFont(ofSize: fontSize!)],
+                                                         range: nsRange)
+                            }
+                        }
+                    }
+                }
+            } catch let error as NSError {
+                print("Couldn't parse \(self): \(error.localizedDescription)")
+            }
+        }
+        return attribText
+    }
+}
+
+extension RangeExpression where Bound == String.Index  {
+    func nsRange<S: StringProtocol>(in string: S) -> NSRange { .init(self, in: string) }
+}
+
+extension String {
+    func indicesOf(string: String) -> [Int] {
+        // Converting to an array of utf8 characters makes indicing and comparing a lot easier
+        let search = self.utf8.map { $0 }
+        let word = string.utf8.map { $0 }
+
+        var indices = [Int]()
+
+        // m - the beginning of the current match in the search string
+        // i - the position of the current character in the string we're trying to match
+        var m = 0, i = 0
+        while m + i < search.count {
+            if word[i] == search[m+i] {
+                if i == word.count - 1 {
+                    indices.append(m)
+                    m += i + 1
+                    i = 0
+                } else {
+                    i += 1
+                }
+            } else {
+                m += 1
+                i = 0
+            }
+        }
+
+        return indices
     }
 }
