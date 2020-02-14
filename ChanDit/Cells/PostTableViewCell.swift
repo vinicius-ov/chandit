@@ -62,7 +62,7 @@ class PostTableViewCell: UITableViewCell {
 
     func loadCell() {
         if let title = postViewModel.title {
-            postTitle.attributedText = title.toPlainText(fontSize: 14, postViewModel: postViewModel)
+            postTitle.attributedText = title.toPlainText(fontSize: 14)
         } else {
             postTitle.text = ""
         }

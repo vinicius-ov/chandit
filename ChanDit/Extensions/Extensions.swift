@@ -131,16 +131,14 @@ extension String {
                         let start = String.Index.init(utf16Offset: lowerIndex, in: self)
                         let upperIndex = pvm.upperRangeGreenText[index]
                         let count = upperIndex - lowerIndex
-                        if let end: String.Index? = self.index(start, offsetBy: count) {
-                            let substring = self[start..<(end ?? start)]
-                            let attRange = attribText.string.range(of: substring)
-                            if let nsRange = attribText.string.range(of: ">\(substring)")?.nsRange(in: attribText.string) {
-                                (attribText.string as NSString).substring(with: nsRange)
+                        let end: String.Index = self.index(start, offsetBy: count)
+                        let substring = self[start..<end]
+                        if let nsRange = attribText.string.range(of: ">\(substring)")?.nsRange(in: attribText.string) {
+                            (attribText.string as NSString).substring(with: nsRange)
 
-                                attribText.addAttributes([.foregroundColor: UIColor.green,
-                                                          .font: UIFont.boldSystemFont(ofSize: fontSize!)],
-                                                         range: nsRange)
-                            }
+                            attribText.addAttributes([.foregroundColor: UIColor.green,
+                                                      .font: UIFont.systemFont(ofSize: fontSize!)],
+                                                     range: nsRange)
                         }
                     }
                 }
@@ -152,7 +150,7 @@ extension String {
     }
 }
 
-extension RangeExpression where Bound == String.Index  {
+extension RangeExpression where Bound == String.Index {
     func nsRange<S: StringProtocol>(in string: S) -> NSRange { .init(self, in: string) }
 }
 
