@@ -70,7 +70,7 @@ class PostTableViewCell: UITableViewCell {
         setupPostHeader()
 
         if let comment = postViewModel.comment {
-            postText.attributedText = comment.toPlainText()
+            postText.attributedText = comment.toPlainText(postViewModel: postViewModel)
         } else {
             postText.text = ""
         }
@@ -220,26 +220,6 @@ class PostTableViewCell: UITableViewCell {
         } else {
             hideDelegate?.hidePost(number: postViewModel.number ?? 0)
         }
-    }
-}
-
-extension String {
-    func toPlainText(fontSize: CGFloat? = 17) -> NSAttributedString {
-        var attribText = NSMutableAttributedString(string: "")
-        if let htmlData = self.data(using: .unicode) {
-            do {
-                attribText =
-                    try NSMutableAttributedString(data: htmlData,
-                                           options: [.documentType: NSAttributedString.DocumentType.html],
-                                           documentAttributes: nil)
-                attribText.addAttributes([.foregroundColor: UIColor.white,
-                                          .font: UIFont.systemFont(ofSize: fontSize!)],
-                                         range: NSRange(location: 0, length: attribText.mutableString.length))
-            } catch let error as NSError {
-                print("Couldn't parse \(self): \(error.localizedDescription)")
-            }
-        }
-        return attribText
     }
 }
 

@@ -28,6 +28,14 @@ extension PostViewModel {
         return formatString
     }
 
+    var lowerRangeGreenText: [Int] {
+        return (comment ?? "").indicesOf(string: "<span class=\"quote\">")
+    }
+
+    var upperRangeGreenText: [Int] {
+        return (comment ?? "").indicesOf(string: "</span>")
+    }
+
     var title: String? {
         return post.sub
     }
