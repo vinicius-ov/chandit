@@ -196,7 +196,7 @@ extension ThreadViewController: UITableViewDataSource {
             } else {
                 cell = tableView.dequeueReusableCell(withIdentifier: "postCell_NoImage_Identifier") as? PostTableViewCell
             }
-
+            print(postViewModel?.quotes)
             cell?.selectedBoardId = threadViewModel.boardIdToNavigate
             cell?.postViewModel = postViewModel
             cell?.boardName = threadViewModel.completeBoardName!

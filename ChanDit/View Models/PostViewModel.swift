@@ -5,6 +5,8 @@
 //  Created by Vinicius Valvassori on 09/08/19.
 //  Copyright © 2019 Vinicius Valvassori. All rights reserved.
 //  swiftlint:disable trailing_whitespace
+//  swiftlint:disable line_length
+
 
 import UIKit
 
@@ -184,4 +186,22 @@ extension PostViewModel {
     var isHidden: Bool {
         return hidden
     }
+
+    var quotes: [String] {
+        guard let comm = post.com else { return [String]() }
+        let occs = comm.components(separatedBy: "&gt;&gt;")
+        var pocs = [String]()
+        for index in 1..<occs.count {
+            pocs.append(contentsOf: occs[index].components(separatedBy: "</a><br>"))
+        }
+        var resul = [String]()
+        for ind in stride(from: 0, to: pocs.count, by: 2) {
+            resul.append(pocs[ind])
+        }
+        return resul
+    }
 }
+
+//"<span class=\"deadlink\">&gt;&gt;496551161</span><br>What are we apologizing for?"
+//"<a href=\"#p496549362\" class=\"quotelink\">&gt;&gt;496549362</a><br>59% togo"
+//"<a href=\"#p496549362\" class=\"quotelink\">&gt;&gt;496549362</a><br><br>Maybe if you didn&#039;t harass fan artists and porn stars into suicide, someone would care."

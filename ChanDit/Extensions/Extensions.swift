@@ -183,3 +183,20 @@ extension String {
         return indices
     }
 }
+
+extension Data {
+    func createCacheDirectory() {
+        guard let cacheDir: String = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else { return }
+        let docURL = URL(string: cacheDir)
+        guard let docPath = docURL?.appendingPathComponent("webm") else { return }
+        if !FileManager.default.fileExists(atPath: docPath.absoluteString) {
+            do {
+                try FileManager.default.createDirectory(atPath: docPath.absoluteString, withIntermediateDirectories: true, attributes: nil)
+            } catch {
+                print(error.localizedDescription);
+            }
+        }
+    }
+
+    
+}
