@@ -205,3 +205,4 @@ extension PostViewModel {
 //"<span class=\"deadlink\">&gt;&gt;496551161</span><br>What are we apologizing for?"
 //"<a href=\"#p496549362\" class=\"quotelink\">&gt;&gt;496549362</a><br>59% togo"
 //"<a href=\"#p496549362\" class=\"quotelink\">&gt;&gt;496549362</a><br><br>Maybe if you didn&#039;t harass fan artists and porn stars into suicide, someone would care."
+//"<a href=\"#p496564612\" class=\"quotelink\">&gt;&gt;496564612</a><br><span class=\"quote\">&gt;&gt; 2016 was all the same color</span><br>the ammo was all that orange/brown"    
