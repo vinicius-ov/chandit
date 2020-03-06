@@ -198,6 +198,10 @@ extension PostViewModel {
         for ind in stride(from: 0, to: pocs.count, by: 2) {
             resul.append(pocs[ind])
         }
+
+//        print(comm)
+//        print(resul)
+
         return resul
     }
 }

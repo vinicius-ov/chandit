@@ -157,7 +157,7 @@ class PlaybackViewController: UIViewController {
     
     @IBAction func valueChanged(_ sender: UISlider) {
         blockTimer = true
-        print(sender.value)
+        //print(sender.value)
         elapsedTime.text = "\(VLCTime(number: NSNumber(value: sender.value)) ?? VLCTime())"
     }
     

@@ -16,6 +16,7 @@ class ThreadViewController: BaseViewController {
     let service = Service()
     var lastModified: String?
     var indexPathNav: IndexPath!
+    var quotesMap: [Int:Int]!
     
     @IBOutlet weak var postsTable: UITableView!
     @IBOutlet weak var reloadButton: UIBarButtonItem!
@@ -40,7 +41,9 @@ class ThreadViewController: BaseViewController {
     
         postsTable.rowHeight = UITableView.automaticDimension
         postsTable.estimatedRowHeight = 200
-        
+
+        quotesMap = [Int:Int]()
+
         fetchData()
     }
 
@@ -67,6 +70,16 @@ class ThreadViewController: BaseViewController {
                             return
                         }
                         self.threadViewModel.posts = thread.posts.map(PostViewModel.init)
+
+                        self.threadViewModel.posts.forEach { pvm in
+                            print(pvm.number ?? 0)
+                            print(pvm.quotes)
+                            pvm.quotes.forEach { quote in
+                                let quo = Int(quote) ?? 0
+                                self.quotesMap.updateValue(quo, forKey: pvm.number ?? 0)
+                            }
+                        }
+
                         DispatchQueue.main.async {
                             self.postsTable.reloadData()
                             self.postsTable.isHidden = false
@@ -196,7 +209,7 @@ extension ThreadViewController: UITableViewDataSource {
             } else {
                 cell = tableView.dequeueReusableCell(withIdentifier: "postCell_NoImage_Identifier") as? PostTableViewCell
             }
-            print(postViewModel?.quotes)
+            //print(postViewModel?.quotes)
             cell?.selectedBoardId = threadViewModel.boardIdToNavigate
             cell?.postViewModel = postViewModel
             cell?.boardName = threadViewModel.completeBoardName!
