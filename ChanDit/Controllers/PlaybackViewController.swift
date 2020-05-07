@@ -36,20 +36,23 @@ class PlaybackViewController: UIViewController {
 
         sliderTimer.addTarget(self, action: #selector(onSliderValChanged(slider:event:)), for: .valueChanged)
         movieView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(toggleHud(_:))))
-        
-        let number = "\(postNumber ?? 0)"
-        if let videoData = UserDefaults.videoCache.data(forKey: number) {
-            do {
-                try setVideoDataToFolder(videoData: videoData)
-            } catch {
-                showAlertView(title: "Failed to load video",
-                              message: "Failed to load video from cache. Try again later.")
+
+        do {
+            try fileURL = getVideoURL()
+            let path = fileURL?.path ?? ""
+            setupMediaPLayer()
+            if fileManager.fileExists(atPath: path) {
+                print("reading from cache: \(fileURL)")
+                setupMedia()
+            } else {
+                print("writing to cache: \(fileURL)")
+                task = Service(delegate: self).loadVideoData(from: mediaURL)
+                task.resume()
+
             }
-            self.setupMediaPLayer()
-            self.setupMedia()
-        } else {
-            task = Service(delegate: self).loadVideoData(from: mediaURL)
-            task.resume()
+        } catch {
+            showAlertView(title: "Failed to load video",
+            message: "Failed to load video from server. Try again later.")
         }
     }
     
@@ -68,14 +71,15 @@ class PlaybackViewController: UIViewController {
     }
     
     private func setVideoDataToFolder(videoData: Data) throws {
-        let documentDirectory = try? self.fileManager.url(
-            for: .documentDirectory, in: .userDomainMask,
-            appropriateFor: nil, create: false)
-        let path = documentDirectory?.appendingPathComponent("webm", isDirectory: true)
-        try fileManager.createDirectory(at: path!, withIntermediateDirectories: true, attributes: nil)
-        fileURL = path!
-            .appendingPathComponent(self.filename, isDirectory: false)
+        let documentDirectory = try getBaseDirectory(for: .cachesDirectory)
+        fileURL = documentDirectory.appendingPathComponent(self.filename, isDirectory: false)
         try videoData.write(to: fileURL!)
+    }
+
+    private func getVideoURL() throws -> URL {
+        let documentDirectory = try getBaseDirectory(for: .cachesDirectory)
+        let path = documentDirectory.appendingPathComponent(self.filename, isDirectory: false)
+        return path
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -121,15 +125,8 @@ class PlaybackViewController: UIViewController {
         if task != nil {
             task.cancel()
         }
-        if let url = fileURL, !shouldSave {
-            do {
-                try fileManager.removeItem(at: url)
-            } catch {
-                print("could not delete file")
-            }
-        }
     }
-    
+
     @IBAction func closeView(_ sender: Any) {
         navigationController?.popViewController(animated: true)
     }
@@ -148,16 +145,34 @@ class PlaybackViewController: UIViewController {
         mediaListPlayer.play(media)
         toggleHud(self)
     }
-    
+
+    func getBaseDirectory(for path: FileManager.SearchPathDirectory) throws -> URL {
+        return try fileManager.url(
+        for: path, in: .userDomainMask,
+        appropriateFor: nil, create: false)
+    }
+
+    func saveWebm() throws {
+        let documentDirectory = try getBaseDirectory(for: .documentDirectory)
+        let webmDir = documentDirectory.appendingPathComponent("webm", isDirectory: true)
+        try fileManager.createDirectory(at: webmDir, withIntermediateDirectories: true, attributes: nil)
+        let filenameExtension = webmDir.appendingPathComponent("\(filename ?? "a").webm", isDirectory: false)
+        try fileManager.copyItem(at: fileURL!, to: filenameExtension)
+    }
+
     @IBAction func saveVideo(_ sender: Any) {
-        shouldSave = true
+        do {
+            try saveWebm()
+        } catch {
+            showAlertView(title: "Failed to save video",
+            message: "Failed saving webm locally. Try again later.")
+        }
         (sender as? UIButton)?.setTitle("Saved", for: .normal)
         (sender as? UIButton)?.isEnabled = false
     }
     
     @IBAction func valueChanged(_ sender: UISlider) {
         blockTimer = true
-        print(sender.value)
         elapsedTime.text = "\(VLCTime(number: NSNumber(value: sender.value)) ?? VLCTime())"
     }
     
@@ -201,21 +216,24 @@ URLSessionDownloadDelegate {
         }
     }
     
-    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
+    fileprivate func showAlertFailedLoadVideo(_ localizedDescription: String? = "") {
+        showAlertView(title: "Failed to load video",
+                      message: "Failed to load video from server. Try again later.")
+    }
+
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask,
+                    didFinishDownloadingTo location: URL) {
         do {
             let data = try Data(contentsOf: location)
-            UserDefaults.videoCache.set(data, forKey: "\(postNumber ?? 0)")
             try setVideoDataToFolder(videoData: data)
-            setupMediaPLayer()
             setupMedia()
         } catch {
-            showAlertView(title: "Failed to load video",
-                          message: "Failed to load video from server. Try again later.")
+            showAlertFailedLoadVideo()
         }
     }
+
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         guard let error = error else { return }
-        showAlertView(title: "Failed to load video",
-                      message: "Failed to load video from server. Try again later. \(error.localizedDescription)")
+        showAlertFailedLoadVideo(error.localizedDescription)
     }
 }
