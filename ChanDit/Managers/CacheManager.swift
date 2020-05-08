@@ -12,9 +12,7 @@ import SDWebImage
 class CacheManager: NSObject {
 
     static func clearWebmCache() {
-        UserDefaults.videoCache.removePersistentDomain(
-            forName: "webm.chandit")
-        UserDefaults.videoCache.synchronize()
+
     }
 
     static func clearImageDiskCache() {

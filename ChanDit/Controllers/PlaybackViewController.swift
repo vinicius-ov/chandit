@@ -72,13 +72,18 @@ class PlaybackViewController: UIViewController {
     
     private func setVideoDataToFolder(videoData: Data) throws {
         let documentDirectory = try getBaseDirectory(for: .cachesDirectory)
+        //let path = documentDirectory.appendingPathComponent("webm", isDirectory: true)
+        try fileManager.createDirectory(at: documentDirectory, withIntermediateDirectories: true, attributes: nil)
         fileURL = documentDirectory.appendingPathComponent(self.filename, isDirectory: false)
         try videoData.write(to: fileURL!)
     }
 
     private func getVideoURL() throws -> URL {
         let documentDirectory = try getBaseDirectory(for: .cachesDirectory)
-        let path = documentDirectory.appendingPathComponent(self.filename, isDirectory: false)
+        //let path = documentDirectory.appendingPathComponent("webm",
+                                                  //          isDirectory: true)
+        let path = documentDirectory.appendingPathComponent(self.filename,
+                                    isDirectory: false)
         return path
     }
     
@@ -147,16 +152,21 @@ class PlaybackViewController: UIViewController {
     }
 
     func getBaseDirectory(for path: FileManager.SearchPathDirectory) throws -> URL {
-        return try fileManager.url(
-        for: path, in: .userDomainMask,
-        appropriateFor: nil, create: false)
+        let url = try fileManager.url(for: path, in: .userDomainMask,
+                                      appropriateFor: nil, create: false)
+        if path == .documentDirectory {
+            return url.appendingPathComponent("webm", isDirectory: true)
+        }
+        let bundle: String = Bundle.main.bundleIdentifier ?? ""
+        return url.appendingPathComponent(bundle, isDirectory: true).appendingPathComponent("webm", isDirectory: true)
     }
 
     func saveWebm() throws {
         let documentDirectory = try getBaseDirectory(for: .documentDirectory)
-        let webmDir = documentDirectory.appendingPathComponent("webm", isDirectory: true)
-        try fileManager.createDirectory(at: webmDir, withIntermediateDirectories: true, attributes: nil)
-        let filenameExtension = webmDir.appendingPathComponent("\(filename ?? "a").webm", isDirectory: false)
+        try fileManager.createDirectory(at: documentDirectory, withIntermediateDirectories: true, attributes: nil)
+        let filenameExtension = documentDirectory
+            .appendingPathComponent(filename ?? "a", isDirectory: false)
+            .appendingPathExtension("webm")
         try fileManager.copyItem(at: fileURL!, to: filenameExtension)
     }
 
@@ -165,7 +175,7 @@ class PlaybackViewController: UIViewController {
             try saveWebm()
         } catch {
             showAlertView(title: "Failed to save video",
-            message: "Failed saving webm locally. Try again later.")
+            message: "Failed saving webm locally. Maybe video was already saved?")
         }
         (sender as? UIButton)?.setTitle("Saved", for: .normal)
         (sender as? UIButton)?.isEnabled = false
@@ -186,9 +196,6 @@ class PlaybackViewController: UIViewController {
         }
     }
     
-    override func didReceiveMemoryWarning() {
-        CacheManager.clearWebmCache()
-    }
 }
 
 extension PlaybackViewController: VLCMediaPlayerDelegate {
