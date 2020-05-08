@@ -132,7 +132,7 @@ extension String {
                         let upperIndex = pvm.upperRangeGreenText[index]
                         let count = upperIndex - lowerIndex
                         let end: String.Index = self.index(start, offsetBy: count)
-                        guard end < start else { return attribText }
+                        guard end > start else { return attribText }
                         let substring = self[start..<end]
                         if let nsRange = attribText.string.range(of: ">\(substring)")?.nsRange(in: attribText.string) {
                             (attribText.string as NSString).substring(with: nsRange)

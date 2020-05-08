@@ -72,7 +72,6 @@ class PlaybackViewController: UIViewController {
     
     private func setVideoDataToFolder(videoData: Data) throws {
         let documentDirectory = try getBaseDirectory(for: .cachesDirectory)
-        //let path = documentDirectory.appendingPathComponent("webm", isDirectory: true)
         try fileManager.createDirectory(at: documentDirectory, withIntermediateDirectories: true, attributes: nil)
         fileURL = documentDirectory.appendingPathComponent(self.filename, isDirectory: false)
         try videoData.write(to: fileURL!)
@@ -80,8 +79,6 @@ class PlaybackViewController: UIViewController {
 
     private func getVideoURL() throws -> URL {
         let documentDirectory = try getBaseDirectory(for: .cachesDirectory)
-        //let path = documentDirectory.appendingPathComponent("webm",
-                                                  //          isDirectory: true)
         let path = documentDirectory.appendingPathComponent(self.filename,
                                     isDirectory: false)
         return path
@@ -180,7 +177,7 @@ class PlaybackViewController: UIViewController {
         (sender as? UIButton)?.setTitle("Saved", for: .normal)
         (sender as? UIButton)?.isEnabled = false
     }
-    
+
     @IBAction func valueChanged(_ sender: UISlider) {
         blockTimer = true
         elapsedTime.text = "\(VLCTime(number: NSNumber(value: sender.value)) ?? VLCTime())"
