@@ -148,16 +148,6 @@ class PlaybackViewController: UIViewController {
         toggleHud(self)
     }
 
-    func getBaseDirectory(for path: FileManager.SearchPathDirectory) throws -> URL {
-        let url = try fileManager.url(for: path, in: .userDomainMask,
-                                      appropriateFor: nil, create: false)
-        if path == .documentDirectory {
-            return url.appendingPathComponent("webm", isDirectory: true)
-        }
-        let bundle: String = Bundle.main.bundleIdentifier ?? ""
-        return url.appendingPathComponent(bundle, isDirectory: true).appendingPathComponent("webm", isDirectory: true)
-    }
-
     func saveWebm() throws {
         let documentDirectory = try getBaseDirectory(for: .documentDirectory)
         try fileManager.createDirectory(at: documentDirectory, withIntermediateDirectories: true, attributes: nil)
@@ -239,5 +229,18 @@ URLSessionDownloadDelegate {
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         guard let error = error else { return }
         showAlertFailedLoadVideo(error.localizedDescription)
+    }
+}
+
+extension PlaybackViewController {
+    func getBaseDirectory(for path: FileManager.SearchPathDirectory) throws -> URL {
+        let fileManager = FileManager.default
+        let url = try fileManager.url(for: path, in: .userDomainMask,
+                                      appropriateFor: nil, create: false)
+        if path == .documentDirectory {
+            return url.appendingPathComponent("webm", isDirectory: true)
+        }
+        let bundle: String = Bundle.main.bundleIdentifier ?? ""
+        return url.appendingPathComponent(bundle, isDirectory: true).appendingPathComponent("webm", isDirectory: true)
     }
 }

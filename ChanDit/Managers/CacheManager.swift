@@ -10,9 +10,13 @@ import UIKit
 import SDWebImage
 
 class CacheManager: NSObject {
-
     static func clearWebmCache() {
-
+        do {
+            let url = try URLManager.getBaseDirectory(for: .cachesDirectory)
+            try FileManager.default.removeItem(at: url)
+        } catch {
+            print("Failed to remove cache. Try again later.")
+        }
     }
 
     static func clearImageDiskCache() {
@@ -23,15 +27,17 @@ class CacheManager: NSObject {
         SDImageCache.shared.clearMemory()
     }
 
-    static func numberOfItensInCache() -> Int {
-        return UserDefaults.videoCache.dictionaryRepresentation().keys.count
-    }
+}
 
-    static func removeWebmCache() {
-        for key in UserDefaults.videoCache.dictionaryRepresentation().keys {
-            UserDefaults.videoCache.removeObject(forKey: key)
+class URLManager {
+    static func getBaseDirectory(for path: FileManager.SearchPathDirectory) throws -> URL {
+        let fileManager = FileManager.default
+        let url = try fileManager.url(for: path, in: .userDomainMask,
+                                      appropriateFor: nil, create: false)
+        if path == .documentDirectory {
+            return url.appendingPathComponent("webm", isDirectory: true)
         }
-        UserDefaults.videoCache.synchronize()
+        let bundle: String = Bundle.main.bundleIdentifier ?? ""
+        return url.appendingPathComponent(bundle, isDirectory: true).appendingPathComponent("webm", isDirectory: true)
     }
-
 }
