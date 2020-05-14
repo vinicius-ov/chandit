@@ -83,7 +83,7 @@ class PostTableViewCell: UITableViewCell {
             if let thumbUrl = postViewModel.thumbnailUrl(boardId: selectedBoardId) {
                 postImage?.sd_setImage(with: thumbUrl,
                                       completed: { (_, error, _, _) in
-                                        print(error?.localizedDescription)
+                                        //print(error?.localizedDescription)
                                         if error != nil {
                                             self.postImage?.sd_setImage(with:
                                                 URL(string: "https://s.4cdn.org/image/filedeleted-res.gif")!)
