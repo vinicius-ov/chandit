@@ -7,11 +7,13 @@
 //  swiftlint:disable trailing_whitespace
 
 import UIKit
+import Foundation
 
 class PostViewModel {
     var post: Post
     var hidden: Bool = false
-
+    var quoted: [Int] = []
+    
     init(post: Post) {
         self.post = post
     }
@@ -24,8 +26,23 @@ extension PostViewModel {
     }
     
     var comment: String? {
-        var formatString = post.com?.replacingOccurrences(of: "#p", with: "chandit://")
+        let formatString: String? = post.com?.replacingOccurrences(of: "#p",
+                                                                   with: "chandit://")
         return formatString
+    }
+
+    var quotes: [Int] {
+        var afterquotes = [Int]()
+        if let comm = post.com {
+            let quotes = comm.components(separatedBy: "&gt;&gt;")
+            for quote in quotes {
+                let mid = quote.components(separatedBy: "</a>")
+                if let quote = Int(mid.first ?? "") {
+                    afterquotes.append(quote)
+                }
+            }
+        }
+        return afterquotes
     }
 
     var lowerRangeGreenText: [Int] {
@@ -183,5 +200,13 @@ extension PostViewModel {
 
     var isHidden: Bool {
         return hidden
+    }
+
+    var quotedAsHtml: String {
+        var html = ""
+        for quote in quoted {
+            html += "<a href=\"#p\(quote)\" class=\"quotelink\">&gt;&gt;\(quote)</a>&#32;"
+        }
+        return html
     }
 }

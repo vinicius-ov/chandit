@@ -188,7 +188,8 @@ class BoardPagesViewController: BaseViewController {
                 }
             case .failure(let error):
                 self.showAlertView(title: "Fetch failed",
-                                   message: "Failed to load board lista. Try reloading the app. \(error.localizedDescription)",
+                                   message: "Failed to load board lista. "
+                    + "Try reloading the app. \(error.localizedDescription)",
                     actions: [])
             }
         }
@@ -294,7 +295,8 @@ extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
             if postViewModel!.hasImage {
                 cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
             } else {
-                cell = tableView.dequeueReusableCell(withIdentifier: "postCell_NoImage_Identifier") as? PostTableViewCell
+                cell = tableView.dequeueReusableCell(
+                    withIdentifier: "postCell_NoImage_Identifier") as? PostTableViewCell
             }
 
             cell?.boardName = boardsViewModel.completeBoardName(atRow: pickerView.selectedRow(inComponent: 0))
@@ -389,7 +391,13 @@ extension BoardPagesViewController: UIPickerViewDataSource, UIPickerViewDelegate
 extension BoardPagesViewController: CellTapInteractionDelegate {
     func linkTapped(postNumber: Int, opNumber: Int, originNumber: Int) {
         self.boardsViewModel.postNumberToNavigate = postNumber
-        self.boardsViewModel.threadToLaunch = opNumber
+
+        if opNumber == 0 {
+            self.boardsViewModel.threadToLaunch = postNumber
+        } else {
+            self.boardsViewModel.threadToLaunch = opNumber
+        }
+
         self.navigateToThread()
     }
     

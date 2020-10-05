@@ -61,4 +61,17 @@ class ThreadViewModel: NSObject {
     var isHidden: Bool {
         return hidden
     }
+
+    func buildQuotes() {
+
+        for post in posts.reversed() {
+            let quotes = post.quotes
+            for testPost in posts {
+                if quotes.contains(testPost.number ?? 0) {
+                    testPost.quoted.append(post.number ?? 0)
+                }
+            }
+        }
+    }
+
 }

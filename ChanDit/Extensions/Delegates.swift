@@ -10,7 +10,7 @@ protocol CellTapInteractionDelegate: class {
     func linkTapped(postNumber: Int, opNumber: Int, originNumber: Int)
     func imageTapped(_ viewController: UIViewController)
     func presentAlertExitingApp(_ actions: [UIAlertAction])
-} 
+}
 
 protocol ToastDelegate: class {
     func showToast(flagHint: String)

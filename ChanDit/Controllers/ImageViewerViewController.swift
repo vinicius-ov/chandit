@@ -201,14 +201,14 @@ CompleteBoardNameProtocol {
     // MARK: alert builders
 
     private func showFailToast(error: Error? = nil) {
-        showToast(
-            message: "Not authorized to save images in Camera Roll. Go to Settings to fix this. \(error?.localizedDescription)")
+        showToast(message: "Not authorized to save images in Camera Roll. "
+            + "Go to Settings to fix this. \(error?.localizedDescription ?? "")")
     }
     
     func showSuccessToast() {
             self.showToast(message: "Photo was saved to the camera roll.",
                            textColor: UIColor.black,
-                           backgroundColor: UIColor(named: "lightGreenSuccess")!)
+                           backgroundColor: UIColor.green)
     }
     
     // MARK: zoom/pinch image functions

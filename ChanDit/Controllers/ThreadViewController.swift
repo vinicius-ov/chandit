@@ -60,13 +60,17 @@ class ThreadViewController: BaseViewController {
                 switch response.code {
                 case 200..<300:
                     self.lastModified = response.modified
+
                     do {
                         guard let thread = try? JSONDecoder().decode(Thread.self, from: response.data) else {
                             print("error trying to convert data to JSON \(response)")
                             self.showThreadNotFoundAlert(isRefreshing: refreshing)
                             return
                         }
+
                         self.threadViewModel.posts = thread.posts.map(PostViewModel.init)
+                        self.threadViewModel.buildQuotes()
+
                         DispatchQueue.main.async {
                             self.postsTable.reloadData()
                             self.postsTable.isHidden = false
@@ -114,6 +118,7 @@ class ThreadViewController: BaseViewController {
              let index = self.threadViewModel.findPostIndexByNumber(postNumberToNavigate) else { return }
             indexPathNav = IndexPath(item: index, section: 0)
         let indexPaths = self.postsTable.indexPathsForVisibleRows!
+
         for index in indexPaths {
             let post = threadViewModel.postViewModel(at: index.row)
             if post!.number! == postNumberToNavigate {
@@ -187,14 +192,14 @@ extension ThreadViewController: UITableViewDataSource {
         let postViewModel = threadViewModel.postViewModel(at: indexPath.row)
         let cell: PostTableViewCell?
 
-
         if postViewModel!.isHidden {
             cell = tableView.dequeueReusableCell(withIdentifier: "postCell_Hidden_Identifier") as? PostTableViewCell
         } else {
             if postViewModel!.hasImage {
                 cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
             } else {
-                cell = tableView.dequeueReusableCell(withIdentifier: "postCell_NoImage_Identifier") as? PostTableViewCell
+                cell = tableView.dequeueReusableCell(
+                    withIdentifier: "postCell_NoImage_Identifier") as? PostTableViewCell
             }
 
             cell?.selectedBoardId = threadViewModel.boardIdToNavigate

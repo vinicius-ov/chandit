@@ -22,17 +22,17 @@ class Service: NSObject {
     }
 
     var session: URLSession!
-    
+
     init(delegate: URLSessionDelegate) {
         super.init()
         session = URLSession(configuration: URLSessionConfiguration.default, delegate: delegate, delegateQueue: nil)
     }
-    
+
     override init() {
         super.init()
         session = URLSession(configuration: URLSessionConfiguration.default)
     }
-    
+
     func loadData(from url: URL, lastModified: String?,
                   completionHandler: @escaping (Result) -> Void) {
         var request = URLRequest(url: url)

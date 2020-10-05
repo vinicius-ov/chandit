@@ -114,6 +114,29 @@ extension UIViewController {
 }
 
 extension String {
+    fileprivate func generateGreenText(_ postViewModel: PostViewModel?,
+                                       _ attribText: NSMutableAttributedString,
+                                       _ fontSize: CGFloat?) {
+        if let pvm = postViewModel {
+            for index in 0..<pvm.lowerRangeGreenText.count {
+                let lowerIndex = pvm.lowerRangeGreenText[index] + 24
+                let start = String.Index.init(utf16Offset: lowerIndex, in: self)
+                let upperIndex = pvm.upperRangeGreenText[index]
+                let count = upperIndex - lowerIndex
+                let end: String.Index = self.index(start, offsetBy: count)
+                guard end > start else { return }
+                let substring = self[start..<end]
+                if let nsRange = attribText.string.range(of: ">\(substring)")?.nsRange(in: attribText.string) {
+                    (attribText.string as NSString).substring(with: nsRange)
+
+                    attribText.addAttributes([.foregroundColor: UIColor.green,
+                                              .font: UIFont.systemFont(ofSize: fontSize!)],
+                                             range: nsRange)
+                }
+            }
+        }
+    }
+
     func toPlainText(fontSize: CGFloat? = 17, postViewModel: PostViewModel? = nil) -> NSAttributedString {
         var attribText = NSMutableAttributedString(string: "")
         if let htmlData = self.data(using: .unicode) {
@@ -125,24 +148,7 @@ extension String {
                 attribText.addAttributes([.foregroundColor: UIColor.white,
                                           .font: UIFont.systemFont(ofSize: fontSize!)],
                                          range: NSRange(location: 0, length: attribText.mutableString.length))
-                if let pvm = postViewModel {
-                    for index in 0..<pvm.lowerRangeGreenText.count {
-                        let lowerIndex = pvm.lowerRangeGreenText[index] + 24
-                        let start = String.Index.init(utf16Offset: lowerIndex, in: self)
-                        let upperIndex = pvm.upperRangeGreenText[index]
-                        let count = upperIndex - lowerIndex
-                        let end: String.Index = self.index(start, offsetBy: count)
-                        guard end > start else { return attribText }
-                        let substring = self[start..<end]
-                        if let nsRange = attribText.string.range(of: ">\(substring)")?.nsRange(in: attribText.string) {
-                            (attribText.string as NSString).substring(with: nsRange)
-
-                            attribText.addAttributes([.foregroundColor: UIColor.green,
-                                                      .font: UIFont.systemFont(ofSize: fontSize!)],
-                                                     range: nsRange)
-                        }
-                    }
-                }
+                //generateGreenText(postViewModel, attribText, fontSize)
             } catch let error as NSError {
                 print("Couldn't parse \(self): \(error.localizedDescription)")
             }

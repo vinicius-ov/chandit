@@ -34,6 +34,7 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var postNumber: UILabel!
     @IBOutlet weak var mediaExtension: UILabel?
     @IBOutlet weak var mediaSize: UILabel?
+    @IBOutlet weak var quotedBys: UILabel?
     
     @IBOutlet weak var stickyIcon: UIImageView! {
         didSet {
@@ -75,15 +76,19 @@ class PostTableViewCell: UITableViewCell {
             postText.text = ""
         }
 
+        if postViewModel.quoted.isEmpty {
+            quotedBys?.isHidden = true
+        } else {
+            quotedBys?.text = postViewModel.quotedAsHtml.toPlainText().string
+            quotedBys?.isHidden = false
+        }
 
-        
         if postViewModel.isSpoiler {
             postImage?.sd_setImage(with: postViewModel.spoilerUrl)
         } else {
             if let thumbUrl = postViewModel.thumbnailUrl(boardId: selectedBoardId) {
                 postImage?.sd_setImage(with: thumbUrl,
                                       completed: { (_, error, _, _) in
-                                        //print(error?.localizedDescription)
                                         if error != nil {
                                             self.postImage?.sd_setImage(with:
                                                 URL(string: "https://s.4cdn.org/image/filedeleted-res.gif")!)
@@ -150,16 +155,25 @@ class PostTableViewCell: UITableViewCell {
         guard let textView: UITextView = tapGesture.view as? UITextView else { return }
         let tapLocation = tapGesture.location(in: tapGesture.view)
 
-        guard let linkString = getTappedLink(from: textView, in: tapLocation) else { return }
+        guard var linkString = getTappedLink(from: textView, in: tapLocation) else { return }
+
+        if linkString.contains("applewebdata") {
+            let comps = linkString.components(separatedBy: "chandit")
+            linkString = "chandit" + (comps.last ?? "")
+        }
 
         if !linkString.isEmpty {
             let quote = linkString.split(separator: "/")
 
             if quote.first == "chandit:" {
-                let postNumber = Int(quote.last!)
-                tapDelegate?.linkTapped(postNumber: postNumber!,
-                                        opNumber: postViewModel.resto!,
-                                        originNumber: postViewModel.number!)
+
+                guard let postNumber = Int(quote.last ?? ""),
+                    let resto = postViewModel.resto,
+                    let number = postViewModel.number else { return }
+
+                tapDelegate?.linkTapped(postNumber: postNumber,
+                                        opNumber: resto,
+                                        originNumber: number)
             } else {
                 let actionOk = UIAlertAction(title: "OK", style: .default) { (_) in
                     if UIApplication.shared.canOpenURL(URL(string: "firefox://open-url?url=\(linkString)")!) {
