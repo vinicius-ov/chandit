@@ -18,7 +18,7 @@ class BoardPagesViewController: BaseViewController {
     @IBOutlet weak var postsTable: UITableView!
     @IBOutlet weak var boardSelector: UITextField!
     @IBOutlet weak var reloadActivityView: UIActivityIndicatorView!
-    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var reloadMessage: UILabel!
 
     var pageViewModel = PageViewModel(threads: Array()) //deveria ser injetado
     var pickerView: UIPickerView!
@@ -92,21 +92,19 @@ class BoardPagesViewController: BaseViewController {
 
         boardSelector.inputAccessoryView = toolBar
 
-        toggleActivityLoaderVisibility()
+        self.reloadActivityView.isHidden = false
+        self.reloadMessage.isHidden = true
 
         fetchBoards()
     }
 
-    func toggleActivityLoaderVisibility() {
-        DispatchQueue.main.async {
-            self.reloadActivityView.isHidden = !self.reloadActivityView.isHidden
-            if self.bottomConstraint.constant == 37 {  self.bottomConstraint.constant = 0
-            } else {
-                self.bottomConstraint.constant = 37
-            }
-            self.view.setNeedsLayout()
-        }
-    }
+//    func toggleActivityLoaderVisibility() {
+//        DispatchQueue.main.async {
+//            self.reloadActivityView.isHidden = !self.reloadActivityView.isHidden
+//            //self.reloadMessage.isHidden = !self.reloadMessage.isHidden
+//            self.view.setNeedsLayout()
+//        }
+//    }
 
     func fetchData(append: Bool) {
         guard let selectedBoard = boardsViewModel.selectedBoardId else {
@@ -123,7 +121,10 @@ class BoardPagesViewController: BaseViewController {
                     if !append {
                         self.pageViewModel.threads.removeAll()
                     } else {
-                        self.toggleActivityLoaderVisibility()
+                        DispatchQueue.main.async {
+                        self.reloadActivityView.isHidden = true
+                        self.reloadMessage.isHidden = true
+                        }
                     }
                     self.lastModified = response.modified
                     do {
@@ -164,6 +165,10 @@ class BoardPagesViewController: BaseViewController {
                 self.showAlertView(title: "Fetch failed",
                                    message: "Failed to load board threads. Try again. \(error.localizedDescription)",
                     actions: [])
+                DispatchQueue.main.async {
+                self.reloadActivityView.isHidden = true
+                self.reloadMessage.isHidden = false
+                }
             }
         }
     }
@@ -344,8 +349,9 @@ extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
         reportAction.backgroundColor = .red
 
         let hideAction = UITableViewRowAction(style: .normal, title: "Show/Hide") { (_, indexPath) in
-            guard let threadViewModel: ThreadViewModel = self.pageViewModel.threads[indexPath.section],
-                let postViewModel = threadViewModel.postViewModel(at: indexPath.row) else { return }
+            let threadViewModel: ThreadViewModel = self.pageViewModel.threads[indexPath.section]
+            guard let postViewModel = threadViewModel.postViewModel(at: indexPath.row) else { return }
+            
             if postViewModel.isOp {
                 threadViewModel.toggleHidden()
             } else {
@@ -367,7 +373,7 @@ extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
 extension BoardPagesViewController: UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         if indexPaths.contains([pageViewModel.threads.count-1, 0]) {
-            toggleActivityLoaderVisibility()
+            //toggleActivityLoaderVisibility()
             print("RELOAD!!!!")
             fetchData(append: true)
         }

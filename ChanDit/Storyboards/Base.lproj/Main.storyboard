@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="iE8-IW-Miu">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="iE8-IW-Miu">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -40,31 +40,32 @@
                                 <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </activityIndicatorView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" indicatorStyle="white" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="36" estimatedSectionFooterHeight="36" translatesAutoresizingMaskIntoConstraints="NO" id="z4D-Iw-lGR">
-                                <rect key="frame" x="0.0" y="88" width="414" height="688"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="separatorColor" red="1" green="0.026629825950000002" blue="0.046368285160000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <inset key="separatorInset" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
                             </tableView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="AxI-Gk-IXv">
-                                <rect key="frame" x="188.5" y="776" width="37" height="37"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="37" id="6fU-yo-htT"/>
-                                </constraints>
-                                <color key="color" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                            </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Parece que deu ruim ao carregar o board. Pressione Reload 🔄 na barra superior para tentar novamente." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kRS-LH-QpD">
+                                <rect key="frame" x="30" y="497.5" width="354" height="61"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="darkTextColor"/>
                         <constraints>
                             <constraint firstItem="z4D-Iw-lGR" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="0wx-wd-RB4"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="AxI-Gk-IXv" secondAttribute="bottom" id="2bd-gZ-PnB"/>
-                            <constraint firstItem="AxI-Gk-IXv" firstAttribute="top" secondItem="z4D-Iw-lGR" secondAttribute="bottom" id="Imc-e0-Qxd"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="z4D-Iw-lGR" secondAttribute="bottom" id="CCb-pQ-MBb"/>
+                            <constraint firstItem="kRS-LH-QpD" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="NnH-MW-kY6"/>
                             <constraint firstItem="GBk-cM-qMp" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="OD9-qY-Eck"/>
+                            <constraint firstAttribute="trailing" secondItem="kRS-LH-QpD" secondAttribute="trailing" constant="30" id="Ta7-bW-fw4"/>
+                            <constraint firstItem="kRS-LH-QpD" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="80" id="Uwu-Kp-QPn"/>
                             <constraint firstItem="GBk-cM-qMp" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="WdY-Rz-4kI"/>
                             <constraint firstItem="z4D-Iw-lGR" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="aAz-E8-gRX"/>
                             <constraint firstItem="z4D-Iw-lGR" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="cId-eF-yZO"/>
-                            <constraint firstItem="AxI-Gk-IXv" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="v9m-hB-eHJ"/>
+                            <constraint firstItem="kRS-LH-QpD" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="30" id="vrS-Mf-N5Y"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="3ek-kV-Mus">
@@ -105,9 +106,9 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="boardSelector" destination="35t-vQ-ASH" id="DcS-sW-BVw"/>
-                        <outlet property="bottomConstraint" destination="6fU-yo-htT" id="2nv-9T-rNp"/>
                         <outlet property="postsTable" destination="z4D-Iw-lGR" id="g58-Qy-ZeU"/>
-                        <outlet property="reloadActivityView" destination="AxI-Gk-IXv" id="dXJ-xQ-ShP"/>
+                        <outlet property="reloadActivityView" destination="GBk-cM-qMp" id="toR-aJ-wkd"/>
+                        <outlet property="reloadMessage" destination="kRS-LH-QpD" id="ctc-hz-kOm"/>
                         <segue destination="dxm-dt-aDR" kind="show" identifier="gotoThreadView" id="rNn-zT-B0g"/>
                     </connections>
                 </viewController>
@@ -131,17 +132,27 @@
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <inset key="separatorInset" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Parece que deu ruim ao carregar a thread. Pressione Reload 🔄 na barra superior para tentar novamente." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gf5-dh-7ho">
+                                <rect key="frame" x="30" y="497.5" width="354" height="61"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <viewLayoutGuide key="safeArea" id="6ce-1H-v6a"/>
+                        <color key="backgroundColor" systemColor="darkTextColor"/>
                         <constraints>
                             <constraint firstItem="SLh-K2-qvc" firstAttribute="centerX" secondItem="zIS-AM-c60" secondAttribute="centerX" id="6i3-aH-ASh"/>
                             <constraint firstItem="6ce-1H-v6a" firstAttribute="trailing" secondItem="fJ7-qD-JGi" secondAttribute="trailing" id="Gkl-aZ-ORy"/>
+                            <constraint firstAttribute="trailing" secondItem="gf5-dh-7ho" secondAttribute="trailing" constant="30" id="Hbc-Cg-LN3"/>
+                            <constraint firstItem="gf5-dh-7ho" firstAttribute="centerY" secondItem="zIS-AM-c60" secondAttribute="centerY" constant="80" id="KNS-mR-RJf"/>
+                            <constraint firstItem="gf5-dh-7ho" firstAttribute="centerX" secondItem="zIS-AM-c60" secondAttribute="centerX" id="Z3a-af-UvA"/>
                             <constraint firstItem="6ce-1H-v6a" firstAttribute="bottom" secondItem="fJ7-qD-JGi" secondAttribute="bottom" id="cHj-vY-6R3"/>
                             <constraint firstItem="SLh-K2-qvc" firstAttribute="centerY" secondItem="zIS-AM-c60" secondAttribute="centerY" id="cfG-re-bPJ"/>
+                            <constraint firstItem="gf5-dh-7ho" firstAttribute="leading" secondItem="zIS-AM-c60" secondAttribute="leading" constant="30" id="fIc-dN-w2L"/>
                             <constraint firstItem="fJ7-qD-JGi" firstAttribute="top" secondItem="6ce-1H-v6a" secondAttribute="top" id="yR2-xw-ge2"/>
                             <constraint firstItem="fJ7-qD-JGi" firstAttribute="leading" secondItem="6ce-1H-v6a" secondAttribute="leading" id="z6x-Ql-5QE"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="6ce-1H-v6a"/>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="tTX-LQ-lBV">
@@ -175,8 +186,10 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="loadingIndicator" destination="SLh-K2-qvc" id="2dd-EP-8rH"/>
                         <outlet property="postsTable" destination="fJ7-qD-JGi" id="CMa-cc-ePT"/>
                         <outlet property="reloadButton" destination="6Tg-g5-6dF" id="o1x-J8-D7V"/>
+                        <outlet property="reloadMessage" destination="gf5-dh-7ho" id="WZU-KA-zVD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6u4-uQ-h6m" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -185,10 +198,13 @@
         </scene>
     </scenes>
     <resources>
-        <image name="arrow.down.to.line" catalog="system" width="64" height="64"/>
-        <image name="arrow.left.to.line.alt" catalog="system" width="64" height="44"/>
-        <image name="arrow.up.to.line" catalog="system" width="64" height="64"/>
-        <image name="gear" catalog="system" width="64" height="58"/>
-        <image name="plus" catalog="system" width="64" height="56"/>
+        <image name="arrow.down.to.line" catalog="system" width="128" height="128"/>
+        <image name="arrow.left.to.line.alt" catalog="system" width="128" height="89"/>
+        <image name="arrow.up.to.line" catalog="system" width="128" height="128"/>
+        <image name="gear" catalog="system" width="128" height="119"/>
+        <image name="plus" catalog="system" width="128" height="113"/>
+        <systemColor name="darkTextColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>
