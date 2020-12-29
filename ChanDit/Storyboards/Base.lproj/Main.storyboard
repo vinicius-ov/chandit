@@ -132,24 +132,14 @@
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <inset key="separatorInset" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Parece que deu ruim ao carregar a thread. Pressione Reload 🔄 na barra superior para tentar novamente." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gf5-dh-7ho">
-                                <rect key="frame" x="30" y="497.5" width="354" height="61"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6ce-1H-v6a"/>
                         <color key="backgroundColor" systemColor="darkTextColor"/>
                         <constraints>
                             <constraint firstItem="SLh-K2-qvc" firstAttribute="centerX" secondItem="zIS-AM-c60" secondAttribute="centerX" id="6i3-aH-ASh"/>
                             <constraint firstItem="6ce-1H-v6a" firstAttribute="trailing" secondItem="fJ7-qD-JGi" secondAttribute="trailing" id="Gkl-aZ-ORy"/>
-                            <constraint firstAttribute="trailing" secondItem="gf5-dh-7ho" secondAttribute="trailing" constant="30" id="Hbc-Cg-LN3"/>
-                            <constraint firstItem="gf5-dh-7ho" firstAttribute="centerY" secondItem="zIS-AM-c60" secondAttribute="centerY" constant="80" id="KNS-mR-RJf"/>
-                            <constraint firstItem="gf5-dh-7ho" firstAttribute="centerX" secondItem="zIS-AM-c60" secondAttribute="centerX" id="Z3a-af-UvA"/>
                             <constraint firstItem="6ce-1H-v6a" firstAttribute="bottom" secondItem="fJ7-qD-JGi" secondAttribute="bottom" id="cHj-vY-6R3"/>
                             <constraint firstItem="SLh-K2-qvc" firstAttribute="centerY" secondItem="zIS-AM-c60" secondAttribute="centerY" id="cfG-re-bPJ"/>
-                            <constraint firstItem="gf5-dh-7ho" firstAttribute="leading" secondItem="zIS-AM-c60" secondAttribute="leading" constant="30" id="fIc-dN-w2L"/>
                             <constraint firstItem="fJ7-qD-JGi" firstAttribute="top" secondItem="6ce-1H-v6a" secondAttribute="top" id="yR2-xw-ge2"/>
                             <constraint firstItem="fJ7-qD-JGi" firstAttribute="leading" secondItem="6ce-1H-v6a" secondAttribute="leading" id="z6x-Ql-5QE"/>
                         </constraints>
@@ -189,7 +179,6 @@
                         <outlet property="loadingIndicator" destination="SLh-K2-qvc" id="2dd-EP-8rH"/>
                         <outlet property="postsTable" destination="fJ7-qD-JGi" id="CMa-cc-ePT"/>
                         <outlet property="reloadButton" destination="6Tg-g5-6dF" id="o1x-J8-D7V"/>
-                        <outlet property="reloadMessage" destination="gf5-dh-7ho" id="WZU-KA-zVD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6u4-uQ-h6m" userLabel="First Responder" sceneMemberID="firstResponder"/>

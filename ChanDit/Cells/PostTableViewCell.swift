@@ -9,6 +9,7 @@
 import UIKit
 import SDWebImage
 
+//TODO: remember to edit both postCell xibs when modifing stuff
 class PostTableViewCell: UITableViewCell {
     var postViewModel: PostViewModel!
     var selectedBoardId: String!
@@ -20,6 +21,7 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var postAuthorName: UILabel!
     @IBOutlet weak var postTimePublishing: UILabel!
     @IBOutlet weak var imageSizeConstraint: NSLayoutConstraint?
+    @IBOutlet weak var titleSizeConstraint: NSLayoutConstraint?
     
     @IBOutlet weak var postImage: UIImageView? {
         didSet {
@@ -34,7 +36,8 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var postNumber: UILabel!
     @IBOutlet weak var mediaExtension: UILabel?
     @IBOutlet weak var mediaSize: UILabel?
-    @IBOutlet weak var quotedBys: UILabel?
+    @IBOutlet weak var quotedBys: UITextView?
+    
     
     @IBOutlet weak var stickyIcon: UIImageView! {
         didSet {
@@ -64,22 +67,23 @@ class PostTableViewCell: UITableViewCell {
     func loadCell() {
         if let title = postViewModel.title {
             postTitle.attributedText = title.toPlainText(fontSize: 14)
+            titleSizeConstraint?.constant = 17
         } else {
             postTitle.text = ""
+            titleSizeConstraint?.constant = 0
         }
 
         setupPostHeader()
 
         if let comment = postViewModel.comment {
             postText.attributedText = comment.toPlainText(postViewModel: postViewModel)
-        } else {
-            postText.text = ""
         }
 
         if postViewModel.quoted.isEmpty {
             quotedBys?.isHidden = true
         } else {
-            quotedBys?.text = postViewModel.quotedAsHtml.toPlainText().string
+            quotedBys?.attributedText = postViewModel.quotedAsHtml.toPlainText(fontSize: 12,
+                                                                               postViewModel: nil)
             quotedBys?.isHidden = false
         }
 
@@ -104,19 +108,27 @@ class PostTableViewCell: UITableViewCell {
                 postImage?.image = nil
             }
         }
-        
-        postImage?.addGestureRecognizer(
-        UITapGestureRecognizer(target: self,
-                               action: #selector(viewImage(_:))))
-        
-        postText.addGestureRecognizer(
-            UITapGestureRecognizer(target: self,
-                                   action: #selector(tappedLink(_:))))
+
+        setupGestureRecognizers()
 
         let copyDoubleTap = UITapGestureRecognizer(target: self,
         action: #selector(copyToClipBoard(_:)))
         copyDoubleTap.numberOfTapsRequired = 2
         postText.addGestureRecognizer(copyDoubleTap)
+    }
+
+    private func setupGestureRecognizers() {
+        postImage?.addGestureRecognizer(
+        UITapGestureRecognizer(target: self,
+                               action: #selector(viewImage(_:))))
+
+        postText.addGestureRecognizer(
+            UITapGestureRecognizer(target: self,
+                                   action: #selector(tappedLink(_:))))
+
+        quotedBys?.addGestureRecognizer(
+            UITapGestureRecognizer(target: self,
+                                   action: #selector(tappedLink(_:))))
     }
 
     @objc
@@ -147,6 +159,15 @@ class PostTableViewCell: UITableViewCell {
     @objc
     func showFlagHint(_ sender: Any) {
         toastDelegate?.showToast(flagHint: postViewModel.countryName)
+    }
+
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL,
+                  in characterRange: NSRange,
+                  interaction: UITextItemInteraction) -> Bool {
+
+        print(URL.absoluteString)
+        //UIApplication.shared.open(URL)
+        return false
     }
     
     @objc

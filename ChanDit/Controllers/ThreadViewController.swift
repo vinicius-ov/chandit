@@ -20,7 +20,6 @@ class ThreadViewController: BaseViewController {
     @IBOutlet weak var postsTable: UITableView!
     @IBOutlet weak var reloadButton: UIBarButtonItem!
 
-    @IBOutlet weak var reloadMessage: UILabel!
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
 
     override func viewDidLoad() {
@@ -44,8 +43,6 @@ class ThreadViewController: BaseViewController {
         postsTable.rowHeight = UITableView.automaticDimension
         postsTable.estimatedRowHeight = 200
 
-        reloadMessage.isHidden = true
-        
         fetchData()
     }
 
@@ -65,7 +62,6 @@ class ThreadViewController: BaseViewController {
             case .success(let response):
 
                 DispatchQueue.main.async {
-                    self.reloadMessage.isHidden = true
                     self.reloadButton.isEnabled = true
                 }
 
@@ -107,7 +103,6 @@ class ThreadViewController: BaseViewController {
                                    message: "Failed to load thread posts. Try again. \(error.localizedDescription)", actions: [])
 
                 DispatchQueue.main.async {
-                    self.reloadMessage.isHidden = false
                     self.loadingIndicator.isHidden = true
                     self.reloadButton.isEnabled = true
                 }

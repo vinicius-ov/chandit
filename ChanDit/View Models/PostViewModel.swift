@@ -205,7 +205,7 @@ extension PostViewModel {
     var quotedAsHtml: String {
         var html = ""
         for quote in quoted {
-            html += "<a href=\"#p\(quote)\" class=\"quotelink\">&gt;&gt;\(quote)</a>&#32;"
+            html += "<a href=\"chandit://\(quote)\" class=\"quotelink\">&gt;&gt;\(quote)</a>&#32;"
         }
         return html
     }
