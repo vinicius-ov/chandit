@@ -100,7 +100,8 @@ class BoardPagesViewController: BaseViewController {
     func toggleActivityLoaderVisibility() {
         DispatchQueue.main.async {
             self.reloadActivityView.isHidden = !self.reloadActivityView.isHidden
-            if self.bottomConstraint.constant == 37 {  self.bottomConstraint.constant = 0
+            if self.bottomConstraint.constant == 37 {
+                self.bottomConstraint.constant = 0
             } else {
                 self.bottomConstraint.constant = 37
             }
@@ -344,8 +345,8 @@ extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
         reportAction.backgroundColor = .red
 
         let hideAction = UITableViewRowAction(style: .normal, title: "Show/Hide") { (_, indexPath) in
-            guard let threadViewModel: ThreadViewModel = self.pageViewModel.threads[indexPath.section],
-                let postViewModel = threadViewModel.postViewModel(at: indexPath.row) else { return }
+            let threadViewModel = self.pageViewModel.threads[indexPath.section]
+            guard let postViewModel = threadViewModel.postViewModel(at: indexPath.row) else { return }
             if postViewModel.isOp {
                 threadViewModel.toggleHidden()
             } else {

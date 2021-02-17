@@ -20,6 +20,21 @@
 		2D3093A92386D22A00FE1D32 /* SwiftModalWebVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3093A22386D22900FE1D32 /* SwiftModalWebVC.swift */; };
 		2D3093AA2386D22A00FE1D32 /* SwiftWebVCActivitySafari.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3093A32386D22900FE1D32 /* SwiftWebVCActivitySafari.swift */; };
 		2D3093AB2386D22A00FE1D32 /* SwiftWebVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3093A42386D22900FE1D32 /* SwiftWebVC.swift */; };
+		2D3FA65925DC85C20083C936 /* GoogleAppMeasurement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D3FA64E25DC85C10083C936 /* GoogleAppMeasurement.framework */; };
+		2D3FA65B25DC85C30083C936 /* FirebaseInstallations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D3FA64F25DC85C20083C936 /* FirebaseInstallations.framework */; };
+		2D3FA65D25DC85C40083C936 /* FirebaseAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D3FA65025DC85C20083C936 /* FirebaseAnalytics.framework */; };
+		2D3FA65F25DC85C40083C936 /* FirebaseCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D3FA65125DC85C20083C936 /* FirebaseCore.framework */; };
+		2D3FA66125DC85C50083C936 /* FIRAnalyticsConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D3FA65225DC85C20083C936 /* FIRAnalyticsConnector.framework */; };
+		2D3FA66325DC85C50083C936 /* GoogleDataTransport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D3FA65325DC85C20083C936 /* GoogleDataTransport.framework */; };
+		2D3FA66525DC85C60083C936 /* FirebaseCoreDiagnostics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D3FA65425DC85C20083C936 /* FirebaseCoreDiagnostics.framework */; };
+		2D3FA66725DC85C60083C936 /* nanopb.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D3FA65525DC85C20083C936 /* nanopb.framework */; };
+		2D3FA66925DC85C70083C936 /* GoogleUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D3FA65625DC85C20083C936 /* GoogleUtilities.framework */; };
+		2D3FA66B25DC85C70083C936 /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D3FA65725DC85C20083C936 /* Firebase.framework */; };
+		2D3FA66D25DC85C80083C936 /* PromisesObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D3FA65825DC85C20083C936 /* PromisesObjC.framework */; };
+		2D3FA67125DC86090083C936 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2D3FA67025DC86090083C936 /* GoogleService-Info.plist */; };
+		2D3FA68825DC8E620083C936 /* GoogleUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D3FA65625DC85C20083C936 /* GoogleUtilities.framework */; };
+		2D3FA68D25DC8E630083C936 /* FirebaseCrashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D3FA68B25DC8E630083C936 /* FirebaseCrashlytics.framework */; };
+		2D3FA68F25DC8E640083C936 /* Protobuf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D3FA68C25DC8E630083C936 /* Protobuf.framework */; };
 		2D5034A12390449F0016BBE7 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D309348238429C100FE1D32 /* SettingsViewController.swift */; };
 		2D5034A2239044AD0016BBE7 /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D309352238441B800FE1D32 /* SettingsViewController.xib */; };
 		2D5034A623905E9D0016BBE7 /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5034A323904ECF0016BBE7 /* CacheManager.swift */; };
@@ -116,6 +131,20 @@
 		2D3093A22386D22900FE1D32 /* SwiftModalWebVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftModalWebVC.swift; sourceTree = "<group>"; };
 		2D3093A32386D22900FE1D32 /* SwiftWebVCActivitySafari.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftWebVCActivitySafari.swift; sourceTree = "<group>"; };
 		2D3093A42386D22900FE1D32 /* SwiftWebVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftWebVC.swift; sourceTree = "<group>"; };
+		2D3FA64E25DC85C10083C936 /* GoogleAppMeasurement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleAppMeasurement.framework; path = Carthage/Build/iOS/GoogleAppMeasurement.framework; sourceTree = "<group>"; };
+		2D3FA64F25DC85C20083C936 /* FirebaseInstallations.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseInstallations.framework; path = Carthage/Build/iOS/FirebaseInstallations.framework; sourceTree = "<group>"; };
+		2D3FA65025DC85C20083C936 /* FirebaseAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseAnalytics.framework; path = Carthage/Build/iOS/FirebaseAnalytics.framework; sourceTree = "<group>"; };
+		2D3FA65125DC85C20083C936 /* FirebaseCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseCore.framework; path = Carthage/Build/iOS/FirebaseCore.framework; sourceTree = "<group>"; };
+		2D3FA65225DC85C20083C936 /* FIRAnalyticsConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FIRAnalyticsConnector.framework; path = Carthage/Build/iOS/FIRAnalyticsConnector.framework; sourceTree = "<group>"; };
+		2D3FA65325DC85C20083C936 /* GoogleDataTransport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleDataTransport.framework; path = Carthage/Build/iOS/GoogleDataTransport.framework; sourceTree = "<group>"; };
+		2D3FA65425DC85C20083C936 /* FirebaseCoreDiagnostics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseCoreDiagnostics.framework; path = Carthage/Build/iOS/FirebaseCoreDiagnostics.framework; sourceTree = "<group>"; };
+		2D3FA65525DC85C20083C936 /* nanopb.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = nanopb.framework; path = Carthage/Build/iOS/nanopb.framework; sourceTree = "<group>"; };
+		2D3FA65625DC85C20083C936 /* GoogleUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleUtilities.framework; path = Carthage/Build/iOS/GoogleUtilities.framework; sourceTree = "<group>"; };
+		2D3FA65725DC85C20083C936 /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Firebase.framework; path = Carthage/Build/iOS/Firebase.framework; sourceTree = "<group>"; };
+		2D3FA65825DC85C20083C936 /* PromisesObjC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PromisesObjC.framework; path = Carthage/Build/iOS/PromisesObjC.framework; sourceTree = "<group>"; };
+		2D3FA67025DC86090083C936 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2D3FA68B25DC8E630083C936 /* FirebaseCrashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseCrashlytics.framework; path = Carthage/Build/iOS/FirebaseCrashlytics.framework; sourceTree = "<group>"; };
+		2D3FA68C25DC8E630083C936 /* Protobuf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Protobuf.framework; path = Carthage/Build/iOS/Protobuf.framework; sourceTree = "<group>"; };
 		2D5034A323904ECF0016BBE7 /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
 		2D57A6F4235F7006001DEBE8 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Carthage/Build/iOS/SDWebImage.framework; sourceTree = "<group>"; };
 		2D8176E62397F1E300491995 /* ChanDitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChanDitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -194,24 +223,38 @@
 			buildActionMask = 2147483647;
 			files = (
 				F2DEFD03232AC97F0031FD98 /* libc++.tbd in Frameworks */,
+				2D3FA66525DC85C60083C936 /* FirebaseCoreDiagnostics.framework in Frameworks */,
 				F2DEFCFA23273CA90031FD98 /* MobileVLCKit.framework in Frameworks */,
+				2D3FA68D25DC8E630083C936 /* FirebaseCrashlytics.framework in Frameworks */,
+				2D3FA65925DC85C20083C936 /* GoogleAppMeasurement.framework in Frameworks */,
 				F2C400F12327371000BFCC89 /* VideoToolbox.framework in Frameworks */,
 				F2C400EF232736FC00BFCC89 /* OpenGLES.framework in Frameworks */,
+				2D3FA66925DC85C70083C936 /* GoogleUtilities.framework in Frameworks */,
 				F2C400ED232736F200BFCC89 /* libiconv.tbd in Frameworks */,
 				F2C400EB232736E800BFCC89 /* libbz2.tbd in Frameworks */,
+				2D3FA66125DC85C50083C936 /* FIRAnalyticsConnector.framework in Frameworks */,
 				F2C400E0232734ED00BFCC89 /* AudioToolbox.framework in Frameworks */,
+				2D3FA65D25DC85C40083C936 /* FirebaseAnalytics.framework in Frameworks */,
 				F2C400E7232736A800BFCC89 /* AVFoundation.framework in Frameworks */,
 				F2C400E9232736B500BFCC89 /* CFNetwork.framework in Frameworks */,
+				2D3FA66725DC85C60083C936 /* nanopb.framework in Frameworks */,
 				F2C400E3232734ED00BFCC89 /* CoreFoundation.framework in Frameworks */,
+				2D3FA66B25DC85C70083C936 /* Firebase.framework in Frameworks */,
 				F2C400DD232734ED00BFCC89 /* CoreVideo.framework in Frameworks */,
 				F2C400E4232734ED00BFCC89 /* CoreMedia.framework in Frameworks */,
+				2D3FA66325DC85C50083C936 /* GoogleDataTransport.framework in Frameworks */,
+				2D3FA66D25DC85C80083C936 /* PromisesObjC.framework in Frameworks */,
+				2D3FA68825DC8E620083C936 /* GoogleUtilities.framework in Frameworks */,
 				F2C400E1232734ED00BFCC89 /* CoreGraphics.framework in Frameworks */,
 				F2C400E5232734ED00BFCC89 /* CoreText.framework in Frameworks */,
 				F2C400DC232734ED00BFCC89 /* QuartzCore.framework in Frameworks */,
+				2D3FA68F25DC8E640083C936 /* Protobuf.framework in Frameworks */,
 				F2C400DE232734ED00BFCC89 /* UIKit.framework in Frameworks */,
 				2D57A6F5235F7006001DEBE8 /* SDWebImage.framework in Frameworks */,
 				F2C400DF232734ED00BFCC89 /* Security.framework in Frameworks */,
+				2D3FA65F25DC85C40083C936 /* FirebaseCore.framework in Frameworks */,
 				F2C400E2232734ED00BFCC89 /* Foundation.framework in Frameworks */,
+				2D3FA65B25DC85C30083C936 /* FirebaseInstallations.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,6 +320,19 @@
 		814C459622F8691C007007C5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2D3FA68B25DC8E630083C936 /* FirebaseCrashlytics.framework */,
+				2D3FA68C25DC8E630083C936 /* Protobuf.framework */,
+				2D3FA65225DC85C20083C936 /* FIRAnalyticsConnector.framework */,
+				2D3FA65725DC85C20083C936 /* Firebase.framework */,
+				2D3FA65025DC85C20083C936 /* FirebaseAnalytics.framework */,
+				2D3FA65125DC85C20083C936 /* FirebaseCore.framework */,
+				2D3FA65425DC85C20083C936 /* FirebaseCoreDiagnostics.framework */,
+				2D3FA64F25DC85C20083C936 /* FirebaseInstallations.framework */,
+				2D3FA64E25DC85C10083C936 /* GoogleAppMeasurement.framework */,
+				2D3FA65325DC85C20083C936 /* GoogleDataTransport.framework */,
+				2D3FA65625DC85C20083C936 /* GoogleUtilities.framework */,
+				2D3FA65525DC85C20083C936 /* nanopb.framework */,
+				2D3FA65825DC85C20083C936 /* PromisesObjC.framework */,
 				2D57A6F4235F7006001DEBE8 /* SDWebImage.framework */,
 				F2DEFD02232AC97F0031FD98 /* libc++.tbd */,
 				F2DEFCF923273CA90031FD98 /* MobileVLCKit.framework */,
@@ -327,6 +383,7 @@
 			children = (
 				F2DEFCFB23273D840031FD98 /* SwiftSimplePlayback-Bridging-Header.h */,
 				81921BEC22F468DE007F4EFC /* Info.plist */,
+				2D3FA67025DC86090083C936 /* GoogleService-Info.plist */,
 				81921BE022F468DD007F4EFC /* AppDelegate.swift */,
 				81921BE722F468DE007F4EFC /* Assets.xcassets */,
 				2D3093902386D22900FE1D32 /* SwiftWebVC */,
@@ -471,6 +528,7 @@
 				81921BDB22F468DD007F4EFC /* Resources */,
 				814C459422F868C1007007C5 /* Carthage */,
 				2D57A6F92360C4EE001DEBE8 /* SwiftLint */,
+				2D3FA69825DC90C30083C936 /* Crashlytics */,
 			);
 			buildRules = (
 			);
@@ -562,6 +620,7 @@
 				81921BEB22F468DE007F4EFC /* LaunchScreen.storyboard in Resources */,
 				F2BAFFE223495AAB006D2CEE /* PostCell.xib in Resources */,
 				2D3093A82386D22A00FE1D32 /* Media.xcassets in Resources */,
+				2D3FA67125DC86090083C936 /* GoogleService-Info.plist in Resources */,
 				2D2784022357ADD400DD0C9F /* ThreadFooterView.xib in Resources */,
 				81921BE822F468DE007F4EFC /* Assets.xcassets in Resources */,
 				2D3093512384403100FE1D32 /* SettingsTableViewCell.xib in Resources */,
@@ -574,6 +633,26 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		2D3FA69825DC90C30083C936 /* Crashlytics */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}\n",
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			name = Crashlytics;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n";
+		};
 		2D57A6F92360C4EE001DEBE8 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -925,6 +1004,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 5FK8753786;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -937,7 +1017,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.digitreco.chanDit;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = com.digitreco.chandit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/ChanDit/SwiftSimplePlayback-Bridging-Header.h";
@@ -964,7 +1045,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.digitreco.chanDit;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = com.digitreco.chandit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/ChanDit/SwiftSimplePlayback-Bridging-Header.h";
