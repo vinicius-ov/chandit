@@ -22,6 +22,7 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var postTimePublishing: UILabel!
     @IBOutlet weak var imageSizeConstraint: NSLayoutConstraint?
     @IBOutlet weak var titleSizeConstraint: NSLayoutConstraint?
+    @IBOutlet weak var quotedByHeight: NSLayoutConstraint?
     
     @IBOutlet weak var postImage: UIImageView? {
         didSet {
@@ -77,18 +78,21 @@ class PostTableViewCell: UITableViewCell {
 
         if let comment = postViewModel.comment {
             postText.attributedText = comment.toPlainText(postViewModel: postViewModel)
+        } else {
+            postText.attributedText = NSAttributedString(string: "")
         }
 
         if postViewModel.quoted.isEmpty {
-            quotedBys?.isHidden = true
+            quotedByHeight?.constant = 2
+
         } else {
             quotedBys?.attributedText = postViewModel.quotedAsHtml.toPlainText(fontSize: 12,
                                                                                postViewModel: nil)
-            quotedBys?.isHidden = false
         }
 
         if postViewModel.isSpoiler {
             postImage?.sd_setImage(with: postViewModel.spoilerUrl)
+            mediaExtension?.text = "Spoiler Image"
         } else {
             if let thumbUrl = postViewModel.thumbnailUrl(boardId: selectedBoardId) {
                 postImage?.sd_setImage(with: thumbUrl,
@@ -98,16 +102,17 @@ class PostTableViewCell: UITableViewCell {
                                                 URL(string: "https://s.4cdn.org/image/filedeleted-res.gif")!)
                                         }
                     })
-                postImage?.isHidden = false
+                //postImage?.isHidden = false
                 imageSizeConstraint?.constant = 160
-                mediaSize?.text = postViewModel.fileSize
                 mediaExtension?.text = postViewModel.mediaFullName
             } else {
-                postImage?.isHidden = true
+                //postImage?.isHidden = true
                 imageSizeConstraint?.constant = 0
                 postImage?.image = nil
             }
         }
+
+        mediaSize?.text = postViewModel.fileSize
 
         setupGestureRecognizers()
 

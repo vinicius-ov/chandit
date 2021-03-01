@@ -937,7 +937,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.digitreco.chanDit;
+				PRODUCT_BUNDLE_IDENTIFIER = com.digitreco.chandit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/ChanDit/SwiftSimplePlayback-Bridging-Header.h";
@@ -964,7 +964,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.digitreco.chanDit;
+				PRODUCT_BUNDLE_IDENTIFIER = com.digitreco.chandit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/ChanDit/SwiftSimplePlayback-Bridging-Header.h";

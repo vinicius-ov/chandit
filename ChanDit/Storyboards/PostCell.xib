@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -84,7 +85,7 @@
                         </constraints>
                     </stackView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="leO-uy-2tW">
-                        <rect key="frame" x="10" y="28" width="394" height="17"/>
+                        <rect key="frame" x="10" y="30" width="394" height="17"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="17" id="QMf-IE-frE"/>
                         </constraints>
@@ -93,7 +94,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <textView clipsSubviews="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="MQI-Sz-RTe">
-                        <rect key="frame" x="0.0" y="238" width="414" height="205"/>
+                        <rect key="frame" x="0.0" y="236" width="414" height="207"/>
                         <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -101,27 +102,28 @@
                         <dataDetectorType key="dataDetectorTypes" link="YES"/>
                     </textView>
                     <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GbS-91-N5I">
-                        <rect key="frame" x="0.0" y="49" width="414" height="160"/>
+                        <rect key="frame" x="0.0" y="47" width="414" height="160"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="160" id="W6M-bj-q3z"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Label" textAlignment="center" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UR4-8B-qES">
-                        <rect key="frame" x="22" y="209" width="370" height="14.5"/>
+                        <rect key="frame" x="22" y="207" width="370" height="14.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l4X-kM-roY">
-                        <rect key="frame" x="191.5" y="223.5" width="31" height="14.5"/>
+                        <rect key="frame" x="191.5" y="221.5" width="31" height="14.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="749" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Lorem" translatesAutoresizingMaskIntoConstraints="NO" id="M5h-GV-wo7">
-                        <rect key="frame" x="10" y="22" width="394" height="2"/>
+                        <rect key="frame" x="10" y="22" width="394" height="6"/>
+                        <color key="backgroundColor" systemColor="systemRedColor"/>
                         <constraints>
-                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="2" id="sBe-WJ-nBc"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="750" constant="2" id="sBe-WJ-nBc"/>
                         </constraints>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="14"/>
@@ -143,10 +145,10 @@
                     <constraint firstItem="UR4-8B-qES" firstAttribute="top" secondItem="GbS-91-N5I" secondAttribute="bottom" id="WLl-tN-NTi"/>
                     <constraint firstAttribute="trailing" secondItem="GbS-91-N5I" secondAttribute="trailing" id="WX7-q0-9Ku"/>
                     <constraint firstItem="l4X-kM-roY" firstAttribute="top" secondItem="UR4-8B-qES" secondAttribute="bottom" id="X3V-En-Fqm"/>
-                    <constraint firstItem="GbS-91-N5I" firstAttribute="top" secondItem="leO-uy-2tW" secondAttribute="bottom" constant="4" id="YTN-Lo-qfN"/>
+                    <constraint firstItem="GbS-91-N5I" firstAttribute="top" secondItem="leO-uy-2tW" secondAttribute="bottom" id="YTN-Lo-qfN"/>
                     <constraint firstAttribute="trailing" secondItem="Shf-j1-KPS" secondAttribute="trailing" id="YdU-NX-Nl9"/>
                     <constraint firstItem="Shf-j1-KPS" firstAttribute="leading" secondItem="hhV-6z-yhL" secondAttribute="leading" id="dgf-Xb-PAY"/>
-                    <constraint firstItem="leO-uy-2tW" firstAttribute="top" secondItem="M5h-GV-wo7" secondAttribute="bottom" constant="4" id="hau-Jc-jBl"/>
+                    <constraint firstItem="leO-uy-2tW" firstAttribute="top" secondItem="M5h-GV-wo7" secondAttribute="bottom" constant="2" id="hau-Jc-jBl"/>
                     <constraint firstItem="GbS-91-N5I" firstAttribute="leading" secondItem="hhV-6z-yhL" secondAttribute="leading" id="iqi-Og-ivy"/>
                     <constraint firstAttribute="trailingMargin" secondItem="UR4-8B-qES" secondAttribute="trailing" constant="2" id="jMf-gu-1an"/>
                     <constraint firstItem="UR4-8B-qES" firstAttribute="leading" secondItem="hhV-6z-yhL" secondAttribute="leadingMargin" constant="2" id="kOY-HX-zhd"/>
@@ -167,6 +169,7 @@
                 <outlet property="postText" destination="MQI-Sz-RTe" id="doM-RN-nmS"/>
                 <outlet property="postTimePublishing" destination="fvS-N3-HbB" id="zp2-NV-EUg"/>
                 <outlet property="postTitle" destination="leO-uy-2tW" id="v2e-ar-01y"/>
+                <outlet property="quotedByHeight" destination="sBe-WJ-nBc" id="4Zh-UR-wI6"/>
                 <outlet property="quotedBys" destination="M5h-GV-wo7" id="EQA-WR-0KN"/>
                 <outlet property="stickyIcon" destination="7cV-9t-QDq" id="jpp-pm-T5e"/>
                 <outlet property="titleSizeConstraint" destination="QMf-IE-frE" id="Lge-om-hN1"/>
@@ -177,6 +180,9 @@
     <resources>
         <systemColor name="darkTextColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="viewFlipsideBackgroundColor">
             <color red="0.1215686274509804" green="0.12941176470588239" blue="0.14117647058823529" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
