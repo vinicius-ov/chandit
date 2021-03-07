@@ -86,9 +86,6 @@
                     </stackView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="leO-uy-2tW">
                         <rect key="frame" x="10" y="30" width="394" height="17"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="17" id="QMf-IE-frE"/>
-                        </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
@@ -119,12 +116,9 @@
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="749" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Lorem" translatesAutoresizingMaskIntoConstraints="NO" id="M5h-GV-wo7">
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="250" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M5h-GV-wo7">
                         <rect key="frame" x="10" y="22" width="394" height="6"/>
                         <color key="backgroundColor" systemColor="systemRedColor"/>
-                        <constraints>
-                            <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="750" constant="2" id="sBe-WJ-nBc"/>
-                        </constraints>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="14"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -169,10 +163,8 @@
                 <outlet property="postText" destination="MQI-Sz-RTe" id="doM-RN-nmS"/>
                 <outlet property="postTimePublishing" destination="fvS-N3-HbB" id="zp2-NV-EUg"/>
                 <outlet property="postTitle" destination="leO-uy-2tW" id="v2e-ar-01y"/>
-                <outlet property="quotedByHeight" destination="sBe-WJ-nBc" id="4Zh-UR-wI6"/>
                 <outlet property="quotedBys" destination="M5h-GV-wo7" id="EQA-WR-0KN"/>
                 <outlet property="stickyIcon" destination="7cV-9t-QDq" id="jpp-pm-T5e"/>
-                <outlet property="titleSizeConstraint" destination="QMf-IE-frE" id="Lge-om-hN1"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="145.64732142857142"/>
         </tableViewCell>

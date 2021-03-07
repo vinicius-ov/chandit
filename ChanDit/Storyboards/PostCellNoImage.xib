@@ -10,11 +10,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PostTableViewCell" customModule="ChanDit" customModuleProvider="target"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="postCell_NoImage_Identifier" rowHeight="263" id="42x-lp-gWH" customClass="PostTableViewCell" customModule="ChanDit" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="414" height="263"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="postCell_NoImage_Identifier" rowHeight="270" id="42x-lp-gWH" customClass="PostTableViewCell" customModule="ChanDit" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="270"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="42x-lp-gWH" id="hhV-6z-yhL">
-                <rect key="frame" x="0.0" y="0.0" width="414" height="263"/>
+                <rect key="frame" x="0.0" y="0.0" width="414" height="270"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="Shf-j1-KPS">
@@ -85,16 +85,13 @@
                         </constraints>
                     </stackView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="leO-uy-2tW">
-                        <rect key="frame" x="10" y="35" width="394" height="17"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="17" id="zEF-ic-PFM"/>
-                        </constraints>
+                        <rect key="frame" x="10" y="42" width="394" height="17"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <textView clipsSubviews="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="MQI-Sz-RTe">
-                        <rect key="frame" x="0.0" y="52" width="414" height="207"/>
+                    <textView clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="249" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="MQI-Sz-RTe">
+                        <rect key="frame" x="0.0" y="61" width="414" height="207"/>
                         <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -102,11 +99,8 @@
                         <dataDetectorType key="dataDetectorTypes" link="YES"/>
                     </textView>
                     <textView clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="749" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="IzR-gg-OgY" userLabel="QuotedBys">
-                        <rect key="frame" x="10" y="22" width="394" height="11"/>
+                        <rect key="frame" x="10" y="22" width="394" height="18"/>
                         <color key="backgroundColor" systemColor="systemRedColor"/>
-                        <constraints>
-                            <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="750" constant="2" id="ofF-M7-OU2"/>
-                        </constraints>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -116,18 +110,17 @@
                 <color key="backgroundColor" systemColor="darkTextColor"/>
                 <constraints>
                     <constraint firstItem="IzR-gg-OgY" firstAttribute="top" secondItem="Shf-j1-KPS" secondAttribute="bottom" constant="2" id="41f-50-DuC"/>
+                    <constraint firstItem="MQI-Sz-RTe" firstAttribute="leading" secondItem="hhV-6z-yhL" secondAttribute="leading" id="D8J-eA-Rn7"/>
+                    <constraint firstItem="leO-uy-2tW" firstAttribute="top" secondItem="IzR-gg-OgY" secondAttribute="bottom" constant="2" id="HkK-mz-NEE"/>
                     <constraint firstItem="leO-uy-2tW" firstAttribute="leading" secondItem="hhV-6z-yhL" secondAttribute="leading" constant="10" id="JYW-Vl-Wbj"/>
                     <constraint firstAttribute="trailing" secondItem="IzR-gg-OgY" secondAttribute="trailing" constant="10" id="L3w-zr-hWP"/>
+                    <constraint firstItem="MQI-Sz-RTe" firstAttribute="top" secondItem="leO-uy-2tW" secondAttribute="bottom" constant="2" id="L6K-DO-C5s"/>
                     <constraint firstAttribute="trailing" secondItem="leO-uy-2tW" secondAttribute="trailing" constant="10" id="Lg9-kM-47D"/>
-                    <constraint firstAttribute="trailing" secondItem="MQI-Sz-RTe" secondAttribute="trailing" id="PKJ-KI-65d"/>
-                    <constraint firstItem="MQI-Sz-RTe" firstAttribute="top" secondItem="leO-uy-2tW" secondAttribute="bottom" id="UZ8-fG-2Hp"/>
-                    <constraint firstAttribute="bottom" secondItem="MQI-Sz-RTe" secondAttribute="bottom" constant="4" id="V57-rC-Sqa"/>
+                    <constraint firstAttribute="bottom" secondItem="MQI-Sz-RTe" secondAttribute="bottom" constant="2" id="QS3-hR-oo6"/>
+                    <constraint firstAttribute="trailing" secondItem="MQI-Sz-RTe" secondAttribute="trailing" id="SVH-Le-Ivi"/>
                     <constraint firstAttribute="trailing" secondItem="Shf-j1-KPS" secondAttribute="trailing" id="YdU-NX-Nl9"/>
                     <constraint firstItem="Shf-j1-KPS" firstAttribute="leading" secondItem="hhV-6z-yhL" secondAttribute="leading" id="dgf-Xb-PAY"/>
-                    <constraint firstItem="leO-uy-2tW" firstAttribute="top" secondItem="IzR-gg-OgY" secondAttribute="bottom" constant="2" id="hKe-Mi-cAi"/>
                     <constraint firstItem="IzR-gg-OgY" firstAttribute="leading" secondItem="hhV-6z-yhL" secondAttribute="leading" constant="10" id="mcK-pi-Ufi"/>
-                    <constraint firstItem="MQI-Sz-RTe" firstAttribute="leading" secondItem="hhV-6z-yhL" secondAttribute="leading" id="que-rV-4I4"/>
-                    <constraint firstAttribute="bottom" secondItem="MQI-Sz-RTe" secondAttribute="bottom" constant="4" id="r59-6f-MAj"/>
                     <constraint firstItem="Shf-j1-KPS" firstAttribute="top" secondItem="hhV-6z-yhL" secondAttribute="top" id="yUy-Mi-a0U"/>
                 </constraints>
             </tableViewCellContentView>
@@ -138,12 +131,10 @@
                 <outlet property="postText" destination="MQI-Sz-RTe" id="doM-RN-nmS"/>
                 <outlet property="postTimePublishing" destination="fvS-N3-HbB" id="zp2-NV-EUg"/>
                 <outlet property="postTitle" destination="leO-uy-2tW" id="v2e-ar-01y"/>
-                <outlet property="quotedByHeight" destination="ofF-M7-OU2" id="g36-EN-Vma"/>
                 <outlet property="quotedBys" destination="IzR-gg-OgY" id="NMw-6O-G3S"/>
                 <outlet property="stickyIcon" destination="7cV-9t-QDq" id="jpp-pm-T5e"/>
-                <outlet property="titleSizeConstraint" destination="zEF-ic-PFM" id="c67-Re-ZQM"/>
             </connections>
-            <point key="canvasLocation" x="137.68115942028987" y="84.040178571428569"/>
+            <point key="canvasLocation" x="137.68115942028987" y="86.383928571428569"/>
         </tableViewCell>
     </objects>
     <resources>

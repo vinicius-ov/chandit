@@ -21,9 +21,9 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var postAuthorName: UILabel!
     @IBOutlet weak var postTimePublishing: UILabel!
     @IBOutlet weak var imageSizeConstraint: NSLayoutConstraint?
-    @IBOutlet weak var titleSizeConstraint: NSLayoutConstraint?
+    //@IBOutlet weak var titleSizeConstraint: NSLayoutConstraint?
     @IBOutlet weak var quotedByHeight: NSLayoutConstraint?
-    
+
     @IBOutlet weak var postImage: UIImageView? {
         didSet {
             postImage?.sd_imageIndicator = SDWebImageActivityIndicator.whiteLarge
@@ -68,10 +68,10 @@ class PostTableViewCell: UITableViewCell {
     func loadCell() {
         if let title = postViewModel.title {
             postTitle.attributedText = title.toPlainText(fontSize: 14)
-            titleSizeConstraint?.constant = 17
+            //titleSizeConstraint?.constant = 17
         } else {
             postTitle.text = ""
-            titleSizeConstraint?.constant = 0
+            //titleSizeConstraint?.constant = 0
         }
 
         setupPostHeader()
@@ -83,11 +83,13 @@ class PostTableViewCell: UITableViewCell {
         }
 
         if postViewModel.quoted.isEmpty {
-            quotedByHeight?.constant = 2
+            quotedBys?.frame.size = CGSize(width: 0, height: 0)
+            print(quotedBys?.frame.size)
 
         } else {
             quotedBys?.attributedText = postViewModel.quotedAsHtml.toPlainText(fontSize: 12,
                                                                                postViewModel: nil)
+
         }
 
         if postViewModel.isSpoiler {
