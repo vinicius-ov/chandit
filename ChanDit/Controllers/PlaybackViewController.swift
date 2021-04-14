@@ -42,10 +42,9 @@ class PlaybackViewController: UIViewController {
             let path = fileURL?.path ?? ""
             setupMediaPLayer()
             if fileManager.fileExists(atPath: path) {
-                print("reading from cache: \(String(describing: fileURL))")
                 setupMedia()
+
             } else {
-                print("writing to cache: \(String(describing: fileURL))")
                 task = Service(delegate: self).loadVideoData(from: mediaURL)
                 task.resume()
 

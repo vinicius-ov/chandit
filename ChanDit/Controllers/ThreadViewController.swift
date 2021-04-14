@@ -20,6 +20,8 @@ class ThreadViewController: BaseViewController {
     @IBOutlet weak var postsTable: UITableView!
     @IBOutlet weak var reloadButton: UIBarButtonItem!
 
+    @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         postsTable.isHidden = true
@@ -40,7 +42,7 @@ class ThreadViewController: BaseViewController {
     
         postsTable.rowHeight = UITableView.automaticDimension
         postsTable.estimatedRowHeight = 200
-        
+
         fetchData()
     }
 
@@ -52,11 +54,17 @@ class ThreadViewController: BaseViewController {
                 message: "Failed to load thread posts. Try again.", actions: [])
                 return
         }
+
         service.loadData(from:
         URL(string: "https://a.4cdn.org/\(board)/thread/\(opNumber).json")!,
                          lastModified: lastModified) { (result) in
             switch result {
             case .success(let response):
+
+                DispatchQueue.main.async {
+                    self.reloadButton.isEnabled = true
+                }
+
                 switch response.code {
                 case 200..<300:
                     self.lastModified = response.modified
@@ -88,14 +96,16 @@ class ThreadViewController: BaseViewController {
                 case 400...500:
                     self.showThreadNotFoundAlert(isRefreshing: refreshing)
                 default: break
-                }
-                DispatchQueue.main.async {
-                    self.reloadButton.isEnabled = true
-                }
+            }
+
             case .failure(let error):
                 self.showAlertView(title: "Fetch failed",
-                                   message: "Failed to load thread posts. Try again. \(error.localizedDescription)",
-                    actions: [])
+                                   message: "Failed to load thread posts. Try again. \(error.localizedDescription)", actions: [])
+
+                DispatchQueue.main.async {
+                    self.loadingIndicator.isHidden = true
+                    self.reloadButton.isEnabled = true
+                }
             }
         }
     }
@@ -189,35 +199,23 @@ extension ThreadViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let postViewModel = threadViewModel.postViewModel(at: indexPath.row)
+        guard let postViewModel: PostViewModel = threadViewModel.postViewModel(at: indexPath.row)
+        else { return UITableViewCell() }
+
         let cell: PostTableViewCell?
 
-        if postViewModel!.isHidden {
+        if postViewModel.isHidden {
             cell = tableView.dequeueReusableCell(withIdentifier: "postCell_Hidden_Identifier") as? PostTableViewCell
         } else {
-            if postViewModel!.hasImage {
-                cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
-            } else {
-                cell = tableView.dequeueReusableCell(
-                    withIdentifier: "postCell_NoImage_Identifier") as? PostTableViewCell
-            }
-
-            cell?.selectedBoardId = threadViewModel.boardIdToNavigate
-            cell?.postViewModel = postViewModel
-            cell?.boardName = threadViewModel.completeBoardName!
-            cell?.tapDelegate = self
-            cell?.toastDelegate = self
-            cell?.hideDelegate = self
-            cell?.loadCell()
+            cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
         }
-        //hell
-        cell?.boardName = threadViewModel.completeBoardName!
-        cell?.selectedBoardId = threadViewModel.boardIdToNavigate
-        cell?.postViewModel = postViewModel
-        //hell
+        
+        cell?.setupCell(threadViewModel: threadViewModel, postViewModel: postViewModel,
+                        currentBoard: threadViewModel.boardIdToNavigate,
+                        tapDelegate: self, toastDelegate: self, hideDelegate: self)
+
         cell?.setupPostHeader()
-        cell?.setNeedsUpdateConstraints()
-        cell?.updateConstraintsIfNeeded()
+        cell?.loadCell()
 
         return cell ?? UITableViewCell()
     }

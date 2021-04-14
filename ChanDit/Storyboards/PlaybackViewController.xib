@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -29,7 +29,7 @@
                     <rect key="frame" x="188.5" y="429.5" width="37" height="37"/>
                 </activityIndicatorView>
                 <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="U3R-Qk-fzE">
-                    <rect key="frame" x="20" y="487" width="374" height="2"/>
+                    <rect key="frame" x="40" y="487" width="334" height="2"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="2" id="u7r-eW-94s"/>
                     </constraints>
@@ -41,13 +41,13 @@
                     <rect key="frame" x="10" y="792" width="394" height="30"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xXk-97-755">
-                            <rect key="frame" x="0.0" y="0.0" width="39" height="30"/>
+                            <rect key="frame" x="0.0" y="0.0" width="27" height="30"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="lHP-RF-wa5">
-                            <rect key="frame" x="43" y="0.0" width="308" height="31"/>
+                            <rect key="frame" x="31" y="0.0" width="320" height="31"/>
                             <connections>
                                 <action selector="valueChanged:" destination="-1" eventType="valueChanged" id="OQd-Ix-tZK"/>
                             </connections>
@@ -63,7 +63,7 @@
                 <stackView opaque="NO" alpha="0.0" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="NEc-3V-BSD">
                     <rect key="frame" x="86.5" y="822" width="241" height="30"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iKW-o1-cbZ">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iKW-o1-cbZ">
                             <rect key="frame" x="0.0" y="0.0" width="42" height="30"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                             <state key="normal" title="Close"/>
@@ -71,7 +71,7 @@
                                 <action selector="closeView:" destination="-1" eventType="touchUpInside" id="sYe-s6-rCZ"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6H0-eC-eRB">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6H0-eC-eRB">
                             <rect key="frame" x="62" y="0.0" width="58" height="30"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                             <state key="normal" title="Unmute"/>
@@ -80,7 +80,7 @@
                                 <action selector="handleToggleAudio:" destination="-1" eventType="touchUpInside" id="a6q-AN-FB6"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NbG-AJ-Ni9">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NbG-AJ-Ni9">
                             <rect key="frame" x="140" y="0.0" width="45" height="30"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                             <state key="normal" title="Pause"/>
@@ -89,7 +89,7 @@
                                 <action selector="handlePlayPause:" destination="-1" eventType="touchUpInside" id="EXk-db-6pd"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rQr-mB-BoH">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rQr-mB-BoH">
                             <rect key="frame" x="205" y="0.0" width="36" height="30"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                             <state key="normal" title="Save"/>
@@ -100,10 +100,11 @@
                     </subviews>
                 </stackView>
             </subviews>
+            <viewLayoutGuide key="safeArea" id="VdL-HY-gzC"/>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="U3R-Qk-fzE" secondAttribute="trailing" constant="20" id="3aR-c4-MoD"/>
-                <constraint firstItem="U3R-Qk-fzE" firstAttribute="leading" secondItem="jc2-cj-1JF" secondAttribute="leading" constant="20" id="4J0-5S-5sf"/>
+                <constraint firstAttribute="trailing" secondItem="U3R-Qk-fzE" secondAttribute="trailing" constant="40" id="3aR-c4-MoD"/>
+                <constraint firstItem="U3R-Qk-fzE" firstAttribute="leading" secondItem="jc2-cj-1JF" secondAttribute="leading" constant="40" id="4J0-5S-5sf"/>
                 <constraint firstItem="C4B-gB-uRM" firstAttribute="bottom" secondItem="VdL-HY-gzC" secondAttribute="bottom" id="7gO-hg-gX6"/>
                 <constraint firstItem="NEc-3V-BSD" firstAttribute="top" secondItem="MPg-VJ-6xN" secondAttribute="bottom" id="7lz-nj-77P"/>
                 <constraint firstItem="C4B-gB-uRM" firstAttribute="leading" secondItem="VdL-HY-gzC" secondAttribute="leading" id="Fug-rx-CQU"/>
@@ -118,7 +119,6 @@
                 <constraint firstItem="C4B-gB-uRM" firstAttribute="trailing" secondItem="VdL-HY-gzC" secondAttribute="trailing" id="soC-v8-TcN"/>
                 <constraint firstItem="sYO-ap-QLq" firstAttribute="centerY" secondItem="jc2-cj-1JF" secondAttribute="centerY" id="u1T-49-Dr1"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="VdL-HY-gzC"/>
             <point key="canvasLocation" x="131.8840579710145" y="79.6875"/>
         </view>
     </objects>

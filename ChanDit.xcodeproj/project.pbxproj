@@ -43,7 +43,6 @@
 		2D8176F72397F1F800491995 /* ChanDitUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D8176F62397F1F800491995 /* ChanDitUITests.swift */; };
 		2D879B732388291500BE56D0 /* ThreadViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D879B722388291500BE56D0 /* ThreadViewModel.swift */; };
 		2D879B752388294900BE56D0 /* PageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D879B742388294900BE56D0 /* PageViewModel.swift */; };
-		2DBD5336239FE864003E23FA /* PostCellNoImage.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2DBD5335239FCCA7003E23FA /* PostCellNoImage.xib */; };
 		2DBD533823A116B7003E23FA /* ImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DBD533723A116B7003E23FA /* ImageService.swift */; };
 		2DBD533A23A124C7003E23FA /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DBD533923A124C7003E23FA /* Errors.swift */; };
 		2DD9C31923576EBA00A14EE4 /* ImageViewerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2DD9C31823576EBA00A14EE4 /* ImageViewerViewController.xib */; };
@@ -155,7 +154,6 @@
 		2D8176F82397F1F800491995 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2D879B722388291500BE56D0 /* ThreadViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadViewModel.swift; sourceTree = "<group>"; };
 		2D879B742388294900BE56D0 /* PageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewModel.swift; sourceTree = "<group>"; };
-		2DBD5335239FCCA7003E23FA /* PostCellNoImage.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostCellNoImage.xib; sourceTree = "<group>"; };
 		2DBD533723A116B7003E23FA /* ImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageService.swift; sourceTree = "<group>"; };
 		2DBD533923A124C7003E23FA /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		2DD9C31823576EBA00A14EE4 /* ImageViewerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageViewerViewController.xib; sourceTree = "<group>"; };
@@ -444,7 +442,6 @@
 				81921BE422F468DD007F4EFC /* Main.storyboard */,
 				81921BE922F468DE007F4EFC /* LaunchScreen.storyboard */,
 				F2BAFFE123495AAB006D2CEE /* PostCell.xib */,
-				2DBD5335239FCCA7003E23FA /* PostCellNoImage.xib */,
 				2DFFF9A223D76D49006421E2 /* PostCellHidden.xib */,
 				2DD9C31823576EBA00A14EE4 /* ImageViewerViewController.xib */,
 				2D2784012357ADD300DD0C9F /* ThreadFooterView.xib */,
@@ -612,7 +609,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2DFFF9A323D78C2B006421E2 /* PostCellHidden.xib in Resources */,
-				2DBD5336239FE864003E23FA /* PostCellNoImage.xib in Resources */,
 				2D5034A2239044AD0016BBE7 /* SettingsViewController.xib in Resources */,
 				2D3093572384691F00FE1D32 /* MultipleOptionsTableViewCell.xib in Resources */,
 				2D3093A62386D22A00FE1D32 /* SwiftWebVC.strings in Resources */,
