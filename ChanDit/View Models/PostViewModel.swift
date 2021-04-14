@@ -7,11 +7,13 @@
 //  swiftlint:disable trailing_whitespace
 
 import UIKit
+import Foundation
 
 class PostViewModel {
     var post: Post
     var hidden: Bool = false
-
+    var quoted: [Int] = []
+    
     init(post: Post) {
         self.post = post
     }
@@ -24,8 +26,23 @@ extension PostViewModel {
     }
     
     var comment: String? {
-        var formatString = post.com?.replacingOccurrences(of: "#p", with: "chandit://")
+        let formatString: String? = post.com?.replacingOccurrences(of: "#p",
+                                                                   with: "chandit://")
         return formatString
+    }
+
+    var quotes: [Int] {
+        var afterquotes = [Int]()
+        if let comm = post.com {
+            let quotes = comm.components(separatedBy: "&gt;&gt;")
+            for quote in quotes {
+                let mid = quote.components(separatedBy: "</a>")
+                if let quote = Int(mid.first ?? "") {
+                    afterquotes.append(quote)
+                }
+            }
+        }
+        return afterquotes
     }
 
     var lowerRangeGreenText: [Int] {
@@ -96,7 +113,7 @@ extension PostViewModel {
     }
     
     var fileSize: String? {
-        guard let filesize = post.fsize else { return "" }
+        guard let filesize: Int = post.fsize, filesize > 0 else { return "" }
         var fsize = Double(filesize)/1024.0
         var unit = "KiB"
         if fsize > 1024 {
@@ -107,7 +124,9 @@ extension PostViewModel {
     }
     
     var mediaFullName: String? {
-        return "\(post.filename ?? "")\(post.ext ?? "")"
+        guard let filename: String = post.filename,
+              let extens: String = post.ext else { return ""}
+        return "\(filename)\(extens)"
     }
     
     fileprivate func getTimeAgo() -> TimeInterval {
@@ -183,5 +202,13 @@ extension PostViewModel {
 
     var isHidden: Bool {
         return hidden
+    }
+
+    var quotedAsHtml: String {
+        var html = ""
+        for quote in quoted {
+            html += "<a href=\"chandit://\(quote)\" class=\"quotelink\">&gt;&gt;\(quote)</a>&#32;"
+        }
+        return html
     }
 }

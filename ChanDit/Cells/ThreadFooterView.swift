@@ -33,10 +33,6 @@ class ThreadFooterView: UITableViewHeaderFooterView {
     }
 
     @IBAction func didTapButton(_ sender: AnyObject) {
-        if threadIsVisible{
-            delegate?.toggleVisibility(section: section)
-        } else {
-            delegate?.threadFooterView(self, threadToNavigate: threadToNavigate)
-        }
+        delegate?.threadFooterView(self, threadToNavigate: threadToNavigate)
     }
 }

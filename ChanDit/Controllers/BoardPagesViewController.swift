@@ -18,7 +18,7 @@ class BoardPagesViewController: BaseViewController {
     @IBOutlet weak var postsTable: UITableView!
     @IBOutlet weak var boardSelector: UITextField!
     @IBOutlet weak var reloadActivityView: UIActivityIndicatorView!
-    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var reloadMessage: UILabel!
 
     var pageViewModel = PageViewModel(threads: Array()) //deveria ser injetado
     var pickerView: UIPickerView!
@@ -32,10 +32,10 @@ class BoardPagesViewController: BaseViewController {
             UINib(nibName: "PostCell",
                   bundle: nil),
             forCellReuseIdentifier: "postCellIdentifier")
-        postsTable.register(
-            UINib(nibName: "PostCellNoImage",
-                  bundle: nil),
-            forCellReuseIdentifier: "postCell_NoImage_Identifier")
+//        postsTable.register(
+//            UINib(nibName: "PostCellNoImage",
+//                  bundle: nil),
+//            forCellReuseIdentifier: "postCell_NoImage_Identifier")
         postsTable.register(
         UINib(nibName: "PostCellHidden",
               bundle: nil),
@@ -92,21 +92,19 @@ class BoardPagesViewController: BaseViewController {
 
         boardSelector.inputAccessoryView = toolBar
 
-        toggleActivityLoaderVisibility()
+        self.reloadActivityView.isHidden = false
+        self.reloadMessage.isHidden = true
 
         fetchBoards()
     }
 
-    func toggleActivityLoaderVisibility() {
-        DispatchQueue.main.async {
-            self.reloadActivityView.isHidden = !self.reloadActivityView.isHidden
-            if self.bottomConstraint.constant == 37 {  self.bottomConstraint.constant = 0
-            } else {
-                self.bottomConstraint.constant = 37
-            }
-            self.view.setNeedsLayout()
-        }
-    }
+//    func toggleActivityLoaderVisibility() {
+//        DispatchQueue.main.async {
+//            self.reloadActivityView.isHidden = !self.reloadActivityView.isHidden
+//            //self.reloadMessage.isHidden = !self.reloadMessage.isHidden
+//            self.view.setNeedsLayout()
+//        }
+//    }
 
     func fetchData(append: Bool) {
         guard let selectedBoard = boardsViewModel.selectedBoardId else {
@@ -123,7 +121,10 @@ class BoardPagesViewController: BaseViewController {
                     if !append {
                         self.pageViewModel.threads.removeAll()
                     } else {
-                        self.toggleActivityLoaderVisibility()
+                        DispatchQueue.main.async {
+                        self.reloadActivityView.isHidden = true
+                        self.reloadMessage.isHidden = true
+                        }
                     }
                     self.lastModified = response.modified
                     do {
@@ -164,6 +165,10 @@ class BoardPagesViewController: BaseViewController {
                 self.showAlertView(title: "Fetch failed",
                                    message: "Failed to load board threads. Try again. \(error.localizedDescription)",
                     actions: [])
+                DispatchQueue.main.async {
+                self.reloadActivityView.isHidden = true
+                self.reloadMessage.isHidden = false
+                }
             }
         }
     }
@@ -188,7 +193,8 @@ class BoardPagesViewController: BaseViewController {
                 }
             case .failure(let error):
                 self.showAlertView(title: "Fetch failed",
-                                   message: "Failed to load board lista. Try reloading the app. \(error.localizedDescription)",
+                                   message: "Failed to load board lista. "
+                    + "Try reloading the app. \(error.localizedDescription)",
                     actions: [])
             }
         }
@@ -283,32 +289,25 @@ extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let threadViewModel = pageViewModel.threads[indexPath.section]
+        let threadViewModel: ThreadViewModel = pageViewModel.threads[indexPath.section]
 
-        let postViewModel = threadViewModel.postViewModel(at: indexPath.row)
+        guard let postViewModel: PostViewModel = threadViewModel.postViewModel(at: indexPath.row)
+        else { return UITableViewCell() }
 
         let cell: PostTableViewCell?
-        if postViewModel!.isHidden {
+
+        if postViewModel.isHidden {
             cell = tableView.dequeueReusableCell(withIdentifier: "postCell_Hidden_Identifier") as? PostTableViewCell
         } else {
-            if postViewModel!.hasImage {
-                cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
-            } else {
-                cell = tableView.dequeueReusableCell(withIdentifier: "postCell_NoImage_Identifier") as? PostTableViewCell
-            }
-
-            cell?.boardName = boardsViewModel.completeBoardName(atRow: pickerView.selectedRow(inComponent: 0))
-            cell?.selectedBoardId = boardsViewModel.selectedBoardId
-            cell?.postViewModel = postViewModel
-            cell?.tapDelegate = self
-            cell?.toastDelegate = self
-            cell?.hideDelegate = self
-            cell?.loadCell()
+            cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
         }
-        cell?.postViewModel = postViewModel
+
+        cell?.setupCell(threadViewModel: threadViewModel, postViewModel: postViewModel,
+                        currentBoard: boardsViewModel.selectedBoardId ?? "",
+                        tapDelegate: self, toastDelegate: self, hideDelegate: self)
+        
         cell?.setupPostHeader()
-        cell?.setNeedsUpdateConstraints()
-        cell?.updateConstraintsIfNeeded()
+        cell?.loadCell()
 
         return cell ?? UITableViewCell()
 
@@ -342,8 +341,9 @@ extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
         reportAction.backgroundColor = .red
 
         let hideAction = UITableViewRowAction(style: .normal, title: "Show/Hide") { (_, indexPath) in
-            guard let threadViewModel: ThreadViewModel = self.pageViewModel.threads[indexPath.section],
-                let postViewModel = threadViewModel.postViewModel(at: indexPath.row) else { return }
+            let threadViewModel: ThreadViewModel = self.pageViewModel.threads[indexPath.section]
+            guard let postViewModel = threadViewModel.postViewModel(at: indexPath.row) else { return }
+            
             if postViewModel.isOp {
                 threadViewModel.toggleHidden()
             } else {
@@ -365,7 +365,7 @@ extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
 extension BoardPagesViewController: UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         if indexPaths.contains([pageViewModel.threads.count-1, 0]) {
-            toggleActivityLoaderVisibility()
+            //toggleActivityLoaderVisibility()
             print("RELOAD!!!!")
             fetchData(append: true)
         }
@@ -389,7 +389,13 @@ extension BoardPagesViewController: UIPickerViewDataSource, UIPickerViewDelegate
 extension BoardPagesViewController: CellTapInteractionDelegate {
     func linkTapped(postNumber: Int, opNumber: Int, originNumber: Int) {
         self.boardsViewModel.postNumberToNavigate = postNumber
-        self.boardsViewModel.threadToLaunch = opNumber
+
+        if opNumber == 0 {
+            self.boardsViewModel.threadToLaunch = postNumber
+        } else {
+            self.boardsViewModel.threadToLaunch = opNumber
+        }
+
         self.navigateToThread()
     }
     

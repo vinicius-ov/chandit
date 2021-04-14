@@ -9,7 +9,7 @@
 import UIKit
 
 class SettingsTableViewCell: UITableViewCell {
-    
+
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var confirmSlider: UISlider!
 

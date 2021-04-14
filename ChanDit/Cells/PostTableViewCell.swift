@@ -9,18 +9,21 @@
 import UIKit
 import SDWebImage
 
+//TODO: remember to edit both postCell xibs when modifing stuff
 class PostTableViewCell: UITableViewCell {
     var postViewModel: PostViewModel!
-    var selectedBoardId: String!
+    var currentBoard: String!
     var boardName = "Im Error"
     var isNsfw = true
 
     var viewForReset: UIView!
     
-    @IBOutlet weak var postAuthorName: UILabel!
-    @IBOutlet weak var postTimePublishing: UILabel!
+    @IBOutlet weak var postAuthorName: UILabel?
+    @IBOutlet weak var postTimePublishing: UILabel?
     @IBOutlet weak var imageSizeConstraint: NSLayoutConstraint?
-    
+    //@IBOutlet weak var titleSizeConstraint: NSLayoutConstraint?
+    @IBOutlet weak var quotedByHeight: NSLayoutConstraint?
+
     @IBOutlet weak var postImage: UIImageView? {
         didSet {
             postImage?.sd_imageIndicator = SDWebImageActivityIndicator.whiteLarge
@@ -28,16 +31,17 @@ class PostTableViewCell: UITableViewCell {
         }
     }
     
-    @IBOutlet weak var flagIcon: UIImageView!
-    @IBOutlet weak var postText: UITextView!
-    @IBOutlet weak var postTitle: UILabel!
-    @IBOutlet weak var postNumber: UILabel!
+    @IBOutlet weak var flagIcon: UIImageView?
+    @IBOutlet weak var postText: UITextView?
+    @IBOutlet weak var postTitle: UILabel?
+    @IBOutlet weak var postNumber: UILabel?
     @IBOutlet weak var mediaExtension: UILabel?
     @IBOutlet weak var mediaSize: UILabel?
+    @IBOutlet weak var quotedBys: UITextView?
     
-    @IBOutlet weak var stickyIcon: UIImageView! {
+    @IBOutlet weak var stickyIcon: UIImageView? {
         didSet {
-            stickyIcon.sd_setImage(with: URL(string: "https://s.4cdn.org/image/sticky.gif")!)
+            stickyIcon?.sd_setImage(with: URL(string: "https://s.4cdn.org/image/sticky.gif")!)
         }
     }
     
@@ -46,72 +50,104 @@ class PostTableViewCell: UITableViewCell {
     weak var hideDelegate: HideDelegate?
 
     func setupPostHeader() {
-        postAuthorName.text = postViewModel.postAuthorName
-        postNumber.text = "No.\(postViewModel.number!)"
-        postTimePublishing.text = postViewModel.timeFromPost
+        postAuthorName?.text = postViewModel.postAuthorName
+        postNumber?.text = "No.\(postViewModel.number!)"
+        postTimePublishing?.text = postViewModel.timeFromPost
         let flag = postViewModel.flagCountryCode
         if let flagUrl = URL(string: "https://s.4cdn.org/image/country/\(flag).gif") {
-            flagIcon.sd_setImage(with: flagUrl)
+            flagIcon?.sd_setImage(with: flagUrl)
         }
-        flagIcon.addGestureRecognizer(
+        flagIcon?.addGestureRecognizer(
         UITapGestureRecognizer(target: self,
                                action: #selector(showFlagHint(_:))))
 
-        stickyIcon.isHidden = !postViewModel.isPinned
+        stickyIcon?.isHidden = !postViewModel.isPinned
+    }
+
+    /*
+     cell?.selectedBoardId = threadViewModel.boardIdToNavigate
+     cell?.postViewModel = postViewModel
+     cell?.boardName = threadViewModel.completeBoardName!
+     cell?.tapDelegate = self
+     cell?.toastDelegate = self
+     cell?.hideDelegate = self
+     */
+
+    func setupCell(threadViewModel: ThreadViewModel, postViewModel: PostViewModel,
+                   currentBoard: String, tapDelegate: CellTapInteractionDelegate,
+                   toastDelegate: ToastDelegate, hideDelegate: HideDelegate) {
+
+        self.currentBoard = currentBoard
+        self.postViewModel = postViewModel
+        self.boardName = threadViewModel.completeBoardName ?? ""
+        self.tapDelegate = tapDelegate
+        self.toastDelegate = toastDelegate
+        self.hideDelegate = hideDelegate
     }
 
     func loadCell() {
-        if let title = postViewModel.title {
-            postTitle.attributedText = title.toPlainText(fontSize: 14)
-        } else {
-            postTitle.text = ""
-        }
 
         setupPostHeader()
 
-        if let comment = postViewModel.comment {
-            postText.attributedText = comment.toPlainText(postViewModel: postViewModel)
+        if let title = postViewModel.title {
+            postTitle?.attributedText = title.toPlainText(fontSize: 14)
+            
         } else {
-            postText.text = ""
+            postTitle?.text = ""
         }
 
+        quotedBys?.attributedText = postViewModel
+            .quotedAsHtml.toPlainText(fontSize: 12, postViewModel: nil)
 
-        
         if postViewModel.isSpoiler {
             postImage?.sd_setImage(with: postViewModel.spoilerUrl)
+            mediaExtension?.text = "Spoiler Image"
         } else {
-            if let thumbUrl = postViewModel.thumbnailUrl(boardId: selectedBoardId) {
+            if let thumbUrl = postViewModel.thumbnailUrl(boardId: currentBoard) {
                 postImage?.sd_setImage(with: thumbUrl,
                                       completed: { (_, error, _, _) in
-                                        //print(error?.localizedDescription)
-                                        if error != nil {
-                                            self.postImage?.sd_setImage(with:
-                                                URL(string: "https://s.4cdn.org/image/filedeleted-res.gif")!)
+                                        if error != nil,
+                                           let url404 = URL(string: "https://s.4cdn.org/image/filedeleted-res.gif") {
+                                            self.postImage?.sd_setImage(with: url404)
                                         }
                     })
-                postImage?.isHidden = false
                 imageSizeConstraint?.constant = 160
-                mediaSize?.text = postViewModel.fileSize
-                mediaExtension?.text = postViewModel.mediaFullName
+
             } else {
-                postImage?.isHidden = true
                 imageSizeConstraint?.constant = 0
                 postImage?.image = nil
             }
         }
-        
-        postImage?.addGestureRecognizer(
+
+        mediaExtension?.text = postViewModel.mediaFullName
+        mediaSize?.text = postViewModel.fileSize
+
+        if let comment = postViewModel.comment {
+            postText?.attributedText = comment.toPlainText(postViewModel: postViewModel)
+        } else {
+            postText?.attributedText = NSAttributedString(string: "")
+        }
+
+        setupGestureRecognizers()
+    }
+
+    private func setupGestureRecognizers() {
+        postImage!.addGestureRecognizer(
         UITapGestureRecognizer(target: self,
                                action: #selector(viewImage(_:))))
-        
-        postText.addGestureRecognizer(
+
+        postText?.addGestureRecognizer(
+            UITapGestureRecognizer(target: self,
+                                   action: #selector(tappedLink(_:))))
+
+        quotedBys?.addGestureRecognizer(
             UITapGestureRecognizer(target: self,
                                    action: #selector(tappedLink(_:))))
 
         let copyDoubleTap = UITapGestureRecognizer(target: self,
-        action: #selector(copyToClipBoard(_:)))
+                                                   action: #selector(copyToClipBoard(_:)))
         copyDoubleTap.numberOfTapsRequired = 2
-        postText.addGestureRecognizer(copyDoubleTap)
+        postText?.addGestureRecognizer(copyDoubleTap)
     }
 
     @objc
@@ -126,13 +162,13 @@ class PostTableViewCell: UITableViewCell {
         let ext = postViewModel.post.ext
         if ext == ".webm" {
             let viewController = PlaybackViewController(nibName: "PlaybackViewController", bundle: Bundle.main)
-            viewController.mediaURL = postViewModel.imageUrl(boardId: selectedBoardId)
+            viewController.mediaURL = postViewModel.imageUrl(boardId: currentBoard)
             viewController.postNumber = self.postViewModel.number ?? 0
             viewController.filename = postViewModel.mediaFullName ?? "im error"
             tapDelegate?.imageTapped(viewController)
         } else {
             let viewController = ImageViewerViewController(nibName: "ImageViewerViewController", bundle: Bundle.main)
-            viewController.boardId = selectedBoardId
+            viewController.boardId = currentBoard
             viewController.postViewModel = postViewModel
             viewController.completeBoardName = boardName
             tapDelegate?.imageTapped(viewController)
@@ -143,6 +179,15 @@ class PostTableViewCell: UITableViewCell {
     func showFlagHint(_ sender: Any) {
         toastDelegate?.showToast(flagHint: postViewModel.countryName)
     }
+
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL,
+                  in characterRange: NSRange,
+                  interaction: UITextItemInteraction) -> Bool {
+
+        print(URL.absoluteString)
+        //UIApplication.shared.open(URL)
+        return false
+    }
     
     @objc
     func tappedLink(_ tapGesture: UITapGestureRecognizer) {
@@ -150,24 +195,28 @@ class PostTableViewCell: UITableViewCell {
         guard let textView: UITextView = tapGesture.view as? UITextView else { return }
         let tapLocation = tapGesture.location(in: tapGesture.view)
 
-        guard let linkString = getTappedLink(from: textView, in: tapLocation) else { return }
+        guard var linkString = getTappedLink(from: textView, in: tapLocation) else { return }
+
+        if linkString.contains("applewebdata") {
+            let comps = linkString.components(separatedBy: "chandit")
+            linkString = "chandit" + (comps.last ?? "")
+        }
 
         if !linkString.isEmpty {
             let quote = linkString.split(separator: "/")
 
             if quote.first == "chandit:" {
-                let postNumber = Int(quote.last!)
-                tapDelegate?.linkTapped(postNumber: postNumber!,
-                                        opNumber: postViewModel.resto!,
-                                        originNumber: postViewModel.number!)
+
+                guard let postNumber = Int(quote.last ?? ""),
+                    let resto = postViewModel.resto,
+                    let number = postViewModel.number else { return }
+
+                tapDelegate?.linkTapped(postNumber: postNumber,
+                                        opNumber: resto,
+                                        originNumber: number)
             } else {
                 let actionOk = UIAlertAction(title: "OK", style: .default) { (_) in
-                    if UIApplication.shared.canOpenURL(URL(string: "firefox://open-url?url=\(linkString)")!) {
-                        UIApplication.shared.open(URL(string: "firefox://open-url?url=\(linkString)")!)
-                    } else {
-                        UIApplication.shared.open(URL(string: linkString)!)
-                    }
-
+                    UIApplication.shared.open(URL(string: linkString)!)
                 }
                 let actionCancel = UIAlertAction(title: "Cancel", style: .default)
                 tapDelegate?.presentAlertExitingApp([actionOk, actionCancel])
