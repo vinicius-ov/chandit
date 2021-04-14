@@ -113,7 +113,7 @@ extension PostViewModel {
     }
     
     var fileSize: String? {
-        guard let filesize = post.fsize else { return "" }
+        guard let filesize: Int = post.fsize, filesize > 0 else { return "" }
         var fsize = Double(filesize)/1024.0
         var unit = "KiB"
         if fsize > 1024 {
@@ -124,7 +124,9 @@ extension PostViewModel {
     }
     
     var mediaFullName: String? {
-        return "\(post.filename ?? "")\(post.ext ?? "")"
+        guard let filename: String = post.filename,
+              let extens: String = post.ext else { return ""}
+        return "\(filename)\(extens)"
     }
     
     fileprivate func getTimeAgo() -> TimeInterval {

@@ -199,35 +199,23 @@ extension ThreadViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let postViewModel = threadViewModel.postViewModel(at: indexPath.row)
+        guard let postViewModel: PostViewModel = threadViewModel.postViewModel(at: indexPath.row)
+        else { return UITableViewCell() }
+
         let cell: PostTableViewCell?
 
-        if postViewModel!.isHidden {
+        if postViewModel.isHidden {
             cell = tableView.dequeueReusableCell(withIdentifier: "postCell_Hidden_Identifier") as? PostTableViewCell
         } else {
-            if postViewModel!.hasImage {
-                cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
-            } else {
-                cell = tableView.dequeueReusableCell(
-                    withIdentifier: "postCell_NoImage_Identifier") as? PostTableViewCell
-            }
-
-            cell?.selectedBoardId = threadViewModel.boardIdToNavigate
-            cell?.postViewModel = postViewModel
-            cell?.boardName = threadViewModel.completeBoardName!
-            cell?.tapDelegate = self
-            cell?.toastDelegate = self
-            cell?.hideDelegate = self
-            cell?.loadCell()
+            cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
         }
-        //hell
-        cell?.boardName = threadViewModel.completeBoardName!
-        cell?.selectedBoardId = threadViewModel.boardIdToNavigate
-        cell?.postViewModel = postViewModel
-        //hell
+        
+        cell?.setupCell(threadViewModel: threadViewModel, postViewModel: postViewModel,
+                        currentBoard: threadViewModel.boardIdToNavigate,
+                        tapDelegate: self, toastDelegate: self, hideDelegate: self)
+
         cell?.setupPostHeader()
-        cell?.setNeedsUpdateConstraints()
-        cell?.updateConstraintsIfNeeded()
+        cell?.loadCell()
 
         return cell ?? UITableViewCell()
     }

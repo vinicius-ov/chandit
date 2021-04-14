@@ -32,10 +32,10 @@ class BoardPagesViewController: BaseViewController {
             UINib(nibName: "PostCell",
                   bundle: nil),
             forCellReuseIdentifier: "postCellIdentifier")
-        postsTable.register(
-            UINib(nibName: "PostCellNoImage",
-                  bundle: nil),
-            forCellReuseIdentifier: "postCell_NoImage_Identifier")
+//        postsTable.register(
+//            UINib(nibName: "PostCellNoImage",
+//                  bundle: nil),
+//            forCellReuseIdentifier: "postCell_NoImage_Identifier")
         postsTable.register(
         UINib(nibName: "PostCellHidden",
               bundle: nil),
@@ -289,33 +289,25 @@ extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let threadViewModel = pageViewModel.threads[indexPath.section]
+        let threadViewModel: ThreadViewModel = pageViewModel.threads[indexPath.section]
 
-        let postViewModel = threadViewModel.postViewModel(at: indexPath.row)
+        guard let postViewModel: PostViewModel = threadViewModel.postViewModel(at: indexPath.row)
+        else { return UITableViewCell() }
 
         let cell: PostTableViewCell?
-        if postViewModel!.isHidden {
+
+        if postViewModel.isHidden {
             cell = tableView.dequeueReusableCell(withIdentifier: "postCell_Hidden_Identifier") as? PostTableViewCell
         } else {
-            if postViewModel!.hasImage {
-                cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
-            } else {
-                cell = tableView.dequeueReusableCell(
-                    withIdentifier: "postCell_NoImage_Identifier") as? PostTableViewCell
-            }
-
-            cell?.boardName = boardsViewModel.completeBoardName(atRow: pickerView.selectedRow(inComponent: 0))
-            cell?.selectedBoardId = boardsViewModel.selectedBoardId
-            cell?.postViewModel = postViewModel
-            cell?.tapDelegate = self
-            cell?.toastDelegate = self
-            cell?.hideDelegate = self
-            cell?.loadCell()
+            cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifier") as? PostTableViewCell
         }
-        cell?.postViewModel = postViewModel
+
+        cell?.setupCell(threadViewModel: threadViewModel, postViewModel: postViewModel,
+                        currentBoard: boardsViewModel.selectedBoardId ?? "",
+                        tapDelegate: self, toastDelegate: self, hideDelegate: self)
+        
         cell?.setupPostHeader()
-        cell?.setNeedsUpdateConstraints()
-        cell?.updateConstraintsIfNeeded()
+        cell?.loadCell()
 
         return cell ?? UITableViewCell()
 

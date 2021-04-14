@@ -25,7 +25,8 @@ class Service: NSObject {
 
     init(delegate: URLSessionDelegate) {
         super.init()
-        session = URLSession(configuration: URLSessionConfiguration.default, delegate: delegate, delegateQueue: nil)
+        session = URLSession(configuration: URLSessionConfiguration.default,
+                             delegate: delegate, delegateQueue: nil)
     }
 
     override init() {
