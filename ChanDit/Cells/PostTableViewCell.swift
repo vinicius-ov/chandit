@@ -9,7 +9,6 @@
 import UIKit
 import SDWebImage
 
-//TODO: remember to edit both postCell xibs when modifing stuff
 class PostTableViewCell: UITableViewCell {
     var postViewModel: PostViewModel!
     var currentBoard: String!
@@ -63,15 +62,6 @@ class PostTableViewCell: UITableViewCell {
 
         stickyIcon?.isHidden = !postViewModel.isPinned
     }
-
-    /*
-     cell?.selectedBoardId = threadViewModel.boardIdToNavigate
-     cell?.postViewModel = postViewModel
-     cell?.boardName = threadViewModel.completeBoardName!
-     cell?.tapDelegate = self
-     cell?.toastDelegate = self
-     cell?.hideDelegate = self
-     */
 
     func setupCell(threadViewModel: ThreadViewModel, postViewModel: PostViewModel,
                    currentBoard: String, tapDelegate: CellTapInteractionDelegate,
@@ -132,7 +122,7 @@ class PostTableViewCell: UITableViewCell {
     }
 
     private func setupGestureRecognizers() {
-        postImage!.addGestureRecognizer(
+        postImage?.addGestureRecognizer(
         UITapGestureRecognizer(target: self,
                                action: #selector(viewImage(_:))))
 
@@ -184,8 +174,6 @@ class PostTableViewCell: UITableViewCell {
                   in characterRange: NSRange,
                   interaction: UITextItemInteraction) -> Bool {
 
-        print(URL.absoluteString)
-        //UIApplication.shared.open(URL)
         return false
     }
     

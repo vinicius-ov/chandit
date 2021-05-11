@@ -20,22 +20,18 @@ class BoardPagesViewController: BaseViewController {
     @IBOutlet weak var reloadActivityView: UIActivityIndicatorView!
     @IBOutlet weak var reloadMessage: UILabel!
 
-    var pageViewModel = PageViewModel(threads: Array()) //deveria ser injetado
+    var pageViewModel: PageViewModel = PageViewModel(threads: Array()) //deveria ser injetado
     var pickerView: UIPickerView!
-    let boardsViewModel = BoardsViewModel() //deveria ser injetado
-    let service = Service() //deveria ser injetado
+    let boardsViewModel: BoardsViewModel = BoardsViewModel() //deveria ser injetado
+    let service: Service = Service() //deveria ser injetado
     var lastModified: String?
-    var thrs = NSMutableOrderedSet()
+    var catalogMode: Bool = false
 
     private func registerCellViews() {
         postsTable.register(
             UINib(nibName: "PostCell",
                   bundle: nil),
             forCellReuseIdentifier: "postCellIdentifier")
-//        postsTable.register(
-//            UINib(nibName: "PostCellNoImage",
-//                  bundle: nil),
-//            forCellReuseIdentifier: "postCell_NoImage_Identifier")
         postsTable.register(
         UINib(nibName: "PostCellHidden",
               bundle: nil),
@@ -97,14 +93,6 @@ class BoardPagesViewController: BaseViewController {
 
         fetchBoards()
     }
-
-//    func toggleActivityLoaderVisibility() {
-//        DispatchQueue.main.async {
-//            self.reloadActivityView.isHidden = !self.reloadActivityView.isHidden
-//            //self.reloadMessage.isHidden = !self.reloadMessage.isHidden
-//            self.view.setNeedsLayout()
-//        }
-//    }
 
     func fetchData(append: Bool) {
         guard let selectedBoard = boardsViewModel.selectedBoardId else {
@@ -257,8 +245,10 @@ class BoardPagesViewController: BaseViewController {
     }
 
     @IBAction func gotoTop(_ sender: Any) {
-        self.postsTable.scrollToRow(at:
-            IndexPath(item: 0, section: 0), at: .top, animated: true)
+//        self.postsTable.scrollToRow(at: IndexPath(item: 0, section: 0),
+//                                    at: .top, animated: true)
+        catalogMode = !catalogMode
+        postsTable.reloadData()
     }
 
     @IBAction func gotoNewThreadWebView(_ sender: Any) {
@@ -277,6 +267,8 @@ extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if sectionShouldBeHidden(section) {
             return 0 // Don't show any rows for hidden sections
+        } else if catalogMode {
+            return 1
         } else {
             let threadViewModel = pageViewModel.threads[section]
             return threadViewModel.posts.count
@@ -364,7 +356,8 @@ extension BoardPagesViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension BoardPagesViewController: UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-        if indexPaths.contains([pageViewModel.threads.count-1, 0]) {
+        print(indexPaths)
+        if indexPaths.contains([pageViewModel.threads.count-5, 0]) {
             //toggleActivityLoaderVisibility()
             print("RELOAD!!!!")
             fetchData(append: true)

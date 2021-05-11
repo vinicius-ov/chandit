@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -21,7 +21,7 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1xE-u5-sLD">
                                 <rect key="frame" x="0.0" y="0.0" width="6" height="20"/>
-                                <color key="backgroundColor" red="0.12129447609186172" green="0.12922456860542297" blue="0.14169979095458984" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.1565729082" green="0.16444301610000001" blue="0.18106204270000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="3sl-ky-0uK"/>
                                     <constraint firstAttribute="width" constant="6" id="Gmy-TV-Q52"/>
@@ -29,7 +29,7 @@
                             </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7cV-9t-QDq">
                                 <rect key="frame" x="6" y="0.0" width="20" height="20"/>
-                                <color key="backgroundColor" red="0.12129447609186172" green="0.12922456860542297" blue="0.14169979095458984" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.1565729082" green="0.16444301610000001" blue="0.18106204270000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="20" id="G29-G6-scB"/>
                                     <constraint firstAttribute="height" constant="20" id="v3b-cW-HuP"/>
@@ -37,7 +37,7 @@
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nFn-3a-MY2">
                                 <rect key="frame" x="26" y="0.0" width="60" height="20"/>
-                                <color key="backgroundColor" systemColor="viewFlipsideBackgroundColor"/>
+                                <color key="backgroundColor" red="0.1565729082" green="0.16444301610000001" blue="0.18106204270000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Name">
                                         <attributes>
@@ -51,7 +51,7 @@
                             </label>
                             <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lba-Y3-HPD">
                                 <rect key="frame" x="86" y="0.0" width="20" height="20"/>
-                                <color key="backgroundColor" red="0.12129447610000001" green="0.12922456860000001" blue="0.14169979099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.1565729082" green="0.16444301610000001" blue="0.18106204270000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="gqu-eu-gz6"/>
                                     <constraint firstAttribute="width" constant="20" id="vmE-jM-2qK"/>
@@ -59,14 +59,14 @@
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zp6-Hk-MGE">
                                 <rect key="frame" x="106" y="0.0" width="50.5" height="20"/>
-                                <color key="backgroundColor" systemColor="viewFlipsideBackgroundColor"/>
+                                <color key="backgroundColor" red="0.1565729082" green="0.16444301610000001" blue="0.18106204270000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fvS-N3-HbB">
                                 <rect key="frame" x="156.5" y="0.0" width="257.5" height="20"/>
-                                <color key="backgroundColor" systemColor="viewFlipsideBackgroundColor"/>
+                                <color key="backgroundColor" red="0.1565729082" green="0.16444301610000001" blue="0.18106204270000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Label">
                                         <attributes>
@@ -92,7 +92,7 @@
                     <textView clipsSubviews="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="MQI-Sz-RTe">
                         <rect key="frame" x="0.0" y="230" width="414" height="148"/>
                         <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="textColor" red="0.77217203379999999" green="0.78455501790000004" blue="0.77619081739999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         <dataDetectorType key="dataDetectorTypes" link="YES"/>
@@ -123,7 +123,7 @@
                         <dataDetectorType key="dataDetectorTypes" link="YES"/>
                     </textView>
                 </subviews>
-                <color key="backgroundColor" systemColor="darkTextColor"/>
+                <color key="backgroundColor" red="0.11346558480000001" green="0.12145919350000001" blue="0.1297880411" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
                     <constraint firstItem="MQI-Sz-RTe" firstAttribute="top" secondItem="l4X-kM-roY" secondAttribute="bottom" id="0xh-tv-K2Q"/>
                     <constraint firstItem="M5h-GV-wo7" firstAttribute="top" secondItem="fvS-N3-HbB" secondAttribute="bottom" constant="2" id="1ca-wZ-NGv"/>
@@ -167,12 +167,4 @@
             <point key="canvasLocation" x="137.68115942028987" y="123.88392857142857"/>
         </tableViewCell>
     </objects>
-    <resources>
-        <systemColor name="darkTextColor">
-            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="viewFlipsideBackgroundColor">
-            <color red="0.1215686274509804" green="0.12941176470588239" blue="0.14117647058823529" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-    </resources>
 </document>

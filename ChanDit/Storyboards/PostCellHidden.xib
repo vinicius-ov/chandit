@@ -1,112 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PostTableViewCell" customModule="ChanDit" customModuleProvider="target"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="postCell_Hidden_Identifier" rowHeight="92" id="42x-lp-gWH" customClass="PostTableViewCell" customModuleProvider="target">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="postCell_Hidden_Identifier" rowHeight="92" id="42x-lp-gWH" customClass="PostTableViewCell" customModule="ChanDit" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="414" height="92"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="42x-lp-gWH" id="hhV-6z-yhL">
                 <rect key="frame" x="0.0" y="0.0" width="414" height="92"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="Shf-j1-KPS">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="20"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1xE-u5-sLD">
-                                <rect key="frame" x="0.0" y="0.0" width="6" height="20"/>
-                                <color key="backgroundColor" red="0.12129447609186172" green="0.12922456860542297" blue="0.14169979095458984" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="20" id="3sl-ky-0uK"/>
-                                    <constraint firstAttribute="width" constant="6" id="Gmy-TV-Q52"/>
-                                </constraints>
-                            </view>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7cV-9t-QDq">
-                                <rect key="frame" x="6" y="0.0" width="20" height="20"/>
-                                <color key="backgroundColor" red="0.12129447609186172" green="0.12922456860542297" blue="0.14169979095458984" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="20" id="G29-G6-scB"/>
-                                    <constraint firstAttribute="height" constant="20" id="v3b-cW-HuP"/>
-                                </constraints>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nFn-3a-MY2">
-                                <rect key="frame" x="26" y="0.0" width="60" height="20"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
-                                <attributedString key="attributedText">
-                                    <fragment content="Name">
-                                        <attributes>
-                                            <color key="NSColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <font key="NSFont" metaFont="label" size="12"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" firstLineHeadIndent="4" tighteningFactorForTruncation="0.0"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lba-Y3-HPD">
-                                <rect key="frame" x="86" y="0.0" width="20" height="20"/>
-                                <color key="backgroundColor" red="0.12129447610000001" green="0.12922456860000001" blue="0.14169979099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="20" id="gqu-eu-gz6"/>
-                                    <constraint firstAttribute="width" constant="20" id="vmE-jM-2qK"/>
-                                </constraints>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zp6-Hk-MGE">
-                                <rect key="frame" x="106" y="0.0" width="50.5" height="20"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fvS-N3-HbB">
-                                <rect key="frame" x="156.5" y="0.0" width="257.5" height="20"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
-                                <attributedString key="attributedText">
-                                    <fragment content="Label">
-                                        <attributes>
-                                            <color key="NSColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <font key="NSFont" metaFont="label" size="12"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="right" lineBreakMode="wordWrapping" baseWritingDirection="rightToLeft" firstLineHeadIndent="6" tighteningFactorForTruncation="0.0"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="20" id="wdd-mu-TGj"/>
-                        </constraints>
-                    </stackView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hidden" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Odv-gq-QJv">
-                        <rect key="frame" x="160" y="26" width="94" height="60"/>
+                        <rect key="frame" x="160" y="6" width="94" height="80"/>
                         <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                        <color key="textColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="textColor" red="0.77217203379999999" green="0.78455501790000004" blue="0.77619081739999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
-                <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                <color key="backgroundColor" systemColor="darkTextColor"/>
                 <constraints>
                     <constraint firstItem="Odv-gq-QJv" firstAttribute="centerX" secondItem="hhV-6z-yhL" secondAttribute="centerX" id="SBI-uI-uTv"/>
-                    <constraint firstAttribute="trailing" secondItem="Shf-j1-KPS" secondAttribute="trailing" id="YdU-NX-Nl9"/>
-                    <constraint firstItem="Shf-j1-KPS" firstAttribute="leading" secondItem="hhV-6z-yhL" secondAttribute="leading" id="dgf-Xb-PAY"/>
+                    <constraint firstItem="Odv-gq-QJv" firstAttribute="centerY" secondItem="hhV-6z-yhL" secondAttribute="centerY" id="fDb-Yb-S3y"/>
                     <constraint firstAttribute="bottom" secondItem="Odv-gq-QJv" secondAttribute="bottom" constant="6" id="fLz-fJ-2Xg"/>
-                    <constraint firstItem="Odv-gq-QJv" firstAttribute="top" secondItem="Shf-j1-KPS" secondAttribute="bottom" constant="6" id="h5f-RK-iDW"/>
-                    <constraint firstItem="Shf-j1-KPS" firstAttribute="top" secondItem="hhV-6z-yhL" secondAttribute="top" id="yUy-Mi-a0U"/>
                 </constraints>
             </tableViewCellContentView>
-            <connections>
-                <outlet property="flagIcon" destination="lba-Y3-HPD" id="cWD-W4-k9y"/>
-                <outlet property="postAuthorName" destination="nFn-3a-MY2" id="HUe-7C-SYv"/>
-                <outlet property="postNumber" destination="zp6-Hk-MGE" id="hjg-n6-QGg"/>
-                <outlet property="postTimePublishing" destination="fvS-N3-HbB" id="zp2-NV-EUg"/>
-                <outlet property="stickyIcon" destination="7cV-9t-QDq" id="jpp-pm-T5e"/>
-            </connections>
             <point key="canvasLocation" x="137.68115942028987" y="26.785714285714285"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <systemColor name="darkTextColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>

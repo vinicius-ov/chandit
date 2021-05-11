@@ -175,9 +175,10 @@ class ThreadViewController: BaseViewController {
         guard let index = self.indexPathNav,
         let cell = self.postsTable.cellForRow(at: index)
             else { return }
+        let previousColor: UIColor = cell.contentView.backgroundColor ?? UIColor.darkGray
         UIView.animate(withDuration: 1.0, animations: {
             cell.contentView.backgroundColor = .red
-            cell.contentView.backgroundColor = .black
+            cell.contentView.backgroundColor = previousColor
         })
     }
     
